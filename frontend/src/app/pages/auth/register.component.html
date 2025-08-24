@@ -1,0 +1,203 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<div class="auth-container">
+  <div class="auth-background">
+    <div class="auth-card card-elegant animate-fadeInScale">
+      <div class="auth-header">
+                 <div class="logo-section">
+           <div class="logo-icon">
+             <img src="assets/PitsApp01.png" alt="PitsApp Logo" class="logo-image">
+           </div>
+          <h1>Únete a PitsApp</h1>
+          <p>Crea tu cuenta y descubre el futuro de los servicios automotrices</p>
+        </div>
+      </div>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form">
+        <!-- Name Fields -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName" class="form-label">Nombre</label>
+            <div class="input-wrapper">
+              <span class="input-icon"><i class="fa-solid fa-user"></i></span>
+              <input
+                type="text"
+                id="firstName"
+                formControlName="firstName"
+                class="form-input"
+                [class.error]="firstName?.invalid && firstName?.touched"
+                placeholder="Tu nombre">
+            </div>
+            <div *ngIf="firstName?.invalid && firstName?.touched" class="error-message">
+              <span *ngIf="firstName?.errors?.['required']">El nombre es requerido</span>
+              <span *ngIf="firstName?.errors?.['minlength']">Mínimo 2 caracteres</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName" class="form-label">Apellido</label>
+            <div class="input-wrapper">
+              <span class="input-icon"><i class="fa-solid fa-user"></i></span>
+              <input
+                type="text"
+                id="lastName"
+                formControlName="lastName"
+                class="form-input"
+                [class.error]="lastName?.invalid && lastName?.touched"
+                placeholder="Tu apellido">
+            </div>
+            <div *ngIf="lastName?.invalid && lastName?.touched" class="error-message">
+              <span *ngIf="lastName?.errors?.['required']">El apellido es requerido</span>
+              <span *ngIf="lastName?.errors?.['minlength']">Mínimo 2 caracteres</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email" class="form-label">Correo Electrónico</label>
+          <div class="input-wrapper">
+            <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="form-input"
+              [class.error]="email?.invalid && email?.touched"
+              placeholder="tu@email.com">
+          </div>
+          <div *ngIf="email?.invalid && email?.touched" class="error-message">
+            <span *ngIf="email?.errors?.['required']">El correo electrónico es requerido</span>
+            <span *ngIf="email?.errors?.['email']">Ingresa un correo electrónico válido</span>
+          </div>
+        </div>
+
+        <!-- Phone Field -->
+        <div class="form-group">
+          <label for="phone" class="form-label">Teléfono</label>
+          <div class="input-wrapper">
+            <span class="input-icon"><i class="fa-solid fa-mobile"></i></span>
+            <input
+              type="tel"
+              id="phone"
+              formControlName="phone"
+              class="form-input"
+              [class.error]="phone?.invalid && phone?.touched"
+              placeholder="3001234567">
+          </div>
+          <div *ngIf="phone?.invalid && phone?.touched" class="error-message">
+            <span *ngIf="phone?.errors?.['required']">El teléfono es requerido</span>
+            <span *ngIf="phone?.errors?.['pattern']">Ingresa un número válido (10 dígitos)</span>
+          </div>
+        </div>
+
+        <!-- User Type -->
+        <div class="form-group">
+          <label class="form-label">Tipo de Usuario</label>
+          <div class="user-type-selector">
+            <label class="radio-option">
+              <input type="radio" formControlName="userType" value="customer">
+              <div class="radio-card">
+                <div class="radio-icon"><i class="fa-solid fa-car-side"></i></div>
+                <div class="radio-content">
+                  <h4>Cliente</h4>
+                  <p>Busco servicios automotrices</p>
+                </div>
+              </div>
+            </label>
+            <label class="radio-option">
+              <input type="radio" formControlName="userType" value="provider">
+              <div class="radio-card">
+                <div class="radio-icon"><i class="fa-solid fa-wrench"></i></div>
+                <div class="radio-content">
+                  <h4>Proveedor</h4>
+                  <p>Ofrezco servicios automotrices</p>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Password Fields -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="password" class="form-label">Contraseña</label>
+            <div class="input-wrapper">
+              <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="password"
+                formControlName="password"
+                class="form-input"
+                [class.error]="password?.invalid && password?.touched"
+                placeholder="Mínimo 8 caracteres">
+              <button type="button" class="password-toggle" (click)="togglePassword()">
+                {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+              </button>
+            </div>
+            <div *ngIf="password?.invalid && password?.touched" class="error-message">
+              <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
+              <span *ngIf="password?.errors?.['minlength']">Mínimo 8 caracteres</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+            <div class="input-wrapper">
+              <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+              <input
+                [type]="showConfirmPassword ? 'text' : 'password'"
+                id="confirmPassword"
+                formControlName="confirmPassword"
+                class="form-input"
+                [class.error]="confirmPassword?.invalid && confirmPassword?.touched"
+                placeholder="Repite tu contraseña">
+              <button type="button" class="password-toggle" (click)="toggleConfirmPassword()">
+                {{ showConfirmPassword ? '👁️' : '👁️‍🗨️' }}
+              </button>
+            </div>
+            <div *ngIf="confirmPassword?.invalid && confirmPassword?.touched" class="error-message">
+              <span *ngIf="confirmPassword?.errors?.['required']">Confirma tu contraseña</span>
+              <span *ngIf="confirmPassword?.errors?.['passwordMismatch']">Las contraseñas no coinciden</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terms and Conditions -->
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="acceptTerms" class="checkbox-input">
+            <span class="checkbox-custom"></span>
+            <span class="checkbox-text">
+              Acepto los <a href="#" class="terms-link">términos y condiciones</a> y la 
+              <a href="#" class="terms-link">política de privacidad</a>
+            </span>
+          </label>
+        </div>
+
+        <div *ngIf="acceptTerms?.invalid && acceptTerms?.touched" class="error-message">
+          Debes aceptar los términos y condiciones
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="btn btn-primary auth-submit"
+          [disabled]="loading"
+          [class.loading]="loading">
+          <span *ngIf="!loading">Crear Cuenta</span>
+          <span *ngIf="loading" class="loading-content">
+            <div class="spinner"></div>
+            Creando cuenta...
+          </span>
+        </button>
+
+        <!-- Login Link -->
+        <div class="auth-footer">
+          <p>¿Ya tienes una cuenta? 
+            <a routerLink="/auth/login" class="login-link">Inicia sesión aquí</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

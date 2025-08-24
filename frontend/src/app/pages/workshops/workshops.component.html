@@ -1,0 +1,111 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" 
+      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" 
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<div class="workshops-container">
+  <div class="container">
+    <div class="page-header">
+      <h1>Talleres Disponibles</h1>
+      <p>Encuentra el taller perfecto para tu vehículo en Medellín</p>
+    </div>
+
+    <div class="search-section">
+      <div class="search-bar">
+        <input 
+          type="text" 
+          placeholder="Buscar talleres..." 
+          class="search-input"
+          [(ngModel)]="searchTerm"
+          (input)="searchWorkshops()">
+        <button class="btn btn-primary" (click)="searchWorkshops()">Buscar</button>
+      </div>
+      <div class="filters">
+        <select 
+          class="filter-select"
+          [(ngModel)]="selectedService"
+          (change)="searchWorkshops()">
+          <option value="">Todos los servicios</option>
+          <option *ngFor="let service of services" [value]="service">{{ service }}</option>
+        </select>
+        <select 
+          class="filter-select"
+          [(ngModel)]="selectedNeighborhood"
+          (change)="searchWorkshops()">
+          <option value="">Todas las ubicaciones</option>
+          <option *ngFor="let neighborhood of neighborhoods" [value]="neighborhood">{{ neighborhood }}</option>
+        </select>
+        <button class="btn btn-secondary" (click)="clearFilters()">Limpiar Filtros</button>
+      </div>
+    </div>
+
+    <!-- Loading indicator -->
+    <div *ngIf="loading" class="loading-section">
+      <div class="loading-spinner"><i class="fa-solid fa-spinner"></i></div>
+      <p>Cargando talleres...</p>
+    </div>
+
+    <!-- Error message -->
+    <div *ngIf="error" class="error-section">
+      <div class="error-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+      <p>{{ error }}</p>
+      <button class="btn btn-primary" (click)="loadWorkshops()">Reintentar</button>
+    </div>
+
+    <!-- No results -->
+    <div *ngIf="!loading && !error && filteredWorkshops.length === 0" class="no-results">
+      <div class="no-results-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+      <h3>No se encontraron talleres</h3>
+      <p>Intenta ajustar tus filtros de búsqueda</p>
+      <button class="btn btn-secondary" (click)="clearFilters()">Limpiar Filtros</button>
+    </div>
+
+    <!-- Results count -->
+    <div *ngIf="!loading && !error && filteredWorkshops.length > 0" class="results-count">
+      <p>{{ filteredWorkshops.length }} taller{{ filteredWorkshops.length !== 1 ? 'es' : '' }} encontrado{{ filteredWorkshops.length !== 1 ? 's' : '' }}</p>
+    </div>
+
+    <!-- Workshops grid -->
+    <div class="workshops-grid" *ngIf="!loading && !error && filteredWorkshops.length > 0">
+      <div 
+        class="workshop-card" 
+        *ngFor="let workshop of filteredWorkshops"
+        (click)="onWorkshopClick(workshop)">
+        <div class="workshop-image">
+          <span class="workshop-icon"><i class="fa-solid fa-wrench"></i></span>
+        </div>
+        <div class="workshop-info">
+          <h3>{{ workshop.name }}</h3>
+          <p class="location"><i class="fa-solid fa-map-pin"></i> {{ workshop.neighborhood }}, {{ workshop.city }}</p>
+          <p class="address">{{ workshop.address }}</p>
+          
+          <div class="rating">
+            <span class="stars">
+              <i *ngFor="let star of getStars(workshop.rating)" [class]="star"></i>
+            </span>
+            <span class="rating-number">{{ workshop.rating }}</span>
+            <span class="review-count">({{ workshop.reviewCount }} reseñas)</span>
+          </div>
+
+          <div class="services">
+            <span class="service-tag" *ngFor="let service of workshop.services.slice(0, 3)">
+              {{ service }}
+            </span>
+            <span *ngIf="workshop.services.length > 3" class="service-tag more">
+              +{{ workshop.services.length - 3 }} más
+            </span>
+          </div>
+
+          <div class="contact-info">
+            <p class="phone"><i class="fa-solid fa-phone"></i> {{ workshop.phone }}</p>
+            <p class="hours" *ngIf="workshop.workingHours"><i class="fa-solid fa-clock"></i> {{ workshop.workingHours }}</p>
+          </div>
+
+          <div class="workshop-actions">
+            <button class="btn btn-primary" (click)="onWorkshopClick(workshop)">Ver Detalles</button>
+            <button class="btn btn-secondary" (click)="onContactClick(workshop, $event)">Contactar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

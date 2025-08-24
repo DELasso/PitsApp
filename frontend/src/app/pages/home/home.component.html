@@ -1,0 +1,68 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<div class="home-container">
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>¡Bienvenido a PitsApp!</h1>
+        <h2>Tu solución completa para servicios automotrices en Medellín</h2>
+        <p>Encuentra talleres, repuestos y servicios especializados para carros y motos en un solo lugar</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary">Buscar Servicios</button>
+          <button class="btn btn-secondary">Registrar Negocio</button>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="car-illustration">
+          <img src="assets/PitsApp01.png" alt="PitsApp Logo" class="hero-logo">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="container">
+      <h2 class="animate-fadeInUp">¿Qué puedes encontrar en PitsApp?</h2>
+      <div class="features-grid">
+        <div class="feature-card card-elegant animate-fadeInScale"
+             *ngFor="let service of services; let i = index"
+             [style.animation-delay.ms]="i * 200">
+          <div class="feature-icon">
+            <i [class]="service.icon + ' fa-2x'"></i>
+          </div>
+          <h3>{{ service.title }}</h3>
+          <p>{{ service.description }}</p>
+          <a [routerLink]="service.route" class="btn btn-primary">Explorar</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="benefits">
+    <div class="container">
+      <h2>¿Por qué elegir PitsApp?</h2>
+      <div class="benefits-grid">
+        <div class="benefit-item">
+          <div class="benefit-icon"><i class="fa-solid fa-map-pin fa-2x"></i></div>
+          <h3>Ubicación en tiempo real</h3>
+          <p>Encuentra servicios cerca de tu ubicación actual</p>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon"><i class="fa-regular fa-star fa-2x"></i></div>
+          <h3>Reseñas verificadas</h3>
+          <p>Lee opiniones reales de otros usuarios</p>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon"><i class="fa-solid fa-rocket fa-2x"></i></div>
+          <h3>Servicio rápido</h3>
+          <p>Atención inmediata y servicio a domicilio</p>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon"><i class="fa-solid fa-sack-dollar fa-2x"></i></div>
+          <h3>Mejores precios</h3>
+          <p>Compara precios y encuentra las mejores ofertas</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

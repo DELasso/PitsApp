@@ -1,0 +1,42 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<div class="parts-container">
+  <div class="container">
+    <div class="page-header">
+      <h1>Repuestos y Autopartes</h1>
+      <p>Encuentra los repuestos que necesitas para tu vehículo</p>
+    </div>
+
+    <div class="search-section">
+      <div class="search-bar">
+        <input type="text" placeholder="Buscar repuestos por marca, modelo o pieza..." class="search-input">
+        <button class="btn btn-primary">Buscar</button>
+      </div>
+    </div>
+
+    <div class="categories-section">
+      <h2>Categorías de Repuestos</h2>
+      <div class="categories-grid">
+        <div class="category-card" *ngFor="let category of categories">
+          <div class="category-icon">
+            <i [class]="category.icon + ' fa-2x'"></i>
+          </div>
+          <h3>{{ category.name }}</h3>
+          <p>{{ category.count }} productos</p>
+          <button class="btn btn-primary">Ver Todo</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured-section">
+      <h2>Repuestos Destacados</h2>
+      <div class="coming-soon">
+        <div class="coming-soon-icon">
+          <i class="fa-solid fa-person-digging fa-2x"></i>
+        </div>
+        <h3>Próximamente</h3>
+        <p>Estamos trabajando para traerte el mejor catálogo de repuestos</p>
+      </div>
+    </div>
+  </div>
+</div>

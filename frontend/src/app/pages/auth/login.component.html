@@ -1,0 +1,105 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<div class="auth-container">
+  <div class="auth-background">
+    <div class="auth-card card-elegant animate-fadeInScale">
+      <div class="auth-header">
+                 <div class="logo-section">
+           <div class="logo-icon">
+             <img src="assets/PitsApp01.png" alt="PitsApp Logo" class="logo-image">
+           </div>
+          <h1>Bienvenido de vuelta</h1>
+          <p>Ingresa a tu cuenta de PitsApp</p>
+        </div>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email" class="form-label">Correo Electrónico</label>
+          <div class="input-wrapper">
+            <span class="input-icon"><i class="fa-regular fa-envelope"></i></span>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              class="form-input"
+              [class.error]="email?.invalid && email?.touched"
+              placeholder="tu@email.com">
+          </div>
+          <div *ngIf="email?.invalid && email?.touched" class="error-message">
+            <span *ngIf="email?.errors?.['required']">El correo electrónico es requerido</span>
+            <span *ngIf="email?.errors?.['email']">Ingresa un correo electrónico válido</span>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password" class="form-label">Contraseña</label>
+          <div class="input-wrapper">
+            <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              class="form-input"
+              [class.error]="password?.invalid && password?.touched"
+              placeholder="Tu contraseña">
+            <button type="button" class="password-toggle" (click)="togglePassword()">
+              {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+            </button>
+          </div>
+          <div *ngIf="password?.invalid && password?.touched" class="error-message">
+            <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
+            <span *ngIf="password?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</span>
+          </div>
+        </div>
+
+        <!-- Remember Me -->
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="rememberMe" class="checkbox-input">
+            <span class="checkbox-custom"></span>
+            <span class="checkbox-text">Recordarme</span>
+          </label>
+          <a routerLink="/auth/forgot-password" class="forgot-link">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="btn btn-primary auth-submit"
+          [disabled]="loading"
+          [class.loading]="loading">
+          <span *ngIf="!loading">Iniciar Sesión</span>
+          <span *ngIf="loading" class="loading-content">
+            <div class="spinner"></div>
+            Iniciando sesión...
+          </span>
+        </button>
+
+        <!-- Social Login -->
+        <div class="social-divider">
+          <span>o continúa con</span>
+        </div>
+
+        <div class="social-buttons">
+          <button type="button" class="btn btn-social google">
+            <span class="social-icon"><i class="fa-brands fa-google"></i></span>
+            Google
+          </button>
+          <button type="button" class="btn btn-social facebook">
+            <span class="social-icon"><i class="fa-brands fa-facebook"></i></span>
+            Facebook
+          </button>
+        </div>
+
+        <!-- Register Link -->
+        <div class="auth-footer">
+          <p>¿No tienes una cuenta? 
+            <a routerLink="/auth/register" class="register-link">Regístrate aquí</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

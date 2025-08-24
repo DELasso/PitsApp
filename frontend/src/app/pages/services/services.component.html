@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<div class="services-container">
+  <div class="container">
+    <div class="page-header">
+      <h1>Servicios Especializados</h1>
+      <p>Servicios automotrices profesionales cuando los necesites</p>
+    </div>
+
+    <div class="emergency-section">
+      <div class="emergency-card">
+        <div class="emergency-icon"><i class="fa-regular fa-bell"></i></div>
+        <div class="emergency-content">
+          <h3>¿Necesitas ayuda inmediata?</h3>
+          <p>Servicio de emergencia 24/7</p>
+          <button class="btn btn-warn">Llamar Ahora</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="services-section">
+      <h2>Nuestros Servicios</h2>
+      <div class="services-grid">
+        <div class="service-card" *ngFor="let service of services" [class.unavailable]="!service.available">
+          <div class="service-icon"><i [class]="service.icon + ' fa-2x'"></i></div>
+          <h3>{{ service.name }}</h3>
+          <p>{{ service.description }}</p>
+          <div class="service-status">
+            <span class="status-badge" [class.available]="service.available" [class.unavailable]="!service.available">
+              {{ service.available ? 'Disponible' : 'Próximamente' }}
+            </span>
+          </div>
+          <button class="btn" [class.btn-primary]="service.available" [class.btn-disabled]="!service.available" [disabled]="!service.available">
+            {{ service.available ? 'Solicitar' : 'No Disponible' }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="how-it-works">
+      <h2>¿Cómo funciona?</h2>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Solicita</h3>
+          <p>Elige el servicio que necesitas</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Confirma</h3>
+          <p>Te contactamos para confirmar detalles</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Disfruta</h3>
+          <p>Nuestro especialista va hasta ti</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

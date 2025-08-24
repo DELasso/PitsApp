@@ -1,0 +1,34 @@
+<div class="app-container">
+  <header class="app-header">
+    <div class="container">
+      <nav class="navbar animate-fadeInUp">
+                  <div class="navbar-brand">
+            <div class="brand-icon">
+              <img src="assets/PitsApp01.png" alt="PitsApp Logo" class="logo-image">
+            </div>
+          <div class="brand-content">
+            <h1>PitsApp</h1>
+            <p>A los Pits.</p>
+          </div>
+        </div>
+        <div class="navbar-menu">
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
+          <a routerLink="/talleres" routerLinkActive="active">Talleres</a>
+          <a routerLink="/repuestos" routerLinkActive="active">Repuestos</a>
+          <a routerLink="/servicios" routerLinkActive="active">Servicios</a>
+          <a routerLink="/auth/login" routerLinkActive="active" class="btn btn-outline">Ingresar</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container">
+      <p>&copy; 2025 PitsApp - Servicios automotrices en Medellín</p>
+    </div>
+  </footer>
+</div>

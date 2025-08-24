@@ -1,0 +1,35 @@
+{
+  "name": "pitsapp",
+  "version": "1.0.0",
+  "description": "Aplicación web para servicios automotrices en Medellín - Frontend Angular y Backend NestJS",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run start:dev",
+    "dev:frontend": "cd frontend && npm start",
+    "start:backend": "cd backend && npm run start:dev",
+    "start:frontend": "cd frontend && npm start",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm build",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install --legacy-peer-deps"
+  },
+  "keywords": [
+    "automotive",
+    "services",
+    "medellin",
+    "angular",
+    "nestjs"
+  ],
+  "author": "PitsApp Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  },
+  "dependencies": {
+    "@angular/cli": "^20.2.0",
+    "@fortawesome/angular-fontawesome": "^3.0.0",
+    "@fortawesome/fontawesome-svg-core": "^7.0.0",
+    "@fortawesome/free-solid-svg-icons": "^7.0.0"
+  }
+}

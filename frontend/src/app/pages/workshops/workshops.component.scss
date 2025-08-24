@@ -1,0 +1,256 @@
+.workshops-container {
+  padding: 2rem 0;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  
+  h1 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+  }
+}
+
+.search-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+  
+  .search-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    
+    .search-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      
+      &:focus {
+        outline: none;
+        border-color: var(--primary-color);
+      }
+    }
+  }
+  
+  .filters {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    
+    .filter-select {
+      padding: 0.75rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+      background: white;
+      min-width: 150px;
+      
+      &:focus {
+        outline: none;
+        border-color: var(--primary-color);
+      }
+    }
+  }
+}
+
+.workshops-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.workshop-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+  
+  .workshop-image {
+    background: linear-gradient(135deg, var(--primary-light), var(--primary-color));
+    padding: 2rem;
+    text-align: center;
+    
+    .workshop-icon {
+      font-size: 4rem;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    }
+  }
+  
+      .workshop-info {
+      padding: 1.5rem;
+      
+      h3 {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+        cursor: pointer;
+        
+        &:hover {
+          color: var(--primary-color);
+        }
+      }
+      
+      .location {
+        color: var(--text-secondary);
+        margin-bottom: 0.25rem;
+        font-weight: 500;
+      }
+      
+      .address {
+        color: var(--text-secondary);
+        margin-bottom: 0.75rem;
+        font-size: 0.9rem;
+      }
+      
+      .rating {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        
+        .stars {
+          color: #ffa000;
+        }
+        
+        .rating-number {
+          font-weight: 600;
+          color: var(--text-primary);
+        }
+        
+        .review-count {
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+        }
+      }
+      
+      .services {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        
+        .service-tag {
+          background: var(--background-color);
+          color: var(--text-secondary);
+          padding: 0.25rem 0.75rem;
+          border-radius: 16px;
+          font-size: 0.9rem;
+          
+          &.more {
+            background: var(--primary-light);
+            color: white;
+          }
+        }
+      }
+      
+      .contact-info {
+        margin-bottom: 1.5rem;
+        
+        .phone {
+          color: var(--text-primary);
+          font-weight: 500;
+          margin-bottom: 0.25rem;
+        }
+        
+        .hours {
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+        }
+      }
+      
+      .workshop-actions {
+        display: flex;
+        gap: 0.5rem;
+        
+        .btn {
+          flex: 1;
+          padding: 0.75rem;
+          font-size: 0.9rem;
+        }
+      }
+    }
+}
+
+.loading-section, .error-section, .no-results {
+  text-align: center;
+  padding: 3rem 2rem;
+  
+  .loading-spinner, .error-icon, .no-results-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: pulse 2s infinite;
+  }
+  
+  .loading-spinner {
+    animation: spin 1s linear infinite;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+  }
+  
+  p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+  }
+}
+
+.results-count {
+  margin-bottom: 1.5rem;
+  padding: 0 1rem;
+  
+  p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-align: center;
+  }
+}
+
+// Animations
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .search-section {
+    .search-bar {
+      flex-direction: column;
+    }
+    
+    .filters {
+      flex-direction: column;
+    }
+  }
+  
+  .workshops-grid {
+    grid-template-columns: 1fr;
+  }
+}
