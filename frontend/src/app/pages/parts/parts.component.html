@@ -23,11 +23,34 @@
           </div>
           <h3>{{ category.name }}</h3>
           <p>{{ category.count }} productos</p>
-          <button class="btn btn-primary">Ver Todo</button>
+          <button class="btn btn-primary" (click)="filterByCategory(category.name)">Ver Todo</button>
         </div>
       </div>
     </div>
 
+    <!-- Modal para mostrar repuestos filtrados por categoría -->
+    <div class="modal-backdrop" *ngIf="showModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Repuestos de {{ modalCategory }}</h2>
+          <button class="close-btn" (click)="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="modalParts.length > 0; else noParts">
+            <div class="product-card" *ngFor="let part of modalParts">
+              <h3>{{ part.name }}</h3>
+              <p>{{ part.description }}</p>
+              <p>Precio: {{ part.price }} COP</p>
+              <p>Stock: {{ part.stock }}</p>
+            </div>
+          </div>
+          <ng-template #noParts>
+            <p>No hay repuestos disponibles para esta categoría.</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    
     <div class="featured-section">
       <h2>Repuestos Destacados</h2>
       <div class="coming-soon">

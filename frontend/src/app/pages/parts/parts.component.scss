@@ -137,3 +137,112 @@
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
 }
+
+// Modal styles
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(30, 34, 40, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  .modal {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    width: 95%;
+    max-width: 480px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 2rem 1rem 2rem;
+      border-bottom: 1px solid #f0f0f0;
+      background: #fafbfc;
+
+      h2 {
+        font-size: 1.5rem;
+        color: var(--text-primary);
+        margin: 0;
+      }
+
+      .close-btn {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: color 0.2s;
+        line-height: 1;
+        padding: 0 0.5rem;
+
+        &:hover {
+          color: var(--primary-color);
+        }
+      }
+    }
+
+    .modal-body {
+      padding: 2rem;
+      overflow-y: auto;
+
+      .product-card {
+        background: #f7f8fa;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        padding: 1.25rem 1rem;
+        margin-bottom: 1.5rem;
+
+        h3 {
+          font-size: 1.1rem;
+          color: var(--text-primary);
+          margin-bottom: 0.5rem;
+        }
+
+        p {
+          color: var(--text-secondary);
+          margin-bottom: 0.3rem;
+          font-size: 1rem;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      p {
+        color: var(--text-secondary);
+        text-align: center;
+        font-size: 1.1rem;
+      }
+    }
+  }
+}
+
+// Responsive modal
+@media (max-width: 600px) {
+  .modal-backdrop {
+    .modal {
+      max-width: 98vw;
+      padding: 0;
+      .modal-header, .modal-body {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      .modal-body {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+      }
+    }
+  }
+}

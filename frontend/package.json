@@ -13,10 +13,16 @@
     "serve:ssr": "node dist/server/server.mjs"
   },
   "private": true,
-  "keywords": ["automotive", "services", "angular", "typescript"],
+  "keywords": [
+    "automotive",
+    "services",
+    "angular",
+    "typescript"
+  ],
   "dependencies": {
     "@angular/animations": "^19.1.0",
     "@angular/common": "^19.1.0",
+    "@angular/compiler-cli": "^19.2.14",
     "@angular/core": "^19.1.0",
     "@angular/forms": "^19.1.0",
     "@angular/platform-browser": "^19.1.0",
