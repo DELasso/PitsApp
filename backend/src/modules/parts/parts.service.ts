@@ -107,6 +107,23 @@ export class PartsService {
       warranty: '5 años',
       rating: 4.8,
       reviewCount: 156
+    }),
+    new Part({
+      id: '6',
+      name: 'Pastillas de Freno traseras',
+      description: 'Pastillas de freno de alta calidad para vehículos Toyota',
+      category: 'Frenos',
+      brand: 'Akebono',
+      partNumber: 'AK-04465-42180',
+      price: 85000,
+      condition: PartCondition.ORIGINAL,
+      vehicleType: VehicleType.CARRO,
+      compatibleVehicles: ['Toyota Corolla 2015-2022', 'Toyota Prius 2016-2022'],
+      supplier: 'Repuestos Toyota Medellín',
+      stock: 15,
+      warranty: '12 meses',
+      rating: 4.7,
+      reviewCount: 23
     })
   ];
 
