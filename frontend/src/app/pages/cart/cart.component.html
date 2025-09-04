@@ -19,7 +19,7 @@
 <div class="cart-actions">
   <p class="total"><strong>Total:</strong> {{ getTotal() | currency:'COP':'symbol':'1.0-0' }}</p>
   <button class="btn btn-warning" (click)="clearCart()">Vaciar Carrito</button>
-  <button class="btn btn-success" (click)="checkout()">Comprar</button>
+  <a routerLink="/order" routerLinkActive="active" class="btn btn-success cart-link">Comprar</a>
 </div>
 
 <ng-template #emptyCart>
