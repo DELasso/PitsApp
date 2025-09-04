@@ -3,6 +3,7 @@ import { PartCondition, VehicleType } from '../dto/create-part.dto';
 export class Part {
   id: string;
   name: string;
+  icon?: string;
   description: string;
   category: string;
   brand: string;

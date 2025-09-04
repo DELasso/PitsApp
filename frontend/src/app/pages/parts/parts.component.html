@@ -27,36 +27,38 @@
         </div>
       </div>
     </div>
-  
-        <!-- Modal para mostrar repuestos filtrados por categoría -->
-    <div class="respuestos-section" *ngIf="selectedCategory">
-  <h2>Repuestos de {{ selectedCategory }}</h2>
 
+    <!-- Modal para mostrar repuestos filtrados por categoría -->
+    <div class="respuestos-section" *ngIf="selectedCategory" style="margin-bottom: 48px;"></div>
+      <h2>Repuestos de {{ selectedCategory }}</h2>
 
-  <div class="respuestos-grid" *ngIf="parts.length > 0; else noParts">
-    <div class="respuesto-card" *ngFor="let part of parts">
-      <div class="respuesto-icon">
-        <i [class]="part.icon + ' fa-2x'"></i>
+      <div class="respuestos-grid" *ngIf="parts.length > 0; else noParts">
+      <div class="respuesto-card improved-card" *ngFor="let part of parts">
+        <div class="respuesto-content">
+        <div class="respuesto-img">
+          <i [class]="part.icon + ' fa-3x'"></i>
+        </div>
+        <div class="respuesto-info">
+          <h3>{{ part.name }}</h3>
+          <p class="respuesto-description">{{ part.description }}</p>
+          <p><strong>Precio:</strong> {{ part.price | currency:'COP':'symbol':'1.0-0' }}</p>
+          <p><strong>Stock:</strong> {{ part.stock }}</p>
+        </div>
+        </div>
+        <div class="respuesto-actions">
+        <button class="btn btn-primary" (click)="addToCart(part)">
+          Agregar al carrito
+        </button>
+        </div>
       </div>
-      <h3>{{ part.name }}</h3>
-      <p>{{ part.description }}</p>
-      <p><strong>Precio:</strong> {{ part.price | currency:'COP':'symbol':'1.0-0' }}</p>
-      <p><strong>Stock:</strong> {{ part.stock }}</p>
-      <button class="btn btn-primary" (click)="addToCart(part)">
-        Agregar al carrito
-      </button>
+      </div>
+
+      <ng-template #noParts>
+      <p>No hay repuestos disponibles para esta categoría.</p>
+      </ng-template>
     </div>
-  </div>
 
-  <ng-template #noParts>
-    <p>No hay repuestos disponibles para esta categoría.</p>
-  </ng-template>
-</div>
-
-  <ng-template #noParts>
-    <p>No hay repuestos disponibles para esta categoría.</p>
-  </ng-template>
-</div>
+    <div style="height: 48px;"></div>
 
   <div class="container">
     <div class="featured-section">
