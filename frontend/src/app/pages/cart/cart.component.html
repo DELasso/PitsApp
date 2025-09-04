@@ -15,7 +15,13 @@
     </div>
   </div>
 </div>
-<button class="btn btn-secondary" (click)="clearCart()">Vaciar carrito</button>
+
+<div class="cart-actions">
+  <p class="total"><strong>Total:</strong> {{ getTotal() | currency:'COP':'symbol':'1.0-0' }}</p>
+  <button class="btn btn-warning" (click)="clearCart()">Vaciar Carrito</button>
+  <button class="btn btn-success" (click)="checkout()">Comprar</button>
+</div>
+
 <ng-template #emptyCart>
   <p>Tu carrito está vacío 🛒</p>
 </ng-template>

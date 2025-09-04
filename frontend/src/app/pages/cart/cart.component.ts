@@ -27,4 +27,18 @@ export class CartComponent {
     this.cartService.clearCart();
     this.items = [];
   }
+
+  getTotal(): number {
+    return this.items.reduce((acc, item) => acc + item.price, 0);
+  }
+
+  checkout() {
+    if (this.items.length === 0) return;
+
+    // Aquí podrías redirigir a una página de pago o procesar la orden
+    alert(`Compra realizada con éxito 🎉\nTotal: ${this.getTotal().toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}`);
+
+    this.clearCart();
+  }
 }
+  

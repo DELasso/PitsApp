@@ -9,6 +9,7 @@ export class PartsService {
     new Part({
       id: '1',
       name: 'Pastillas de Freno Delanteras',
+      icon: 'fa-solid fa-cog',
       description: 'Pastillas de freno de alta calidad para vehículos Toyota',
       category: 'Frenos',
       brand: 'Akebono',
@@ -26,6 +27,7 @@ export class PartsService {
     new Part({
       id: '2',
       name: 'Filtro de Aceite',
+      icon: 'fa-solid fa-cog',
       description: 'Filtro de aceite universal para motores 1.6L y 2.0L',
       category: 'Motor',
       brand: 'Mann Filter',
@@ -43,6 +45,7 @@ export class PartsService {
     new Part({
       id: '3',
       name: 'Cadena de Transmisión',
+      icon: 'fa-solid fa-cog',
       description: 'Cadena reforzada para motocicletas deportivas',
       category: 'Transmisión',
       brand: 'DID',
@@ -60,6 +63,7 @@ export class PartsService {
     new Part({
       id: '4',
       name: 'Amortiguador Trasero',
+      icon: 'fa-solid fa-cog',
       description: 'Amortiguador de gas para mejor confort y estabilidad',
       category: 'Suspensión',
       brand: 'Monroe',
@@ -77,6 +81,7 @@ export class PartsService {
     new Part({
       id: '5',
       name: 'Batería 12V 60Ah',
+      icon: 'fa-solid fa-cog',
       description: 'Batería libre de mantenimiento con tecnología AGM',
       category: 'Eléctricos',
       brand: 'MAC',
@@ -94,6 +99,7 @@ export class PartsService {
     new Part({
       id: '6',
       name: 'Llanta 175/65 R14',
+      icon: 'fa-solid fa-cog',
       description: 'Llanta radial para uso urbano con excelente agarre',
       category: 'Llantas',
       brand: 'Michelin',
@@ -111,6 +117,7 @@ export class PartsService {
     new Part({
       id: '6',
       name: 'Pastillas de Freno traseras',
+      icon: 'fa-solid fa-cog',
       description: 'Pastillas de freno de alta calidad para vehículos Toyota',
       category: 'Frenos',
       brand: 'Akebono',
