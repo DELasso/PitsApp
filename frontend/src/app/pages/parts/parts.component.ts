@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { PartsService } from '../../services/parts.service'; // Ajusta el path si necesario
-import { Part, PartSearchParams } from '../../models/part.model';
+
+import { CartService } from '../../services/cart.service';
+import { PartsService } from '../../services/parts.service';
+import { Part } from '../../models/part.model';
 
 @Component({
   selector: 'app-parts',
@@ -13,35 +15,34 @@ import { Part, PartSearchParams } from '../../models/part.model';
 })
 export class PartsComponent implements OnInit {
   categories: { name: string, icon: string, count: number }[] = [];
-  // Elimina la lista de partes principal
-  // parts: Part[] = [];
-  showModal: boolean = false;
-  modalParts: Part[] = [];
-  modalCategory: string = '';
 
-  constructor(private partsService: PartsService) {}
+  parts: Part[] = [];   // 👈 aquí guardamos los productos filtrados
+  selectedCategory: string = '';
+
+  constructor(
+    private partsService: PartsService,
+    private cartService: CartService
+  ) {}
+
+  addToCart(part: Part): void {
+    this.cartService.addToCart(part);
+    console.log('Agregado al carrito:', part);
+  }
 
   ngOnInit(): void {
-    // Carga categorías dinámicamente
     this.partsService.getCategories().subscribe(cats => {
-      this.categories = cats.map(cat => ({ name: cat, icon: 'fa-solid fa-cog', count: 0 }));
-      // Ya no se cargan productos aquí
+      this.categories = cats.map(cat => ({
+        name: cat,
+        icon: 'fa-solid fa-cog',
+        count: 0
+      }));
       this.updateCategoryCounts();
     });
   }
 
-  // Ya no se usa para mostrar productos abajo
-  // Método para cargar productos (solo para contar)
-  private loadPartsForCount() {
-    this.partsService.getParts().subscribe(response => {
-      this.updateCategoryCounts(response);
-    });
-  }
 
-  // Actualiza el conteo de productos por categoría
   private updateCategoryCounts(parts: Part[] = []) {
     if (parts.length === 0) {
-      // Si no se pasan partes, obtenerlas solo para contar
       this.partsService.getParts().subscribe(allParts => {
         this.categories.forEach(cat => {
           cat.count = allParts.filter(p => p.category === cat.name).length;
@@ -54,22 +55,12 @@ export class PartsComponent implements OnInit {
     }
   }
 
-  // Maneja el clic en "Ver Todo" y muestra el modal
+
+  // ✅ Ahora en vez de modal, cargamos productos en la misma vista
   filterByCategory(category: string) {
     this.partsService.searchParts({ category }).subscribe(response => {
-      this.modalParts = response;
-      this.modalCategory = category;
-      this.showModal = true;
+      this.parts = response;
+      this.selectedCategory = category;
     });
-  }
-
-  closeModal() {
-    this.showModal = false;
-    this.modalParts = [];
-    this.modalCategory = '';
-  }
-
-  getFloor(value: number): number {
-    return Math.floor(value);
   }
 }

@@ -1,0 +1,21 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+
+<div class="cart-container">
+  <h2>Tu carrito de compras</h2>
+  <div class="cart-grid">
+    <div class="cart-item" *ngFor="let item of items; let i = index">
+      <div class="cart-icon">
+        <i [class]="item.icon + ' fa-2x'"></i>
+      </div>
+      <h3>{{ item.name }}</h3>
+      <p>{{ item.description }} </p>
+      <p><strong>Precio:</strong> {{item.price | currency: 'cop' }}</p>
+      <button class="btn btn-danger" (click)="removeItem(i)">Eliminar</button>
+    </div>
+  </div>
+</div>
+<button class="btn btn-secondary" (click)="clearCart()">Vaciar carrito</button>
+<ng-template #emptyCart>
+  <p>Tu carrito está vacío 🛒</p>
+</ng-template>

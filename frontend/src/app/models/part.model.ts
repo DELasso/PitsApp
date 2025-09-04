@@ -15,6 +15,7 @@ export interface Part {
   id: string;
   name: string;
   description: string;
+  icon?: string;
   category: string;
   brand: string;
   partNumber: string;
