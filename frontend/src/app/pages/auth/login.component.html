@@ -1,12 +1,14 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+  integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
 <div class="auth-container">
   <div class="auth-background">
     <div class="auth-card card-elegant animate-fadeInScale">
       <div class="auth-header">
-                 <div class="logo-section">
-           <div class="logo-icon">
-             <img src="assets/PitsApp01.png" alt="PitsApp Logo" class="logo-image">
-           </div>
+        <div class="logo-section">
+          <div class="logo-icon">
+            <img src="assets/PitsApp01.png" alt="PitsApp Logo" class="logo-image">
+          </div>
           <h1>Bienvenido de vuelta</h1>
           <p>Ingresa a tu cuenta de PitsApp</p>
         </div>
@@ -18,13 +20,8 @@
           <label for="email" class="form-label">Correo Electrónico</label>
           <div class="input-wrapper">
             <span class="input-icon"><i class="fa-regular fa-envelope"></i></span>
-            <input
-              type="email"
-              id="email"
-              formControlName="email"
-              class="form-input"
-              [class.error]="email?.invalid && email?.touched"
-              placeholder="tu@email.com">
+            <input type="email" id="email" formControlName="email" class="form-input"
+              [class.error]="email?.invalid && email?.touched" placeholder="tu@email.com">
           </div>
           <div *ngIf="email?.invalid && email?.touched" class="error-message">
             <span *ngIf="email?.errors?.['required']">El correo electrónico es requerido</span>
@@ -37,16 +34,12 @@
           <label for="password" class="form-label">Contraseña</label>
           <div class="input-wrapper">
             <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
-            <input
-              [type]="showPassword ? 'text' : 'password'"
-              id="password"
-              formControlName="password"
-              class="form-input"
-              [class.error]="password?.invalid && password?.touched"
-              placeholder="Tu contraseña">
+            <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
+              class="form-input" [class.error]="password?.invalid && password?.touched" placeholder="Tu contraseña">
             <button type="button" class="password-toggle" (click)="togglePassword()">
-              {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+              <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
             </button>
+
           </div>
           <div *ngIf="password?.invalid && password?.touched" class="error-message">
             <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
@@ -65,11 +58,7 @@
         </div>
 
         <!-- Submit Button -->
-        <button 
-          type="submit" 
-          class="btn btn-primary auth-submit"
-          [disabled]="loading"
-          [class.loading]="loading">
+        <button type="submit" class="btn btn-primary auth-submit" [disabled]="loading" [class.loading]="loading">
           <span *ngIf="!loading">Iniciar Sesión</span>
           <span *ngIf="loading" class="loading-content">
             <div class="spinner"></div>
@@ -95,7 +84,7 @@
 
         <!-- Register Link -->
         <div class="auth-footer">
-          <p>¿No tienes una cuenta? 
+          <p>¿No tienes una cuenta?
             <a routerLink="/auth/register" class="register-link">Regístrate aquí</a>
           </p>
         </div>

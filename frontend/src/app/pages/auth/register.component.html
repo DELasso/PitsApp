@@ -1,12 +1,14 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+  integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
 <div class="auth-container">
   <div class="auth-background">
     <div class="auth-card card-elegant animate-fadeInScale">
       <div class="auth-header">
-                 <div class="logo-section">
-           <div class="logo-icon">
-             <img src="assets/PitsApp01.png" alt="PitsApp Logo" class="logo-image">
-           </div>
+        <div class="logo-section">
+          <div class="logo-icon">
+            <img src="assets/PitsApp01.png" alt="PitsApp Logo" class="logo-image">
+          </div>
           <h1>Únete a PitsApp</h1>
           <p>Crea tu cuenta y descubre el futuro de los servicios automotrices</p>
         </div>
@@ -19,13 +21,8 @@
             <label for="firstName" class="form-label">Nombre</label>
             <div class="input-wrapper">
               <span class="input-icon"><i class="fa-solid fa-user"></i></span>
-              <input
-                type="text"
-                id="firstName"
-                formControlName="firstName"
-                class="form-input"
-                [class.error]="firstName?.invalid && firstName?.touched"
-                placeholder="Tu nombre">
+              <input type="text" id="firstName" formControlName="firstName" class="form-input"
+                [class.error]="firstName?.invalid && firstName?.touched" placeholder="Tu nombre">
             </div>
             <div *ngIf="firstName?.invalid && firstName?.touched" class="error-message">
               <span *ngIf="firstName?.errors?.['required']">El nombre es requerido</span>
@@ -37,13 +34,8 @@
             <label for="lastName" class="form-label">Apellido</label>
             <div class="input-wrapper">
               <span class="input-icon"><i class="fa-solid fa-user"></i></span>
-              <input
-                type="text"
-                id="lastName"
-                formControlName="lastName"
-                class="form-input"
-                [class.error]="lastName?.invalid && lastName?.touched"
-                placeholder="Tu apellido">
+              <input type="text" id="lastName" formControlName="lastName" class="form-input"
+                [class.error]="lastName?.invalid && lastName?.touched" placeholder="Tu apellido">
             </div>
             <div *ngIf="lastName?.invalid && lastName?.touched" class="error-message">
               <span *ngIf="lastName?.errors?.['required']">El apellido es requerido</span>
@@ -57,13 +49,8 @@
           <label for="email" class="form-label">Correo Electrónico</label>
           <div class="input-wrapper">
             <span class="input-icon"><i class="fa-solid fa-envelope"></i></span>
-            <input
-              type="email"
-              id="email"
-              formControlName="email"
-              class="form-input"
-              [class.error]="email?.invalid && email?.touched"
-              placeholder="tu@email.com">
+            <input type="email" id="email" formControlName="email" class="form-input"
+              [class.error]="email?.invalid && email?.touched" placeholder="tu@email.com">
           </div>
           <div *ngIf="email?.invalid && email?.touched" class="error-message">
             <span *ngIf="email?.errors?.['required']">El correo electrónico es requerido</span>
@@ -76,13 +63,8 @@
           <label for="phone" class="form-label">Teléfono</label>
           <div class="input-wrapper">
             <span class="input-icon"><i class="fa-solid fa-mobile"></i></span>
-            <input
-              type="tel"
-              id="phone"
-              formControlName="phone"
-              class="form-input"
-              [class.error]="phone?.invalid && phone?.touched"
-              placeholder="3001234567">
+            <input type="tel" id="phone" formControlName="phone" class="form-input"
+              [class.error]="phone?.invalid && phone?.touched" placeholder="3001234567">
           </div>
           <div *ngIf="phone?.invalid && phone?.touched" class="error-message">
             <span *ngIf="phone?.errors?.['required']">El teléfono es requerido</span>
@@ -119,19 +101,16 @@
 
         <!-- Password Fields -->
         <div class="form-row">
+          <!-- Password -->
           <div class="form-group">
             <label for="password" class="form-label">Contraseña</label>
             <div class="input-wrapper">
               <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
-              <input
-                [type]="showPassword ? 'text' : 'password'"
-                id="password"
-                formControlName="password"
-                class="form-input"
-                [class.error]="password?.invalid && password?.touched"
+              <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
+                class="form-input" [class.error]="password?.invalid && password?.touched"
                 placeholder="Mínimo 8 caracteres">
               <button type="button" class="password-toggle" (click)="togglePassword()">
-                {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+                <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
               </button>
             </div>
             <div *ngIf="password?.invalid && password?.touched" class="error-message">
@@ -140,19 +119,16 @@
             </div>
           </div>
 
+          <!-- Confirm Password -->
           <div class="form-group">
             <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
             <div class="input-wrapper">
               <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
-              <input
-                [type]="showConfirmPassword ? 'text' : 'password'"
-                id="confirmPassword"
-                formControlName="confirmPassword"
-                class="form-input"
-                [class.error]="confirmPassword?.invalid && confirmPassword?.touched"
-                placeholder="Repite tu contraseña">
+              <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword"
+                formControlName="confirmPassword" class="form-input"
+                [class.error]="confirmPassword?.invalid && confirmPassword?.touched" placeholder="Repite tu contraseña">
               <button type="button" class="password-toggle" (click)="toggleConfirmPassword()">
-                {{ showConfirmPassword ? '👁️' : '👁️‍🗨️' }}
+                <i class="fa-solid" [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
               </button>
             </div>
             <div *ngIf="confirmPassword?.invalid && confirmPassword?.touched" class="error-message">
@@ -160,6 +136,7 @@
               <span *ngIf="confirmPassword?.errors?.['passwordMismatch']">Las contraseñas no coinciden</span>
             </div>
           </div>
+
         </div>
 
         <!-- Terms and Conditions -->
@@ -168,7 +145,7 @@
             <input type="checkbox" formControlName="acceptTerms" class="checkbox-input">
             <span class="checkbox-custom"></span>
             <span class="checkbox-text">
-              Acepto los <a href="#" class="terms-link">términos y condiciones</a> y la 
+              Acepto los <a href="#" class="terms-link">términos y condiciones</a> y la
               <a href="#" class="terms-link">política de privacidad</a>
             </span>
           </label>
@@ -179,11 +156,7 @@
         </div>
 
         <!-- Submit Button -->
-        <button 
-          type="submit" 
-          class="btn btn-primary auth-submit"
-          [disabled]="loading"
-          [class.loading]="loading">
+        <button type="submit" class="btn btn-primary auth-submit" [disabled]="loading" [class.loading]="loading">
           <span *ngIf="!loading">Crear Cuenta</span>
           <span *ngIf="loading" class="loading-content">
             <div class="spinner"></div>
@@ -193,7 +166,7 @@
 
         <!-- Login Link -->
         <div class="auth-footer">
-          <p>¿Ya tienes una cuenta? 
+          <p>¿Ya tienes una cuenta?
             <a routerLink="/auth/login" class="login-link">Inicia sesión aquí</a>
           </p>
         </div>

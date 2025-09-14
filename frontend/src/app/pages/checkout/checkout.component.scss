@@ -13,6 +13,10 @@ div {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.space {
+  margin: 0 2px; // Espacio entre enlaces y texto
+}
+
 .checkout-header {
   text-align: center;
   margin-bottom: 3rem;
@@ -244,7 +248,7 @@ textarea.form-control {
       align-items: center;
       justify-content: center;
       font-size: 1.5rem;
-      color: #7d6c6c;
+      color: #ff5400;
     }
     
     .method-info {
@@ -289,29 +293,38 @@ textarea.form-control {
 .terms {
   .checkbox-label {
     display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
+    align-items: center; // checkbox alineado con el texto
+    gap: 0.2rem; // menos separación entre checkbox y el texto
     cursor: pointer;
     font-size: 0.9rem;
     line-height: 1.4;
-    
+
     input[type="checkbox"] {
       width: 18px;
       height: 18px;
       accent-color: #cc0606;
       margin: 0;
     }
-    
+
+    // texto e hipervínculos en línea
     a {
+      margin: 0 2px; // pequeño espacio a los lados
       color: #b20b0b;
       text-decoration: none;
-      
+
       &:hover {
         text-decoration: underline;
       }
     }
   }
+
+  .error-message {
+    margin-left: 0px 10px; // alinea el error debajo del texto, no del checkbox
+    font-size: 0.8rem;
+    color: #dc3545;
+  }
 }
+
 
 .form-actions {
   display: flex;
