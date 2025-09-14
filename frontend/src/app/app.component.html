@@ -16,6 +16,13 @@
           <a routerLink="/talleres" routerLinkActive="active">Talleres</a>
           <a routerLink="/repuestos" routerLinkActive="active">Repuestos</a>
           <a routerLink="/servicios" routerLinkActive="active">Servicios</a>
+          <a routerLink="/carrito" routerLinkActive="active" class="cart-link">
+            <i class="fas fa-shopping-cart"></i>
+            Carrito
+            <span *ngIf="cartSummary && cartSummary.totalItems > 0" class="cart-badge">
+              {{cartSummary.totalItems}}
+            </span>
+          </a>
           <a routerLink="/auth/login" routerLinkActive="active" class="btn btn-outline">Ingresar</a>
         </div>
       </nav>

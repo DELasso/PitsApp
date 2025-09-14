@@ -1,0 +1,140 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<div class="cart-container">
+  <div class="cart-header">
+    <h1>
+      <i class="fas fa-shopping-cart"></i>
+      Carrito de Compras
+    </h1>
+    <p class="cart-subtitle" *ngIf="cartSummary">
+      {{cartSummary.totalItems}} repuestos en tu carrito
+    </p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Cargando carrito...</p>
+  </div>
+
+  <!-- Empty Cart -->
+  <div *ngIf="!isLoading && cartSummary?.isEmpty" class="empty-cart">
+    <i class="fas fa-shopping-cart empty-icon"></i>
+    <h2>Tu carrito está vacío</h2>
+    <p>Explora nuestro catálogo de repuestos y encuentra lo que necesitas</p>
+    <button class="btn-primary" (click)="continueShopping()">
+      <i class="fas fa-arrow-left"></i>
+      Explorar Repuestos
+    </button>
+  </div>
+
+  <!-- Cart with Items -->
+  <div *ngIf="!isLoading && cart && !cartSummary?.isEmpty" class="cart-content">
+    <!-- Cart Items -->
+    <div class="cart-items">
+      <div *ngFor="let item of cart.items" class="cart-item">
+        <div class="item-image">
+          <img 
+            [src]="item.part.images?.[0] || 'assets/logo-placeholder.txt'" 
+            [alt]="item.part.name"
+            onerror="this.src='assets/logo-placeholder.txt'"
+          >
+        </div>
+        
+        <div class="item-details">
+          <h3>{{item.part.name}}</h3>
+          <p class="item-description">{{item.part.description}}</p>
+          <div class="item-meta">
+            <span class="part-number">P/N: {{item.part.partNumber}}</span>
+            <span class="brand">{{item.part.brand}}</span>
+            <span class="condition" [class]="'condition-' + item.part.condition">
+              {{item.part.condition | titlecase}}
+            </span>
+          </div>
+        </div>
+
+        <div class="item-quantity">
+          <label>Cantidad:</label>
+          <div class="quantity-controls">
+            <button 
+              class="quantity-btn" 
+              (click)="updateQuantity(item.part.id, item.quantity - 1)"
+              [disabled]="item.quantity <= 1"
+            >
+              <i class="fas fa-minus"></i>
+            </button>
+            <input 
+              type="number" 
+              [value]="item.quantity" 
+              readonly
+              class="quantity-input"
+            >
+            <button 
+              class="quantity-btn" 
+              (click)="updateQuantity(item.part.id, item.quantity + 1)"
+              [disabled]="item.quantity >= item.part.stock"
+            >
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+          <small class="stock-info">Disponible: {{item.part.stock}}</small>
+        </div>
+
+        <div class="item-price">
+          <div class="unit-price">{{formatPrice(item.part.price)}} c/u</div>
+          <div class="subtotal">{{formatPrice(item.subtotal)}}</div>
+        </div>
+
+        <div class="item-actions">
+          <button 
+            class="btn-remove" 
+            (click)="removeItem(item.part.id)"
+            title="Eliminar del carrito"
+          >
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cart Summary -->
+    <div class="cart-summary">
+      <div class="summary-card">
+        <h3>Resumen del Pedido</h3>
+        
+        <div class="summary-line">
+          <span>Total de repuestos:</span>
+          <span>{{cartSummary?.totalItems}}</span>
+        </div>
+        
+        <div class="summary-line subtotal">
+          <span>Subtotal:</span>
+          <span>{{formatPrice(cartSummary?.totalAmount || 0)}}</span>
+        </div>
+        
+        <hr>
+        
+        <div class="summary-line total">
+          <span>Total:</span>
+          <span>{{formatPrice(cartSummary?.totalAmount || 0)}}</span>
+        </div>
+
+        <div class="summary-actions">
+          <button class="btn-secondary full-width" (click)="continueShopping()">
+            <i class="fas fa-arrow-left"></i>
+            Seguir Comprando
+          </button>
+          
+          <button class="btn-primary full-width" (click)="proceedToCheckout()">
+            <i class="fas fa-credit-card"></i>
+            Proceder al Pago
+          </button>
+          
+          <button class="btn-danger-outline full-width" (click)="clearCart()">
+            <i class="fas fa-trash"></i>
+            Vaciar Carrito
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

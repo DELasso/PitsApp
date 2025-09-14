@@ -1,4 +1,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;1,300&family=Special+Gothic+Expanded+One&family=Special+Gothic:wght@400..700&family=Telex&display=swap" rel="stylesheet">
 
 <div class="parts-container">
   <div class="container">
@@ -9,33 +12,135 @@
 
     <div class="search-section">
       <div class="search-bar">
-        <input type="text" placeholder="Buscar repuestos por marca, modelo o pieza..." class="search-input">
-        <button class="btn btn-primary">Buscar</button>
+        <input 
+          type="text" 
+          placeholder="Buscar repuestos por marca, modelo o pieza..." 
+          class="search-input"
+          [(ngModel)]="searchTerm"
+          (keyup.enter)="onSearch()"
+        >
+        <button class="btn btn-primary" (click)="onSearch()">
+          <i class="fas fa-search"></i>
+          Buscar
+        </button>
+        <button 
+          *ngIf="hasActiveFilters" 
+          class="btn btn-secondary" 
+          (click)="clearFilters()"
+        >
+          <i class="fas fa-times"></i>
+          Limpiar
+        </button>
+      </div>
+      
+      <!-- Indicador de estado de filtros -->
+      <div class="filter-status" *ngIf="hasActiveFilters">
+        <i class="fas fa-filter"></i>
+        {{filterStatusText}} ({{partsToShow.length}} resultado{{partsToShow.length !== 1 ? 's' : ''}})
       </div>
     </div>
 
     <div class="categories-section">
       <h2>Categorías de Repuestos</h2>
       <div class="categories-grid">
-        <div class="category-card" *ngFor="let category of categories">
+        <div class="category-card" *ngFor="let category of categories" 
+             [class.active]="selectedCategory === category.name">
           <div class="category-icon">
             <i [class]="category.icon + ' fa-2x'"></i>
           </div>
           <h3>{{ category.name }}</h3>
           <p>{{ category.count }} productos</p>
-          <button class="btn btn-primary">Ver Todo</button>
+          <button 
+            class="btn btn-primary" 
+            (click)="onCategoryFilter(category.name)"
+          >
+            Ver Todo
+          </button>
         </div>
       </div>
     </div>
 
     <div class="featured-section">
-      <h2>Repuestos Destacados</h2>
-      <div class="coming-soon">
-        <div class="coming-soon-icon">
-          <i class="fa-solid fa-person-digging fa-2x"></i>
+      <div class="section-header">
+        <h2 *ngIf="!hasActiveFilters">Repuestos Destacados</h2>
+        <h2 *ngIf="hasActiveFilters">Resultados de Búsqueda</h2>
+        <p class="results-count">{{partsToShow.length}} repuesto{{partsToShow.length !== 1 ? 's' : ''}} encontrado{{partsToShow.length !== 1 ? 's' : ''}}</p>
+      </div>
+      
+      <!-- Mensaje cuando no hay resultados -->
+      <div *ngIf="partsToShow.length === 0" class="no-results">
+        <i class="fas fa-search fa-3x"></i>
+        <h3>No se encontraron repuestos</h3>
+        <p>Intenta con otros términos de búsqueda o revisa las categorías disponibles</p>
+        <button class="btn btn-primary" (click)="clearFilters()">
+          <i class="fas fa-refresh"></i>
+          Ver todos los repuestos
+        </button>
+      </div>
+
+      <div class="parts-grid" *ngIf="partsToShow.length > 0">
+        <div class="part-card" *ngFor="let part of partsToShow">
+          <div class="part-image">
+            <img 
+              [src]="part.images?.[0] || 'assets/logo-placeholder.txt'" 
+              [alt]="part.name"
+              onerror="this.src='assets/logo-placeholder.txt'"
+            >
+            <div class="part-condition" [class]="getConditionClass(part.condition)">
+              {{part.condition | titlecase}}
+            </div>
+          </div>
+          
+          <div class="part-content">
+            <h3>{{part.name}}</h3>
+            <p class="part-description">{{part.description}}</p>
+            
+            <div class="part-meta">
+              <div class="brand-info">
+                <strong>{{part.brand}}</strong>
+                <span class="part-number">P/N: {{part.partNumber}}</span>
+              </div>
+              
+              <div class="rating" *ngIf="part.rating > 0">
+                <span class="stars">
+                  <i class="fas fa-star" *ngFor="let star of [1,2,3,4,5]; let i = index" 
+                     [class.filled]="i < Math.floor(part.rating)"></i>
+                </span>
+                <span class="rating-text">{{part.rating}} ({{part.reviewCount}} reseñas)</span>
+              </div>
+              
+              <div class="compatibility">
+                <strong>Compatible con:</strong>
+                <span>{{part.compatibleVehicles.slice(0, 2).join(', ')}}
+                  <span *ngIf="part.compatibleVehicles.length > 2">...</span>
+                </span>
+              </div>
+            </div>
+            
+            <div class="part-footer">
+              <div class="price-section">
+                <div class="price">{{formatPrice(part.price)}}</div>
+                <div class="stock-info" [class.low-stock]="part.stock <= 5">
+                  <i class="fas fa-box"></i>
+                  {{part.stock}} disponibles
+                </div>
+              </div>
+              
+              <div class="cart-actions">
+                <button 
+                  class="btn-cart" 
+                  (click)="addToCart(part)"
+                  [disabled]="part.stock <= 0"
+                  [class.in-cart]="isInCart(part.id)"
+                >
+                  <i class="fas fa-shopping-cart"></i>
+                  <span *ngIf="!isInCart(part.id)">Agregar</span>
+                  <span *ngIf="isInCart(part.id)">En Carrito ({{getCartQuantity(part.id)}})</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <h3>Próximamente</h3>
-        <p>Estamos trabajando para traerte el mejor catálogo de repuestos</p>
       </div>
     </div>
   </div>
