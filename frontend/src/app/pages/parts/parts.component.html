@@ -23,7 +23,7 @@
           <i class="fas fa-search"></i>
           Buscar
         </button>
-        <button 
+        <button id="clear-filters-btn"
           *ngIf="hasActiveFilters" 
           class="btn btn-secondary" 
           (click)="clearFilters()"
@@ -44,7 +44,7 @@
       <h2>Categorías de Repuestos</h2>
       <div class="categories-grid">
         <div class="category-card" *ngFor="let category of categories" 
-             [class.active]="selectedCategory === category.name">
+            [class.active]="selectedCategory === category.name">
           <div class="category-icon">
             <i [class]="category.icon + ' fa-2x'"></i>
           </div>

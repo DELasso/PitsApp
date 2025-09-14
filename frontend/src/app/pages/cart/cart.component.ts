@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CartService } from '../../services/cart.service';
@@ -19,7 +20,7 @@ export class CartComponent implements OnInit, OnDestroy {
   isLoading = true;
   private destroy$ = new Subject<void>();
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadCart();
@@ -85,12 +86,15 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   proceedToCheckout(): void {
-    // Implementar lógica de checkout aquí
-    alert('Funcionalidad de checkout pendiente de implementar');
+    if (this.cartSummary?.isEmpty) {
+      alert('Tu carrito está vacío. Agrega algunos repuestos antes de proceder al checkout.');
+      return;
+    }
+    
+    this.router.navigate(['/checkout']);
   }
 
   continueShopping(): void {
-    // Navegar de vuelta a la lista de repuestos
-    window.location.href = '/repuestos';
+    this.router.navigate(['/repuestos']);
   }
 }

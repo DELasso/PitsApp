@@ -1,0 +1,198 @@
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&family=Special+Gothic+Expanded+One&family=Special+Gothic:wdth@112.5&family=Telex&display=swap"
+    rel="stylesheet" />
+<div class="confirmation-container">
+    <div class="confirmation-content" *ngIf="!loading">
+        <!-- Encabezado de confirmación -->
+        <div class="confirmation-header" *ngIf="order">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1>¡Pedido Confirmado!</h1>
+            <p class="confirmation-message">
+                Gracias por tu compra. Tu pedido ha sido procesado exitosamente.
+            </p>
+        </div>
+
+        <!-- Información de la orden -->
+        <div class="order-info" *ngIf="order">
+            <div class="order-header">
+                <h2>Detalles del Pedido</h2>
+                <div class="order-meta">
+                    <div class="order-number">
+                        <strong>Número de Pedido:</strong> {{ order.orderNumber }}
+                    </div>
+                    <div class="order-date">
+                        <strong>Fecha:</strong>
+                        {{ order.createdAt | date : "dd/MM/yyyy HH:mm" }}
+                    </div>
+                    <div class="order-status" [ngClass]="getStatusClass()">
+                        <strong>Estado:</strong> {{ getStatusText() }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información del cliente -->
+            <div class="customer-info">
+                <h3>Información del Cliente</h3>
+                <div class="info-grid">
+                    <div class="customer-details">
+                        <p>
+                            <strong>Nombre:</strong> {{ order.customerInfo.firstName }}
+                            {{ order.customerInfo.lastName }}
+                        </p>
+                        <p><strong>Email:</strong> {{ order.customerInfo.email }}</p>
+                        <p><strong>Teléfono:</strong> {{ order.customerInfo.phone }}</p>
+                    </div>
+                    <div class="shipping-address">
+                        <h4>Dirección de Envío</h4>
+                        <p>{{ order.shippingAddress.street }}</p>
+                        <p *ngIf="order.shippingAddress.additionalInfo">
+                            {{ order.shippingAddress.additionalInfo }}
+                        </p>
+                        <p>
+                            {{ order.shippingAddress.neighborhood }},
+                            {{ order.shippingAddress.city }}
+                        </p>
+                        <p>
+                            {{ order.shippingAddress.department }}
+                            {{ order.shippingAddress.postalCode || "" }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Artículos del pedido -->
+            <div class="order-items">
+                <h3>Artículos del Pedido</h3>
+                <div class="items-list">
+                    <div class="item-row" *ngFor="let item of order.items">
+                        <div class="item-info">
+                            <img [src]="item.part.images?.[0] || '/assets/logo-placeholder.txt'" [alt]="item.part.name"
+                                class="item-image" />
+                            <div class="item-details">
+                                <h4>{{ item.part.name }}</h4>
+                                <p class="item-specs">
+                                    <span class="brand">{{ item.part.brand }}</span>
+                                    <span class="separator">•</span>
+                                    <span class="category">{{ item.part.category }}</span>
+                                </p>
+                                <p class="item-description">{{ item.part.description }}</p>
+                            </div>
+                        </div>
+                        <div class="item-pricing">
+                            <div class="quantity">Cantidad: {{ item.quantity }}</div>
+                            <div class="unit-price">
+                                ${{ item.part.price | number : "1.2-2" }} c/u
+                            </div>
+                            <div class="subtotal">
+                                ${{ item.subtotal | number : "1.2-2" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen de costos -->
+            <div class="order-summary">
+                <h3>Resumen de Costos</h3>
+                <div class="summary-rows">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span>${{ order.subtotal | number : "1.2-2" }}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Envío:</span>
+                        <span>${{ order.shippingCost | number : "1.2-2" }}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Impuestos:</span>
+                        <span>${{ order.taxes | number : "1.2-2" }}</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span><strong>Total:</strong></span>
+                        <span><strong>${{ order.total | number : "1.2-2" }}</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información de pago -->
+            <div class="payment-info">
+                <h3>Información de Pago</h3>
+                <div class="payment-details">
+                    <div class="payment-method">
+                        <strong>Método de Pago:</strong>
+                        <span class="method-type">{{ order.paymentMethod.name }}</span>
+                    </div>
+                    <div class="payment-status" [ngClass]="'payment-' + order.paymentStatus">
+                        <strong>Estado del Pago:</strong>
+                        <span>{{
+                            order.paymentStatus === "approved"
+                            ? "Aprobado"
+                            : order.paymentStatus === "pending"
+                            ? "Pendiente"
+                            : order.paymentStatus === "rejected"
+                            ? "Rechazado"
+                            : order.paymentStatus
+                            }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información de envío -->
+            <div class="shipping-info" *ngIf="order.trackingNumber">
+                <h3>Información de Envío</h3>
+                <div class="shipping-details">
+                    <p>
+                        <strong>Número de Seguimiento:</strong> {{ order.trackingNumber }}
+                    </p>
+                    <p *ngIf="order.estimatedDelivery">
+                        <strong>Entrega Estimada:</strong>
+                        {{ order.estimatedDelivery | date : "dd/MM/yyyy" }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Notas del pedido -->
+            <div class="order-notes" *ngIf="order.notes">
+                <h3>Notas del Pedido</h3>
+                <p>{{ order.notes }}</p>
+            </div>
+        </div>
+
+        <!-- Error si no hay orden -->
+        <div class="no-order" *ngIf="!order">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2>No se encontró información del pedido</h2>
+            <p>No pudimos encontrar los detalles de tu pedido.</p>
+        </div>
+
+        <!-- Acciones -->
+        <div class="confirmation-actions">
+            <button class="btn btn-primary" (click)="continueShopping()">
+                <i class="fas fa-shopping-cart"></i>
+                Continuar Comprando
+            </button>
+            <button class="btn btn-secondary" (click)="viewMyOrders()">
+                <i class="fas fa-list"></i>
+                Ver Mis Pedidos
+            </button>
+            <button class="btn btn-outline" (click)="printOrder()" *ngIf="order">
+                <i class="fas fa-print"></i>
+                Imprimir Pedido
+            </button>
+        </div>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-content" *ngIf="loading">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+        <p>Cargando información del pedido...</p>
+    </div>
+</div>

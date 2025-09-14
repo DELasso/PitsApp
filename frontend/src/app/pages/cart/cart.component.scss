@@ -1,3 +1,6 @@
+div {
+  font-family: 'Special Gothic', sans-serif;
+}
 .cart-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -320,12 +323,24 @@
   }
 }
 
-.btn-primary {
-  background: #f10119;
-  color: white;
+#explore-parts {
+  background: transparent;
+  color: #dc3545;
+  border: 1px solid #dc3545;
   
   &:hover {
-    background: #b10214;
+    background: #dc3545;
+    color: white;
+    transform: translateY(-1px);
+  }
+}
+
+.btn-primary {
+  background: #28a745;
+  color: white;
+  
+  &:hover:not(:disabled) {
+    background: #218838;
     transform: translateY(-1px);
   }
 }
@@ -361,5 +376,6 @@
 }
 
 .quantity-input[type=number] {
+  appearance: textfield;
   -moz-appearance: textfield;
 }

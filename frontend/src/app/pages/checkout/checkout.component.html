@@ -1,0 +1,434 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&family=Special+Gothic+Expanded+One&family=Special+Gothic:wdth@112.5&family=Telex&display=swap" rel="stylesheet">
+<div class="checkout-container">
+  <div class="container">
+    <!-- Header -->
+    <div class="checkout-header">
+      <button class="back-button" (click)="goBackToCart()">
+        <i class="fas fa-arrow-left"></i>
+        Volver al Carrito
+      </button>
+      <h1>Finalizar Compra</h1>
+      
+      <!-- Progress indicator -->
+      <div class="progress-indicator">
+        <div class="step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+          <span class="step-number">1</span>
+          <span class="step-label">Información</span>
+        </div>
+        <div class="step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+          <span class="step-number">2</span>
+          <span class="step-label">Dirección</span>
+        </div>
+        <div class="step" [class.active]="currentStep >= 3" [class.completed]="currentStep > 3">
+          <span class="step-number">3</span>
+          <span class="step-label">Pago</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="checkout-content">
+      <!-- Formulario -->
+      <div class="checkout-form">
+        <form [formGroup]="checkoutForm" (ngSubmit)="processOrder()">
+          
+          <!-- Paso 1: Información Personal -->
+          <div class="form-step" *ngIf="currentStep === 1">
+            <h2>Información Personal</h2>
+            
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="firstName">Nombre *</label>
+                <input 
+                  type="text" 
+                  id="firstName" 
+                  formControlName="firstName"
+                  class="form-control"
+                  [class.error]="checkoutForm.get('firstName')?.invalid && checkoutForm.get('firstName')?.touched"
+                >
+                <div class="error-message" *ngIf="checkoutForm.get('firstName')?.invalid && checkoutForm.get('firstName')?.touched">
+                  El nombre es requerido (mínimo 2 caracteres)
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="lastName">Apellido *</label>
+                <input 
+                  type="text" 
+                  id="lastName" 
+                  formControlName="lastName"
+                  class="form-control"
+                  [class.error]="checkoutForm.get('lastName')?.invalid && checkoutForm.get('lastName')?.touched"
+                >
+                <div class="error-message" *ngIf="checkoutForm.get('lastName')?.invalid && checkoutForm.get('lastName')?.touched">
+                  El apellido es requerido (mínimo 2 caracteres)
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Correo Electrónico *</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  formControlName="email"
+                  class="form-control"
+                  [class.error]="checkoutForm.get('email')?.invalid && checkoutForm.get('email')?.touched"
+                >
+                <div class="error-message" *ngIf="checkoutForm.get('email')?.invalid && checkoutForm.get('email')?.touched">
+                  Ingresa un correo electrónico válido
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Teléfono *</label>
+                <input 
+                  type="tel" 
+                  id="phone" 
+                  formControlName="phone"
+                  class="form-control"
+                  placeholder="3001234567"
+                  [class.error]="checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched"
+                >
+                <div class="error-message" *ngIf="checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched">
+                  Ingresa un número de teléfono válido (10 dígitos)
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="documentType">Tipo de Documento *</label>
+                <select 
+                  id="documentType" 
+                  formControlName="documentType"
+                  class="form-control"
+                >
+                  <option value="CC">Cédula de Ciudadanía</option>
+                  <option value="CE">Cédula de Extranjería</option>
+                  <option value="TI">Tarjeta de Identidad</option>
+                  <option value="NIT">NIT</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="documentNumber">Número de Documento *</label>
+                <input 
+                  type="text" 
+                  id="documentNumber" 
+                  formControlName="documentNumber"
+                  class="form-control"
+                  [class.error]="checkoutForm.get('documentNumber')?.invalid && checkoutForm.get('documentNumber')?.touched"
+                >
+                <div class="error-message" *ngIf="checkoutForm.get('documentNumber')?.invalid && checkoutForm.get('documentNumber')?.touched">
+                  El número de documento es requerido (mínimo 6 caracteres)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 2: Dirección de Envío -->
+          <div class="form-step" *ngIf="currentStep === 2">
+            <h2>Dirección de Envío</h2>
+            
+            <div class="form-grid">
+              <div class="form-group full-width">
+                <label for="street">Dirección *</label>
+                <input 
+                  type="text" 
+                  id="street" 
+                  formControlName="street"
+                  class="form-control"
+                  placeholder="Calle 50 # 45-67"
+                  [class.error]="checkoutForm.get('street')?.invalid && checkoutForm.get('street')?.touched"
+                >
+                <div class="error-message" *ngIf="checkoutForm.get('street')?.invalid && checkoutForm.get('street')?.touched">
+                  La dirección es requerida
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="neighborhood">Barrio *</label>
+                <input 
+                  type="text" 
+                  id="neighborhood" 
+                  formControlName="neighborhood"
+                  class="form-control"
+                  [class.error]="checkoutForm.get('neighborhood')?.invalid && checkoutForm.get('neighborhood')?.touched"
+                >
+                <div class="error-message" *ngIf="checkoutForm.get('neighborhood')?.invalid && checkoutForm.get('neighborhood')?.touched">
+                  El barrio es requerido
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="city">Ciudad *</label>
+                <input 
+                  type="text" 
+                  id="city" 
+                  formControlName="city"
+                  class="form-control"
+                  [class.error]="checkoutForm.get('city')?.invalid && checkoutForm.get('city')?.touched"
+                >
+                <div class="error-message" *ngIf="checkoutForm.get('city')?.invalid && checkoutForm.get('city')?.touched">
+                  La ciudad es requerida
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="department">Departamento *</label>
+                <input 
+                  type="text" 
+                  id="department" 
+                  formControlName="department"
+                  class="form-control"
+                  [class.error]="checkoutForm.get('department')?.invalid && checkoutForm.get('department')?.touched"
+                >
+                <div class="error-message" *ngIf="checkoutForm.get('department')?.invalid && checkoutForm.get('department')?.touched">
+                  El departamento es requerido
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="postalCode">Código Postal</label>
+                <input 
+                  type="text" 
+                  id="postalCode" 
+                  formControlName="postalCode"
+                  class="form-control"
+                >
+              </div>
+
+              <div class="form-group full-width">
+                <label for="additionalInfo">Información Adicional</label>
+                <textarea 
+                  id="additionalInfo" 
+                  formControlName="additionalInfo"
+                  class="form-control"
+                  rows="3"
+                  placeholder="Apartamento, piso, referencias..."
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paso 3: Método de Pago -->
+          <div class="form-step" *ngIf="currentStep === 3">
+            <h2>Método de Pago</h2>
+            
+            <div class="payment-methods">
+              <div 
+                class="payment-method" 
+                *ngFor="let method of paymentMethods"
+                [class.selected]="selectedPaymentMethod?.id === method.id"
+                (click)="selectPaymentMethod(method)"
+              >
+                <div class="method-icon">
+                  <i [class]="method.icon"></i>
+                </div>
+                <div class="method-info">
+                  <h4>{{method.name}}</h4>
+                  <p>{{method.description}}</p>
+                </div>
+                <div class="method-radio">
+                  <input 
+                    type="radio" 
+                    [name]="'paymentMethod'" 
+                    [value]="method.id"
+                    [checked]="selectedPaymentMethod?.id === method.id"
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Información de Tarjeta (si aplica) -->
+            <div class="card-info" *ngIf="selectedPaymentMethod?.type === 'credit_card' || selectedPaymentMethod?.type === 'debit_card'">
+              <h3>Información de la Tarjeta</h3>
+              
+              <div class="form-grid">
+                <div class="form-group full-width">
+                  <label for="cardholderName">Nombre del Titular *</label>
+                  <input 
+                    type="text" 
+                    id="cardholderName" 
+                    formControlName="cardholderName"
+                    class="form-control"
+                    placeholder="Nombre como aparece en la tarjeta"
+                  >
+                </div>
+
+                <div class="form-group full-width">
+                  <label for="cardNumber">Número de Tarjeta *</label>
+                  <input 
+                    type="text" 
+                    id="cardNumber" 
+                    formControlName="cardNumber"
+                    class="form-control"
+                    placeholder="1234 5678 9012 3456"
+                    maxlength="16"
+                  >
+                </div>
+
+                <div class="form-group">
+                  <label for="expiryMonth">Mes *</label>
+                  <select id="expiryMonth" formControlName="expiryMonth" class="form-control">
+                    <option value="">MM</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="expiryYear">Año *</label>
+                  <select id="expiryYear" formControlName="expiryYear" class="form-control">
+                    <option value="">YYYY</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                    <option value="2029">2029</option>
+                    <option value="2030">2030</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="cvv">CVV *</label>
+                  <input 
+                    type="text" 
+                    id="cvv" 
+                    formControlName="cvv"
+                    class="form-control"
+                    placeholder="123"
+                    maxlength="4"
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Notas adicionales -->
+            <div class="form-group">
+              <label for="notes">Notas del Pedido</label>
+              <textarea 
+                id="notes" 
+                formControlName="notes"
+                class="form-control"
+                rows="3"
+                placeholder="Instrucciones especiales para la entrega..."
+              ></textarea>
+            </div>
+
+            <!-- Términos y condiciones -->
+            <div class="form-group terms">
+              <label class="checkbox-label">
+                <input type="checkbox" formControlName="acceptTerms">
+                <span class="checkmark"></span>Acepto los<a href="#" target="_blank">términos y condiciones</a>y la<a href="#" target="_blank">política de privacidad</a>
+              </label>
+              <div class="error-message" *ngIf="checkoutForm.get('acceptTerms')?.invalid && checkoutForm.get('acceptTerms')?.touched">
+                Debes aceptar los términos y condiciones
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <!-- Botones de navegación -->
+        <div class="form-actions">
+          <button 
+            type="button" 
+            class="btn-secondary" 
+            *ngIf="currentStep > 1"
+            (click)="previousStep()"
+          >
+            <i class="fas fa-arrow-left"></i>
+            Anterior
+          </button>
+
+          <button 
+            type="button" 
+            class="btn-primary" 
+            *ngIf="currentStep < totalSteps"
+            (click)="nextStep()"
+          >
+            Siguiente
+            <i class="fas fa-arrow-right"></i>
+          </button>
+
+          <button 
+            type="button" 
+            class="btn-success" 
+            *ngIf="currentStep === totalSteps"
+            (click)="processOrder()"
+            [disabled]="!checkoutForm.valid || !selectedPaymentMethod || isProcessing"
+          >
+            <i class="fas fa-spinner fa-spin" *ngIf="isProcessing"></i>
+            <i class="fas fa-credit-card" *ngIf="!isProcessing"></i>
+            {{isProcessing ? 'Procesando...' : 'Confirmar Pedido'}}
+          </button>
+        </div>
+      </div>
+
+      <!-- Resumen del pedido -->
+      <div class="order-summary">
+        <div class="summary-card">
+          <h3>Resumen del Pedido</h3>
+          
+          <!-- Items del carrito -->
+          <div class="cart-items" *ngIf="cart">
+            <div class="cart-item" *ngFor="let item of cart.items">
+              <img 
+                [src]="item.part.images?.[0] || 'assets/logo-placeholder.txt'" 
+                [alt]="item.part.name"
+                class="item-image"
+              >
+              <div class="item-details">
+                <h4>{{item.part.name}}</h4>
+                <p>{{item.part.brand}} - {{item.part.partNumber}}</p>
+                <div class="quantity-price">
+                  <span class="quantity">Cantidad: {{item.quantity}}</span>
+                  <span class="price">{{formatPrice(item.subtotal)}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Totales -->
+          <div class="summary-totals">
+            <div class="total-line">
+              <span>Subtotal ({{orderSummary.itemCount}} items):</span>
+              <span>{{formatPrice(orderSummary.subtotal)}}</span>
+            </div>
+            <div class="total-line">
+              <span>Envío:</span>
+              <span [class.free]="orderSummary.shippingCost === 0">
+                {{orderSummary.shippingCost === 0 ? 'GRATIS' : formatPrice(orderSummary.shippingCost)}}
+              </span>
+            </div>
+            <div class="total-line">
+              <span>IVA (19%):</span>
+              <span>{{formatPrice(orderSummary.taxes)}}</span>
+            </div>
+            <hr>
+            <div class="total-line total">
+              <span>Total:</span>
+              <span>{{formatPrice(orderSummary.total)}}</span>
+            </div>
+          </div>
+
+          <!-- Beneficio de envío gratis -->
+          <div class="shipping-notice" *ngIf="orderSummary.shippingCost === 0">
+            <i class="fas fa-truck"></i>
+            ¡Envío gratis por compras superiores a $200,000!
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
