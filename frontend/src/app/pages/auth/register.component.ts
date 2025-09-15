@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { RegisterRequest, UserRole } from '../../models/auth.model';
+import { RegisterRequest, UserRole, BusinessType } from '../../models/auth.model';
 
 @Component({
   selector: 'app-register',
@@ -19,6 +19,13 @@ export class RegisterComponent {
   showConfirmPassword = false;
   errorMessage = '';
   UserRole = UserRole;
+  BusinessType = BusinessType;
+
+  businessTypeOptions = [
+    { value: BusinessType.TALLER_MECANICO, label: 'Taller Mecánico' },
+    { value: BusinessType.VENTA_REPUESTOS, label: 'Venta de Repuestos' },
+    { value: BusinessType.TALLER_Y_REPUESTOS, label: 'Taller y Repuestos' }
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -38,9 +45,37 @@ export class RegisterComponent {
       businessType: [''],
       address: [''],
       city: [''],
+      description: [''],
       dateOfBirth: [''],
       vehicleInfo: ['']
     }, { validators: this.passwordMatchValidator });
+
+    // Observar cambios en el rol para mostrar/ocultar campos
+    this.registerForm.get('role')?.valueChanges.subscribe(role => {
+      this.updateValidators(role);
+    });
+  }
+
+  updateValidators(role: UserRole) {
+    const companyName = this.registerForm.get('companyName');
+    const businessType = this.registerForm.get('businessType');
+    
+    if (role === UserRole.PROVEEDOR) {
+      // Hacer campos de proveedor requeridos
+      companyName?.setValidators([Validators.required]);
+      businessType?.setValidators([Validators.required]);
+    } else {
+      // Quitar validadores para clientes
+      companyName?.clearValidators();
+      businessType?.clearValidators();
+    }
+    
+    companyName?.updateValueAndValidity();
+    businessType?.updateValueAndValidity();
+  }
+
+  get isProvider() {
+    return this.registerForm.get('role')?.value === UserRole.PROVEEDOR;
   }
 
   passwordMatchValidator(form: FormGroup) {
@@ -74,6 +109,7 @@ export class RegisterComponent {
         registerData.businessType = this.registerForm.value.businessType;
         registerData.address = this.registerForm.value.address;
         registerData.city = this.registerForm.value.city;
+        registerData.description = this.registerForm.value.description;
       } else {
         registerData.dateOfBirth = this.registerForm.value.dateOfBirth;
         registerData.vehicleInfo = this.registerForm.value.vehicleInfo;
@@ -83,7 +119,14 @@ export class RegisterComponent {
         next: (response) => {
           this.loading = false;
           console.log('Registro exitoso:', response.message);
-          this.router.navigate(['/']);
+          
+          // Redirigir según el tipo de usuario
+          const user = this.authService.getCurrentUser();
+          if (user?.role === 'proveedor') {
+            this.router.navigate(['/provider/dashboard']);
+          } else {
+            this.router.navigate(['/']);
+          }
         },
         error: (error) => {
           this.loading = false;
@@ -119,4 +162,8 @@ export class RegisterComponent {
   get confirmPassword() { return this.registerForm.get('confirmPassword'); }
   get role() { return this.registerForm.get('role'); }
   get acceptTerms() { return this.registerForm.get('acceptTerms'); }
+  get name() { return this.registerForm.get('name'); }
+  get companyName() { return this.registerForm.get('companyName'); }
+  get businessType() { return this.registerForm.get('businessType'); }
+  get description() { return this.registerForm.get('description'); }
 }

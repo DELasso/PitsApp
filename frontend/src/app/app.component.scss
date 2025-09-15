@@ -161,7 +161,6 @@
         }
       }
     }
-
     // bloque usuario y salir juntos
     .user-menu {
       display: flex;
@@ -187,6 +186,7 @@
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
+        margin-left: 1vw;
 
         &:hover {
           background: var(--ferrari-red);
@@ -250,4 +250,16 @@
       }
     }
   }
+}
+
+#user-greeting{
+        font-family: 'Special Gothic Expanded One', serif;
+        font-size: 0.75rem;
+        margin: 0;
+        color: var(--ferrari-white);
+        line-height: 1;
+        strong { font-weight: 700; }
+        small { font-size: 0.85rem; font-weight: 400; opacity: 0.8; }
+        padding-right: 0;
+        width: 12vw;
 }

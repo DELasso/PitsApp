@@ -8,91 +8,146 @@ import {
   Delete, 
   Query,
   HttpCode,
-  HttpStatus
+  HttpStatus,
+  UseGuards,
+  Request,
+  ForbiddenException
 } from '@nestjs/common';
 import { WorkshopsService } from './workshops.service';
 import { CreateWorkshopDto } from './dto/create-workshop.dto';
 import { UpdateWorkshopDto } from './dto/update-workshop.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UserRole, BusinessType } from '../users/entities/user.entity';
 
 @Controller('workshops')
 export class WorkshopsController {
   constructor(private readonly workshopsService: WorkshopsService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createWorkshopDto: CreateWorkshopDto) {
+  async create(@Body() createWorkshopDto: CreateWorkshopDto, @Request() req) {
+    const user = req.user;
+
+    // Verificar que el usuario sea un proveedor
+    if (user.role !== UserRole.PROVEEDOR) {
+      throw new ForbiddenException('Solo los proveedores pueden crear talleres');
+    }
+
+    // Verificar que el proveedor pueda crear talleres según su tipo de negocio
+    if (user.businessType !== BusinessType.TALLER_MECANICO && 
+        user.businessType !== BusinessType.TALLER_Y_REPUESTOS) {
+      throw new ForbiddenException('Tu tipo de negocio no permite crear talleres');
+    }
+
+    const workshop = await this.workshopsService.create(createWorkshopDto, user.sub);
+    
     return {
       success: true,
       message: 'Taller creado exitosamente',
-      data: this.workshopsService.create(createWorkshopDto)
+      data: workshop
     };
   }
 
   @Get()
-  findAll() {
+  async findAll() {
+    const workshops = await this.workshopsService.findAll();
     return {
       success: true,
       message: 'Talleres obtenidos exitosamente',
-      data: this.workshopsService.findAll()
+      data: workshops
+    };
+  }
+
+  @Get('my-workshops')
+  @UseGuards(JwtAuthGuard)
+  async findMyWorkshops(@Request() req) {
+    const user = req.user;
+
+    if (user.role !== UserRole.PROVEEDOR) {
+      throw new ForbiddenException('Solo los proveedores pueden acceder a esta función');
+    }
+
+    const workshops = await this.workshopsService.findByOwner(user.sub);
+    return {
+      success: true,
+      message: 'Talleres del proveedor obtenidos exitosamente',
+      data: workshops
     };
   }
 
   @Get('search')
-  search(
-    @Query('service') service?: string,
-    @Query('neighborhood') neighborhood?: string,
-    @Query('lat') latitude?: string,
-    @Query('lng') longitude?: string,
-    @Query('radius') radius?: string
-  ) {
-    let workshops = this.workshopsService.findAll();
-
-    if (service) {
-      workshops = this.workshopsService.findByService(service);
+  async search(@Query('q') query: string) {
+    if (!query) {
+      return {
+        success: false,
+        message: 'Parámetro de búsqueda requerido',
+        data: []
+      };
     }
 
-    if (neighborhood) {
-      workshops = this.workshopsService.findByNeighborhood(neighborhood);
-    }
-
-    if (latitude && longitude) {
-      const lat = parseFloat(latitude);
-      const lng = parseFloat(longitude);
-      const radiusKm = radius ? parseFloat(radius) : 10;
-      
-      workshops = this.workshopsService.findByLocation(lat, lng, radiusKm);
-    }
-
+    const workshops = await this.workshopsService.search(query);
     return {
       success: true,
-      message: 'Búsqueda completada exitosamente',
-      data: workshops,
-      count: workshops.length
+      message: 'Búsqueda realizada exitosamente',
+      data: workshops
+    };
+  }
+
+  @Get('city/:city')
+  async findByCity(@Param('city') city: string) {
+    const workshops = await this.workshopsService.findByCity(city);
+    return {
+      success: true,
+      message: `Talleres en ${city} obtenidos exitosamente`,
+      data: workshops
     };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
+    const workshop = await this.workshopsService.findOne(id);
     return {
       success: true,
-      message: 'Taller encontrado exitosamente',
-      data: this.workshopsService.findOne(id)
+      message: 'Taller obtenido exitosamente',
+      data: workshop
     };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWorkshopDto: UpdateWorkshopDto) {
+  @UseGuards(JwtAuthGuard)
+  async update(
+    @Param('id') id: string, 
+    @Body() updateWorkshopDto: UpdateWorkshopDto,
+    @Request() req
+  ) {
+    const user = req.user;
+
+    if (user.role !== UserRole.PROVEEDOR) {
+      throw new ForbiddenException('Solo los proveedores pueden actualizar talleres');
+    }
+
+    const workshop = await this.workshopsService.update(id, updateWorkshopDto, user.sub);
+    
     return {
       success: true,
       message: 'Taller actualizado exitosamente',
-      data: this.workshopsService.update(id, updateWorkshopDto)
+      data: workshop
     };
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id') id: string) {
-    this.workshopsService.remove(id);
+  async remove(@Param('id') id: string, @Request() req) {
+    const user = req.user;
+
+    if (user.role !== UserRole.PROVEEDOR) {
+      throw new ForbiddenException('Solo los proveedores pueden eliminar talleres');
+    }
+
+    await this.workshopsService.remove(id, user.sub);
+    
     return {
       success: true,
       message: 'Taller eliminado exitosamente'

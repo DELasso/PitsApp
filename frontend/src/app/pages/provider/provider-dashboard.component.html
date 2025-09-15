@@ -1,0 +1,80 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+  integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Panel de Proveedor</h1>
+        <p>Bienvenido, {{ user?.firstName }} {{ user?.lastName }}</p>
+        <p class="company-info">{{ user?.companyName }}</p>
+    </div>
+
+    <div class="business-type-info">
+        <span class="business-badge" [ngClass]="getBusinessTypeClass()">
+            {{ getBusinessTypeLabel() }}
+        </span>
+    </div>
+
+    <div class="dashboard-actions">
+        <!-- Mostrar Talleres si el tipo es WORKSHOP o BOTH -->
+        <div *ngIf="canManageWorkshops()" class="action-card workshop-card">
+            <div class="card-icon">
+                <i class="fa-solid fa-wrench"></i>
+            </div>
+            <h3>Gestión de Talleres</h3>
+            <p>Administra tus talleres mecánicos</p>
+            <div class="card-actions">
+                <button class="btn btn-primary" (click)="navigateToWorkshops()">
+                    <i class="fa-solid fa-list"></i> Ver Talleres
+                </button>
+                <button class="btn btn-success" (click)="createWorkshop()">
+                    <i class="fa-solid fa-plus"></i> Crear Taller
+                </button>
+            </div>
+        </div>
+
+        <!-- Mostrar Repuestos si el tipo es PARTS o BOTH -->
+        <div *ngIf="canManageParts()" class="action-card parts-card">
+            <div class="card-icon">
+                <i class="fa-solid fa-cog"></i>
+            </div>
+            <h3>Gestión de Repuestos</h3>
+            <p>Administra tu inventario de repuestos</p>
+            <div class="card-actions">
+                <button class="btn btn-primary" (click)="navigateToParts()">
+                    <i class="fa-solid fa-list"></i> Ver Repuestos
+                </button>
+                <button class="btn btn-success" (click)="createPart()">
+                    <i class="fa-solid fa-plus"></i> Agregar Repuesto
+                </button>
+            </div>
+        </div>
+
+        <!-- Información adicional para tipo BOTH -->
+        <div *ngIf="isBothBusinessType()" class="info-card">
+            <div class="card-icon">
+                <i class="fa-solid fa-star"></i>
+            </div>
+            <h3>Negocio Completo</h3>
+            <p>Tienes acceso completo a talleres y repuestos. ¡Aprovecha al máximo tu negocio!</p>
+        </div>
+    </div>
+
+    <!-- Estadísticas rápidas -->
+    <div class="dashboard-stats">
+        <div class="stat-card" *ngIf="canManageWorkshops()">
+            <i class="fa-solid fa-wrench"></i>
+            <div class="stat-content">
+                <span class="stat-number">{{ workshopCount }}</span>
+                <span class="stat-label">Talleres</span>
+            </div>
+        </div>
+
+        <div class="stat-card" *ngIf="canManageParts()">
+            <i class="fa-solid fa-cog"></i>
+            <div class="stat-content">
+                <span class="stat-number">{{ partsCount }}</span>
+                <span class="stat-label">Repuestos</span>
+            </div>
+        </div>
+    </div>
+</div>

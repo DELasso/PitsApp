@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { ProviderGuard, BusinessTypeGuard } from './guards/provider.guard';
+import { BusinessType } from './models/auth.model';
 
 export const routes: Routes = [
   {
@@ -37,6 +39,32 @@ export const routes: Routes = [
     path: 'auth/register',
     loadComponent: () => import('./pages/auth/register.component').then(m => m.RegisterComponent)
   },
+  {
+    path: 'provider/dashboard',
+    loadComponent: () => import('./pages/provider/provider-dashboard.component').then(m => m.ProviderDashboardComponent),
+    canActivate: [ProviderGuard]
+  },
+  {
+    path: 'workshops',
+    loadComponent: () => import('./pages/workshops/workshops.component').then(m => m.WorkshopsComponent),
+    canActivate: [BusinessTypeGuard],
+    data: { businessType: BusinessType.TALLER_MECANICO }
+  },
+  // TODO: Crear componentes de formulario para crear talleres y repuestos
+  // {
+  //   path: 'workshops/create',
+  //   loadComponent: () => import('./pages/workshops/workshop-form.component').then(m => m.WorkshopFormComponent)
+  // },
+  {
+    path: 'parts',
+    loadComponent: () => import('./pages/parts/parts.component').then(m => m.PartsComponent),
+    canActivate: [BusinessTypeGuard],
+    data: { businessType: BusinessType.VENTA_REPUESTOS }
+  },
+  // {
+  //   path: 'parts/create',
+  //   loadComponent: () => import('./pages/parts/part-form.component').then(m => m.PartFormComponent)
+  // },
   {
     path: '**',
     redirectTo: ''

@@ -29,10 +29,7 @@
           
           <!-- Mostrar si SÍ está logueado -->
           <div *ngIf="isLoggedIn && currentUser" class="user-menu">
-            <span class="user-greeting">
-              Hola, {{currentUser.firstName}}
-              <small>({{currentUser.role}})</small>
-            </span>
+            <a id="user-greeting" routerLink="/provider/dashboard">Hola, {{currentUser.firstName}} <small>({{currentUser.role}})</small></a>
             <button (click)="logout()" class="btn btn-outline">Salir</button>
           </div>
         </div>

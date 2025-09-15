@@ -1,11 +1,12 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MinLength, IsDate } from 'class-validator';
-import { UserRole, BusinessType } from '../entities/user.entity';
+import { IsEmail, IsNotEmpty, IsString, IsEnum, IsOptional, MinLength, IsDateString } from 'class-validator';
+import { UserRole, BusinessType } from '../../users/entities/user.entity';
 
-export class CreateUserDto {
+export class RegisterDto {
   @IsEmail()
   email: string;
 
   @IsString()
+  @IsNotEmpty()
   @MinLength(6)
   password: string;
 
@@ -24,7 +25,7 @@ export class CreateUserDto {
   @IsEnum(UserRole)
   role: UserRole;
 
-  // Campos opcionales para proveedores
+  // Campos específicos para proveedores
   @IsOptional()
   @IsString()
   companyName?: string;
@@ -45,10 +46,10 @@ export class CreateUserDto {
   @IsString()
   description?: string;
 
-  // Campos opcionales para clientes
+  // Campos específicos para clientes
   @IsOptional()
-  @IsDate()
-  dateOfBirth?: Date;
+  @IsDateString()
+  dateOfBirth?: string;
 
   @IsOptional()
   @IsString()

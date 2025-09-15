@@ -3,6 +3,12 @@ export enum UserRole {
   PROVEEDOR = 'proveedor',
 }
 
+export enum BusinessType {
+  TALLER_MECANICO = 'taller_mecanico',
+  VENTA_REPUESTOS = 'venta_repuestos',
+  TALLER_Y_REPUESTOS = 'taller_y_repuestos',
+}
+
 export interface User {
   id: string;
   email: string;
@@ -17,9 +23,10 @@ export interface User {
   
   // Campos específicos para proveedores
   companyName?: string;
-  businessType?: string;
+  businessType?: BusinessType;
   address?: string;
   city?: string;
+  description?: string;
   
   // Campos específicos para clientes
   dateOfBirth?: Date;

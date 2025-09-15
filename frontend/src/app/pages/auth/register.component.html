@@ -150,26 +150,33 @@
           <h3 class="section-title">Información de la Empresa</h3>
 
           <div class="form-group">
-            <label for="companyName" class="form-label">Nombre de la Empresa</label>
+            <label for="companyName" class="form-label">Nombre de la Empresa *</label>
             <div class="input-wrapper">
               <span class="input-icon"><i class="fa-solid fa-building"></i></span>
               <input type="text" id="companyName" formControlName="companyName" class="form-input"
+                [class.error]="companyName?.invalid && companyName?.touched"
                 placeholder="Nombre de tu empresa">
+            </div>
+            <div *ngIf="companyName?.invalid && companyName?.touched" class="error-message">
+              <span *ngIf="companyName?.errors?.['required']">El nombre de la empresa es requerido</span>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="businessType" class="form-label">Tipo de Negocio</label>
+              <label for="businessType" class="form-label">Tipo de Negocio *</label>
               <div class="input-wrapper">
                 <span class="input-icon"><i class="fa-solid fa-briefcase"></i></span>
-                <select id="businessType" formControlName="businessType" class="form-input">
-                  <option value="">Selecciona el tipo</option>
-                  <option value="taller">Taller Mecánico</option>
-                  <option value="repuestos">Venta de Repuestos</option>
-                  <option value="mixto">Taller y Repuestos</option>
-                  <option value="especializado">Servicio Especializado</option>
+                <select id="businessType" formControlName="businessType" class="form-input"
+                  [class.error]="businessType?.invalid && businessType?.touched">
+                  <option value="">Selecciona el tipo de negocio</option>
+                  <option *ngFor="let option of businessTypeOptions" [value]="option.value">
+                    {{option.label}}
+                  </option>
                 </select>
+              </div>
+              <div *ngIf="businessType?.invalid && businessType?.touched" class="error-message">
+                <span *ngIf="businessType?.errors?.['required']">El tipo de negocio es requerido</span>
               </div>
             </div>
 

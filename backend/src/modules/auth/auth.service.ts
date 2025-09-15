@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
-import { CreateUserDto } from '../users/dto/create-user.dto';
+import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { User } from '../users/entities/user.entity';
 
@@ -12,12 +12,23 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async register(createUserDto: CreateUserDto) {
+  async register(registerDto: RegisterDto) {
     try {
+      // Convertir RegisterDto a CreateUserDto
+      const createUserDto = {
+        ...registerDto,
+        dateOfBirth: registerDto.dateOfBirth ? new Date(registerDto.dateOfBirth) : undefined
+      };
+      
       const user = await this.usersService.create(createUserDto);
       const { password, ...userWithoutPassword } = user;
       
-      const payload = { email: user.email, sub: user.id, role: user.role };
+      const payload = { 
+        email: user.email, 
+        sub: user.id, 
+        role: user.role,
+        businessType: user.businessType 
+      };
       const access_token = this.jwtService.sign(payload);
       
       return {
@@ -51,7 +62,12 @@ export class AuthService {
     }
 
     const { password, ...userWithoutPassword } = user;
-    const payload = { email: user.email, sub: user.id, role: user.role };
+    const payload = { 
+      email: user.email, 
+      sub: user.id, 
+      role: user.role,
+      businessType: user.businessType 
+    };
     const access_token = this.jwtService.sign(payload);
     
     return {

@@ -54,7 +54,14 @@ export class LoginComponent {
           }
           
           this.loading = false;
-          this.router.navigate(['/']);
+          
+          // Redirigir según el tipo de usuario
+          const user = this.authService.getCurrentUser();
+          if (user?.role === 'proveedor') {
+            this.router.navigate(['/provider/dashboard']);
+          } else {
+            this.router.navigate(['/']);
+          }
         },
         error: (error) => {
           console.error('Error en login:', error);

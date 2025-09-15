@@ -20,6 +20,7 @@ export class Part {
   rating: number;
   reviewCount: number;
   isAvailable: boolean;
+  ownerId: string; // ID del proveedor que lo creó
   createdAt: Date;
   updatedAt: Date;
 
