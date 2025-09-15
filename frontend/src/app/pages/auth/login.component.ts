@@ -35,11 +35,24 @@ export class LoginComponent {
     
     if (this.loginForm.valid) {
       this.loading = true;
-      const loginData: LoginRequest = this.loginForm.value;
+      // Solo enviamos email y password, no rememberMe
+      const loginData: LoginRequest = {
+        email: this.loginForm.get('email')?.value,
+        password: this.loginForm.get('password')?.value
+      };
+      
+      const rememberMe = this.loginForm.get('rememberMe')?.value;
       
       this.authService.login(loginData).subscribe({
         next: (response) => {
           console.log('Login exitoso:', response);
+          
+          // Si "Recordarme" está marcado, podríamos extender la duración del token
+          if (rememberMe) {
+            console.log('Usuario eligió ser recordado');
+            // Aquí podrías implementar lógica adicional como extender la expiración
+          }
+          
           this.loading = false;
           this.router.navigate(['/']);
         },

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "1",
+    "email": "adely@gmail.com",
+    "password": "$2b$10$FvAtdMbh834Rk.EI.ZCtve1JNQnLkDTNFD81M4yu8oTPoAgRuoK4q",
+    "firstName": "Adely",
+    "lastName": "Aponte",
+    "phone": "3005995878",
+    "role": "cliente",
+    "dateOfBirth": "2001-10-08",
+    "vehicleInfo": " Ferrari SF-25",
+    "isActive": true,
+    "createdAt": "2025-09-15T00:41:50.258Z",
+    "updatedAt": "2025-09-15T00:41:50.258Z"
+  },
+  {
+    "id": "2",
+    "email": "lasso@gmail.com",
+    "password": "$2b$10$bsESGDB2O25D9RTqg9DcZuMcCjnztgUE8a8UrIRHtdblLRm7KjZfe",
+    "firstName": "David",
+    "lastName": "Lasso",
+    "phone": "3005995878",
+    "role": "proveedor",
+    "companyName": "Lassopits",
+    "businessType": "mixto",
+    "address": "Carrera 40 # 40 - 30",
+    "city": "Medellín",
+    "isActive": true,
+    "createdAt": "2025-09-15T00:43:25.585Z",
+    "updatedAt": "2025-09-15T00:43:25.585Z"
+  },
+  {
+    "id": "3",
+    "email": "esteban@gmail.com",
+    "password": "$2b$10$zRJlOnNBpx0O1cHfjAEPneZJmaA3JqUUS/YI76h2yRgIujwqL7vFu",
+    "firstName": "Esteban",
+    "lastName": "Herrera",
+    "phone": "3005995878",
+    "role": "cliente",
+    "dateOfBirth": "",
+    "vehicleInfo": "Cadillac 2025",
+    "isActive": true,
+    "createdAt": "2025-09-15T00:44:31.506Z",
+    "updatedAt": "2025-09-15T00:44:31.506Z"
+  }
+]
