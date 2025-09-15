@@ -14,6 +14,12 @@
         </div>
       </div>
 
+      <!-- Mensaje de error -->
+      <div *ngIf="errorMessage" class="error-alert">
+        <i class="fa-solid fa-exclamation-triangle"></i>
+        {{ errorMessage }}
+      </div>
+
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
         <!-- Email Field -->
         <div class="form-group">
@@ -51,7 +57,7 @@
         <div class="form-group checkbox-group">
           <label class="checkbox-label">
             <input type="checkbox" formControlName="rememberMe" class="checkbox-input">
-            <span class="checkbox-custom"></span>
+            <span class="checkbox-custom"><i class="fa-solid fa-check"></i></span>
             <span class="checkbox-text">Recordarme</span>
           </label>
           <a routerLink="/auth/forgot-password" class="forgot-link">¿Olvidaste tu contraseña?</a>

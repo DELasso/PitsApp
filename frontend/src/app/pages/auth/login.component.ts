@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { LoginRequest } from '../../models/auth.model';
 
 @Component({
   selector: 'app-login',
@@ -14,8 +16,13 @@ export class LoginComponent {
   loginForm: FormGroup;
   loading = false;
   showPassword = false;
+  errorMessage = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -24,16 +31,27 @@ export class LoginComponent {
   }
 
   onSubmit() {
+    this.errorMessage = '';
+    
     if (this.loginForm.valid) {
       this.loading = true;
-      // Simular login
-      setTimeout(() => {
-        console.log('Login successful:', this.loginForm.value);
-        this.loading = false;
-        // Aquí redireccionar o mostrar mensaje de éxito
-      }, 2000);
+      const loginData: LoginRequest = this.loginForm.value;
+      
+      this.authService.login(loginData).subscribe({
+        next: (response) => {
+          console.log('Login exitoso:', response);
+          this.loading = false;
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          console.error('Error en login:', error);
+          this.loading = false;
+          this.errorMessage = error.error?.message || 'Error al iniciar sesión. Verifica tus credenciales.';
+        }
+      });
     } else {
       this.markFormGroupTouched();
+      this.errorMessage = 'Por favor, completa todos los campos requeridos.';
     }
   }
 
@@ -50,4 +68,5 @@ export class LoginComponent {
 
   get email() { return this.loginForm.get('email'); }
   get password() { return this.loginForm.get('password'); }
+  get rememberMe() { return this.loginForm.get('rememberMe'); }
 }

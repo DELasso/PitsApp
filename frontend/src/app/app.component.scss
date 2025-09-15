@@ -220,3 +220,50 @@
     }
   }
 }
+
+.user-greeting {
+  font-family: 'Special Gothic Expanded One', serif;
+  font-size: 0.9rem;
+  color: var(--ferrari-white);
+  margin-right: 1rem;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .user-greeting {
+    font-family: 'Special Gothic Expanded One', serif;
+    font-size: 0.9rem;
+    color: var(--ferrari-white);
+
+    strong {
+      font-weight: 700;
+    }
+
+    small {
+      font-size: 0.85rem;
+      font-weight: 400;
+      opacity: 0.8;
+    }
+  }
+
+  .btn.btn-outline {
+    background: transparent;
+    border: 1px solid var(--ferrari-red);
+    color: var(--ferrari-red);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: var(--ferrari-red);
+      color: white;
+      transform: translateY(-2px);
+    }
+  }
+}
+

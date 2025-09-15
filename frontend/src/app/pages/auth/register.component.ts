@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { RegisterRequest, UserRole } from '../../models/auth.model';
 
 @Component({
   selector: 'app-register',
@@ -15,17 +17,29 @@ export class RegisterComponent {
   loading = false;
   showPassword = false;
   showConfirmPassword = false;
+  errorMessage = '';
+  UserRole = UserRole;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
-      userType: ['customer', [Validators.required]],
-      acceptTerms: [false, [Validators.requiredTrue]]
+      role: [UserRole.CLIENTE, [Validators.required]],
+      acceptTerms: [false, [Validators.requiredTrue]],
+      companyName: [''],
+      businessType: [''],
+      address: [''],
+      city: [''],
+      dateOfBirth: [''],
+      vehicleInfo: ['']
     }, { validators: this.passwordMatchValidator });
   }
 
@@ -44,12 +58,39 @@ export class RegisterComponent {
   onSubmit() {
     if (this.registerForm.valid) {
       this.loading = true;
-      // Simular registro
-      setTimeout(() => {
-        console.log('Registration successful:', this.registerForm.value);
-        this.loading = false;
-        // Aquí redireccionar o mostrar mensaje de éxito
-      }, 2000);
+      this.errorMessage = '';
+      
+      const registerData: RegisterRequest = {
+        email: this.registerForm.value.email,
+        password: this.registerForm.value.password,
+        firstName: this.registerForm.value.firstName,
+        lastName: this.registerForm.value.lastName,
+        phone: this.registerForm.value.phone,
+        role: this.registerForm.value.role
+      };
+
+      if (registerData.role === UserRole.PROVEEDOR) {
+        registerData.companyName = this.registerForm.value.companyName;
+        registerData.businessType = this.registerForm.value.businessType;
+        registerData.address = this.registerForm.value.address;
+        registerData.city = this.registerForm.value.city;
+      } else {
+        registerData.dateOfBirth = this.registerForm.value.dateOfBirth;
+        registerData.vehicleInfo = this.registerForm.value.vehicleInfo;
+      }
+
+      this.authService.register(registerData).subscribe({
+        next: (response) => {
+          this.loading = false;
+          console.log('Registro exitoso:', response.message);
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          this.loading = false;
+          this.errorMessage = error.error?.message || 'Error al registrar usuario';
+          console.error('Error en registro:', error);
+        }
+      });
     } else {
       this.markFormGroupTouched();
     }
@@ -76,6 +117,6 @@ export class RegisterComponent {
   get phone() { return this.registerForm.get('phone'); }
   get password() { return this.registerForm.get('password'); }
   get confirmPassword() { return this.registerForm.get('confirmPassword'); }
-  get userType() { return this.registerForm.get('userType'); }
+  get role() { return this.registerForm.get('role'); }
   get acceptTerms() { return this.registerForm.get('acceptTerms'); }
 }

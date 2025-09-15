@@ -1,5 +1,5 @@
 // Inherit all styles from login component
-@import './login.component.scss';
+@use './login.component.scss';
 
 // Additional styles specific to register
 .auth-card {
@@ -97,20 +97,64 @@
 }
 
 .checkbox-group {
-  .checkbox-text {
-    line-height: 1.4;
-    
-    .terms-link {
-      color: var(--ferrari-red);
-      text-decoration: none;
-      font-weight: 600;
-      
-      &:hover {
-        text-decoration: underline;
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 0.5rem;
+
+    .checkbox-input {
+      display: none; // ocultamos el checkbox nativo
+    }
+
+    .checkbox-custom {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--ferrari-red);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      color: white;
+      background: white;
+
+      i {
+        opacity: 0; // escondemos el ícono al inicio
+        transition: opacity 0.2s ease;
+        color: var(--ferrari-red);
+      }
+    }
+
+    // Cuando el checkbox está marcado → aparece el chulito
+    .checkbox-input:checked + .checkbox-custom {
+      background: var(--ferrari-red);
+      border-color: var(--ferrari-red);
+
+      i {
+        opacity: 1;
+        color: white;
+      }
+    }
+
+    .checkbox-text {
+      font-size: 14px;
+      line-height: 1.4;
+
+      .terms-link {
+        color: var(--ferrari-red);
+        font-weight: 600;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }
 }
+
 
 .auth-footer {
   .login-link {
@@ -167,6 +211,12 @@
 
 // Animation for form validation
 .form-group {
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--ferrari-black);
+  }
   .error-message {
     animation: slideDown 0.3s ease-out;
   }

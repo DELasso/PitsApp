@@ -188,7 +188,7 @@
         background: var(--ferrari-red);
         border-color: var(--ferrari-red);
         
-        &::after {
+        i {
           opacity: 1;
           transform: scale(1);
         }
@@ -203,17 +203,15 @@
       margin-right: 0.75rem;
       position: relative;
       transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       
-      &::after {
-        content: '✓';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0);
+      i {
         color: white;
         font-size: 12px;
-        font-weight: bold;
         opacity: 0;
+        transform: scale(0);
         transition: all 0.2s;
       }
     }
@@ -258,6 +256,44 @@
         border-top: 2px solid white;
         border-radius: 50%;
         animation: spin 1s linear infinite;
+      }
+    }
+  }
+
+  // Base button styles
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 48px;
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    &.btn-primary {
+      background: linear-gradient(135deg, var(--ferrari-red) 0%, var(--ferrari-red-dark) 100%);
+      color: white;
+      box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
+      
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, var(--ferrari-red-dark) 0%, #b71c1c 100%);
+        box-shadow: 0 6px 16px rgba(220, 20, 60, 0.4);
+        transform: translateY(-2px);
+      }
+      
+      &:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(220, 20, 60, 0.3);
       }
     }
   }

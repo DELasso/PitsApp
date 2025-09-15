@@ -23,7 +23,18 @@
               {{cartSummary.totalItems}}
             </span>
           </a>
-          <a routerLink="/auth/login" routerLinkActive="active" class="btn btn-outline">Ingresar</a>
+          
+          <!-- Mostrar si NO está logueado -->
+          <a *ngIf="!isLoggedIn" routerLink="/auth/login" routerLinkActive="active" class="btn btn-outline">Ingresar</a>
+          
+          <!-- Mostrar si SÍ está logueado -->
+          <div *ngIf="isLoggedIn && currentUser" class="user-menu">
+            <span class="user-greeting">
+              Hola, {{currentUser.firstName}}
+              <small>({{currentUser.role}})</small>
+            </span>
+            <button (click)="logout()" class="btn btn-outline">Salir</button>
+          </div>
         </div>
       </nav>
     </div>
