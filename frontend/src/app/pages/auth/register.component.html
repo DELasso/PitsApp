@@ -148,7 +148,7 @@
         <!-- Campos específicos para Proveedores -->
         <div *ngIf="registerForm.get('role')?.value === UserRole.PROVEEDOR" class="provider-fields">
           <h3 class="section-title">Información de la Empresa</h3>
-          
+
           <div class="form-group">
             <label for="companyName" class="form-label">Nombre de la Empresa</label>
             <div class="input-wrapper">
@@ -177,8 +177,7 @@
               <label for="city" class="form-label">Ciudad</label>
               <div class="input-wrapper">
                 <span class="input-icon"><i class="fa-solid fa-location-dot"></i></span>
-                <input type="text" id="city" formControlName="city" class="form-input"
-                  placeholder="Ciudad">
+                <input type="text" id="city" formControlName="city" class="form-input" placeholder="Ciudad">
               </div>
             </div>
           </div>
@@ -196,7 +195,7 @@
         <!-- Campos específicos para Clientes -->
         <div *ngIf="registerForm.get('role')?.value === UserRole.CLIENTE" class="client-fields">
           <h3 class="section-title">Información del Vehículo (Opcional)</h3>
-          
+
           <div class="form-row">
             <div class="form-group">
               <label for="dateOfBirth" class="form-label">Fecha de Nacimiento</label>
@@ -218,20 +217,20 @@
         </div>
 
         <!-- Terms and Conditions -->
-       <div class="form-group checkbox-group">
-  <label class="checkbox-label">
-    <input type="checkbox" formControlName="acceptTerms" class="checkbox-input">
-    <span class="checkbox-custom"><i class="fa-solid fa-check"></i></span>
-    <span class="checkbox-text">
-      Acepto los <a href="#" class="terms-link">términos y condiciones</a> y la
-      <a href="#" class="terms-link">política de privacidad</a>
-    </span>
-  </label>
-</div>
+        <div class="form-group checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="acceptTerms" class="checkbox-input">
+            <span class="checkbox-custom"><i class="fa-solid fa-check"></i></span>
+            <span class="checkbox-text">
+              Acepto los <a href="#" class="terms-link">términos y condiciones</a> y la
+              <a href="#" class="terms-link">política de privacidad</a>
+            </span>
+          </label>
+        </div>
 
-<div *ngIf="acceptTerms?.invalid && acceptTerms?.touched" class="error-message">
-  Debes aceptar los términos y condiciones
-</div>
+        <div *ngIf="acceptTerms?.invalid && acceptTerms?.touched" class="error-message">
+          Debes aceptar los términos y condiciones
+        </div>
 
 
         <!-- Submit Button -->

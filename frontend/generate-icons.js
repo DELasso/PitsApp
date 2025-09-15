@@ -19,7 +19,7 @@ const iconSizes = [
   { size: 512, name: 'icon-512x512.png' }
 ];
 
-console.log('🎨 Generando iconos PWA desde PitsApp01.png...');
+console.log('Generando iconos PWA desde PitsApp01.png...');
 console.log('');
 
 // Verificar que existe el directorio de iconos
@@ -29,19 +29,19 @@ if (!fs.existsSync(iconsDir)) {
 
 // Verificar que existe el logo
 if (!fs.existsSync(logoPath)) {
-  console.error('❌ No se encontró el logo en:', logoPath);
+  console.error('No se encontró el logo en:', logoPath);
   process.exit(1);
 }
 
-console.log('✅ Logo encontrado:', logoPath);
-console.log('📁 Directorio de iconos:', iconsDir);
+console.log('Logo encontrado:', logoPath);
+console.log('Directorio de iconos:', iconsDir);
 console.log('');
 
 // Generar comandos para diferentes herramientas
-console.log('🔧 OPCIONES PARA GENERAR ICONOS:');
+console.log('OPCIONES PARA GENERAR ICONOS:');
 console.log('');
 
-console.log('📋 OPCIÓN 1 - Con ImageMagick (recomendado):');
+console.log('OPCIÓN 1 - Con ImageMagick (recomendado):');
 console.log('Instala ImageMagick y ejecuta estos comandos:');
 console.log('');
 
@@ -51,21 +51,21 @@ iconSizes.forEach(icon => {
 });
 
 console.log('');
-console.log('📋 OPCIÓN 2 - Con FFmpeg:');
+console.log('OPCIÓN 2 - Con FFmpeg:');
 iconSizes.forEach(icon => {
   const outputPath = path.join(iconsDir, icon.name);
   console.log(`ffmpeg -i "${logoPath}" -vf scale=${icon.size}:${icon.size} "${outputPath}"`);
 });
 
 console.log('');
-console.log('📋 OPCIÓN 3 - Online (más fácil):');
+console.log('OPCIÓN 3 - Online (más fácil):');
 console.log('1. Ve a: https://www.pwabuilder.com/imageGenerator');
 console.log('2. Sube tu logo: src/assets/PitsApp01.png');
 console.log('3. Descarga los iconos generados');
 console.log('4. Reemplaza los archivos en: public/icons/');
 
 console.log('');
-console.log('📋 OPCIÓN 4 - Copia manual:');
+console.log('OPCIÓN 4 - Copia manual:');
 console.log('Si no puedes usar herramientas de resize, puedes copiar el logo original a cada tamaño:');
 console.log('');
 
@@ -75,5 +75,5 @@ iconSizes.forEach(icon => {
 });
 
 console.log('');
-console.log('⚠️  NOTA: Para mejor calidad, usa la OPCIÓN 1 o 3');
-console.log('💡 Los iconos se redimensionarán automáticamente por el navegador si es necesario');
+console.log('NOTA: Para mejor calidad, usa la OPCIÓN 1 o 3');
+console.log('Los iconos se redimensionarán automáticamente por el navegador si es necesario');
