@@ -1,0 +1,167 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" 
+      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" 
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;1,300&family=Special+Gothic+Expanded+One&family=Special+Gothic:wght@400..700&family=Telex&display=swap" rel="stylesheet">
+
+<div class="workshop-detail-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Cargando información del taller...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !isLoading" class="error-container">
+    <div class="error-message">
+      <i class="fas fa-exclamation-triangle"></i>
+      <h2>Error</h2>
+      <p>{{ error }}</p>
+      <button class="btn btn-primary" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i>
+        Volver a Talleres
+      </button>
+    </div>
+  </div>
+
+  <!-- Workshop Detail Content -->
+  <div *ngIf="workshop && !isLoading" class="workshop-detail-content">
+    <!-- Header -->
+    <div class="workshop-header">
+      <button class="back-button" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i>
+        Volver a Talleres
+      </button>
+      
+      <div class="workshop-title-section">
+        <h1>{{ workshop.name }}</h1>
+        <div class="workshop-rating">
+          <div class="stars">
+            <i *ngFor="let star of getStarArray(workshop.rating)" 
+               class="fas fa-star" 
+               [class.filled]="star"></i>
+          </div>
+          <span class="rating-text">{{ workshop.rating }} ({{ workshop.reviewCount }} reseñas)</span>
+        </div>
+        <div class="workshop-location">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>{{ workshop.neighborhood }}, {{ workshop.city }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="workshop-main">
+      <!-- Workshop Info Grid -->
+      <div class="workshop-info-grid">
+        <!-- Left Column - Details -->
+        <div class="workshop-details">
+          <!-- Description -->
+          <div class="detail-section">
+            <h2><i class="fas fa-info-circle"></i> Descripción</h2>
+            <p class="description">{{ workshop.description }}</p>
+          </div>
+
+          <!-- Services -->
+          <div class="detail-section" *ngIf="workshop.services && workshop.services.length > 0">
+            <h2><i class="fas fa-tools"></i> Servicios</h2>
+            <div class="services-grid">
+              <span *ngFor="let service of workshop.services" class="service-tag">
+                <i class="fas fa-check"></i>
+                {{ service }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Specialties -->
+          <div class="detail-section" *ngIf="workshop.specialties && workshop.specialties.length > 0">
+            <h2><i class="fas fa-star"></i> Especialidades</h2>
+            <div class="specialties-grid">
+              <span *ngFor="let specialty of workshop.specialties" class="specialty-tag">
+                {{ specialty }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Working Hours -->
+          <div class="detail-section" *ngIf="workshop.workingHours">
+            <h2><i class="fas fa-clock"></i> Horarios de Atención</h2>
+            <p class="working-hours">{{ workshop.workingHours }}</p>
+          </div>
+        </div>
+
+        <!-- Right Column - Contact & Location -->
+        <div class="workshop-contact">
+          <!-- Contact Info -->
+          <div class="contact-card">
+            <h3><i class="fas fa-address-book"></i> Información de Contacto</h3>
+            
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <div class="contact-details">
+                <strong>Dirección:</strong>
+                <p>{{ workshop.address }}</p>
+                <p>{{ workshop.neighborhood }}, {{ workshop.city }}</p>
+              </div>
+            </div>
+
+            <div class="contact-item" *ngIf="workshop.phone">
+              <i class="fas fa-phone"></i>
+              <div class="contact-details">
+                <strong>Teléfono:</strong>
+                <p>{{ workshop.phone }}</p>
+              </div>
+            </div>
+
+            <div class="contact-item" *ngIf="workshop.email">
+              <i class="fas fa-envelope"></i>
+              <div class="contact-details">
+                <strong>Email:</strong>
+                <p>{{ workshop.email }}</p>
+              </div>
+            </div>
+
+            <div class="contact-item" *ngIf="workshop.website">
+              <i class="fas fa-globe"></i>
+              <div class="contact-details">
+                <strong>Sitio Web:</strong>
+                <p>{{ workshop.website }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <button class="btn btn-primary" (click)="onCallClick(workshop.phone)" *ngIf="workshop.phone">
+              <i class="fas fa-phone"></i>
+              Llamar Ahora
+            </button>
+            
+            <button class="btn btn-secondary" (click)="onEmailClick(workshop.email)" *ngIf="workshop.email">
+              <i class="fas fa-envelope"></i>
+              Enviar Email
+            </button>
+            
+            <button class="btn btn-outline" (click)="onWebsiteClick(workshop.website)" *ngIf="workshop.website">
+              <i class="fas fa-globe"></i>
+              Visitar Sitio Web
+            </button>
+            
+            <button class="btn btn-success" (click)="onDirectionsClick()">
+              <i class="fas fa-directions"></i>
+              Cómo Llegar
+            </button>
+          </div>
+
+          <!-- Map placeholder -->
+          <div class="map-placeholder">
+            <i class="fas fa-map"></i>
+            <p>Mapa de ubicación</p>
+            <small>{{ workshop.address }}, {{ workshop.city }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { WorkshopsService } from '../../services/workshops.service';
 import { Workshop, WorkshopSearchParams } from '../../models/workshop.model';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
+import { Subscription, filter } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { User, UserRole } from '../../models/auth.model';
 
 @Component({
   selector: 'app-workshops',  
@@ -14,11 +17,13 @@ import { RouterModule } from '@angular/router';
   styleUrl: './workshops.component.scss',
   providers: [WorkshopsService]
 })
-export class WorkshopsComponent implements OnInit {
+export class WorkshopsComponent implements OnInit, OnDestroy {
   workshops: Workshop[] = [];
   filteredWorkshops: Workshop[] = [];
   loading = false;
   error: string | null = null;
+  private routerSubscription?: Subscription;
+  currentUser: User | null = null;
   
   // Filtros
   searchTerm = '';
@@ -29,22 +34,53 @@ export class WorkshopsComponent implements OnInit {
   services = ['Mecánica general', 'Frenos', 'Suspensión', 'Eléctrica', 'Aire acondicionado', 'Diagnóstico'];
   neighborhoods = ['Poblado', 'Laureles', 'Envigado', 'Belén', 'Sabaneta', 'Itagüí'];
 
-  constructor(private workshopsService: WorkshopsService) {}
+  constructor(
+    private workshopsService: WorkshopsService, 
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
+    // Obtener usuario actual
+    this.currentUser = this.authService.getCurrentUser();
+    
     this.loadWorkshops();
+    
+    // Suscribirse a eventos de navegación para refrescar cuando se regrese del formulario
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        if (event.url === '/workshops' && event.url !== event.urlAfterRedirects) {
+          // Se regresó a la lista desde otra página, refrescar
+          this.loadWorkshops();
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
 
   loadWorkshops() {
     this.loading = true;
     this.error = null;
     
-    // Usar método mockeado por ahora
-    this.workshopsService.getWorkshopsMocked().subscribe({
+    // Si es proveedor, mostrar solo sus talleres. Si es cliente, mostrar todos
+    const isProvider = this.currentUser?.role === UserRole.PROVEEDOR;
+    const serviceCall = isProvider ? 
+      this.workshopsService.getMyWorkshops() : 
+      this.workshopsService.getWorkshops();
+    
+    serviceCall.subscribe({
       next: (workshops) => {
         this.workshops = workshops;
         this.filteredWorkshops = [...workshops];
         this.loading = false;
+        
+        const userType = isProvider ? 'proveedor' : 'cliente';
+        const count = workshops.length;
       },
       error: (error) => {
         this.error = 'Error al cargar los talleres. Por favor, intenta de nuevo.';
@@ -112,13 +148,23 @@ export class WorkshopsComponent implements OnInit {
   }
 
   onWorkshopClick(workshop: Workshop) {
-    // Navegar a detalle del taller (implementar más tarde)
-    console.log('Workshop clicked:', workshop);
+    // Navegar a detalle del taller
+    this.router.navigate(['/talleres', workshop.id]);
   }
 
   onContactClick(workshop: Workshop, event: Event) {
     event.stopPropagation();
     // Abrir WhatsApp o llamada
     window.open(`tel:${workshop.phone}`, '_blank');
+  }
+
+  onImageError(event: any) {
+    // Reemplazar imagen rota con ícono por defecto
+    const imgElement = event.target;
+    imgElement.style.display = 'none';
+    const parent = imgElement.parentElement;
+    if (parent) {
+      parent.innerHTML = '<span class="workshop-icon"><i class="fa-solid fa-wrench"></i></span>';
+    }
   }
 }

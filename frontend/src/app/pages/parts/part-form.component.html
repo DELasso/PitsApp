@@ -1,0 +1,190 @@
+`
+<div class="form-container">
+    <div class="form-header">
+        <h1>{{ isEditMode ? 'Editar Repuesto' : 'Agregar Nuevo Repuesto' }}</h1>
+        <button class="btn-back" (click)="goBack()">
+            <i class="fa-solid fa-arrow-left"></i> Volver
+        </button>
+    </div>
+
+    <form [formGroup]="partForm" (ngSubmit)="onSubmit()" class="part-form">
+        <div class="form-section">
+            <h3>Información Básica</h3>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name" class="form-label">Nombre del Repuesto *</label>
+                    <input type="text" id="name" formControlName="name" class="form-input"
+                        [class.error]="name?.invalid && name?.touched"
+                        placeholder="Ej: Frenos delanteros Toyota Corolla">
+                    <div *ngIf="name?.invalid && name?.touched" class="error-message">
+                        <span *ngIf="name?.errors?.['required']">El nombre es requerido</span>
+                        <span *ngIf="name?.errors?.['minlength']">Mínimo 3 caracteres</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="partNumber" class="form-label">Código/Referencia *</label>
+                    <input type="text" id="partNumber" formControlName="partNumber" class="form-input"
+                        [class.error]="partNumber?.invalid && partNumber?.touched" placeholder="Ej: BR-TY-COR-2020">
+                    <div *ngIf="partNumber?.invalid && partNumber?.touched" class="error-message">
+                        <span *ngIf="partNumber?.errors?.['required']">El código es requerido</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="brand" class="form-label">Marca *</label>
+                    <select id="brand" formControlName="brand" class="form-select"
+                        [class.error]="brand?.invalid && brand?.touched">
+                        <option value="">Selecciona una marca</option>
+                        <option *ngFor="let brand of availableBrands" [value]="brand">{{ brand }}</option>
+                    </select>
+                    <div *ngIf="brand?.invalid && brand?.touched" class="error-message">
+                        <span *ngIf="brand?.errors?.['required']">La marca es requerida</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="category" class="form-label">Categoría *</label>
+                    <select id="category" formControlName="category" class="form-select"
+                        [class.error]="category?.invalid && category?.touched">
+                        <option value="">Selecciona una categoría</option>
+                        <option *ngFor="let category of availableCategories" [value]="category">{{ category }}</option>
+                    </select>
+                    <div *ngIf="category?.invalid && category?.touched" class="error-message">
+                        <span *ngIf="category?.errors?.['required']">La categoría es requerida</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description" class="form-label">Descripción *</label>
+                <textarea id="description" formControlName="description" class="form-textarea"
+                    [class.error]="description?.invalid && description?.touched" rows="4"
+                    placeholder="Describe el repuesto, sus características y compatibilidad..."></textarea>
+                <div *ngIf="description?.invalid && description?.touched" class="error-message">
+                    <span *ngIf="description?.errors?.['required']">La descripción es requerida</span>
+                    <span *ngIf="description?.errors?.['minlength']">Mínimo 20 caracteres</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Detalles del Producto</h3>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="condition" class="form-label">Condición *</label>
+                    <select id="condition" formControlName="condition" class="form-select"
+                        [class.error]="condition?.invalid && condition?.touched">
+                        <option value="">Selecciona la condición</option>
+                        <option [value]="PartCondition.ORIGINAL">Original</option>
+                        <option [value]="PartCondition.GENERICO">Genérico</option>
+                        <option [value]="PartCondition.REMANUFACTURADO">Remanufacturado</option>
+                        <option [value]="PartCondition.USADO">Usado</option>
+                    </select>
+                    <div *ngIf="condition?.invalid && condition?.touched" class="error-message">
+                        <span *ngIf="condition?.errors?.['required']">La condición es requerida</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="vehicleType" class="form-label">Tipo de Vehículo *</label>
+                    <select id="vehicleType" formControlName="vehicleType" class="form-select"
+                        [class.error]="vehicleType?.invalid && vehicleType?.touched">
+                        <option value="">Selecciona el tipo</option>
+                        <option [value]="VehicleType.CARRO">Carro</option>
+                        <option [value]="VehicleType.MOTO">Moto</option>
+                        <option [value]="VehicleType.AMBOS">Ambos</option>
+                    </select>
+                    <div *ngIf="vehicleType?.invalid && vehicleType?.touched" class="error-message">
+                        <span *ngIf="vehicleType?.errors?.['required']">El tipo de vehículo es requerido</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="price" class="form-label">Precio (COP) *</label>
+                    <input type="number" id="price" formControlName="price" class="form-input"
+                        [class.error]="price?.invalid && price?.touched" placeholder="0" min="0" step="1000">
+                    <div *ngIf="price?.invalid && price?.touched" class="error-message">
+                        <span *ngIf="price?.errors?.['required']">El precio es requerido</span>
+                        <span *ngIf="price?.errors?.['min']">El precio debe ser mayor a 0</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="stock" class="form-label">Cantidad en Stock *</label>
+                    <input type="number" id="stock" formControlName="stock" class="form-input"
+                        [class.error]="stock?.invalid && stock?.touched" placeholder="0" min="0">
+                    <div *ngIf="stock?.invalid && stock?.touched" class="error-message">
+                        <span *ngIf="stock?.errors?.['required']">La cantidad es requerida</span>
+                        <span *ngIf="stock?.errors?.['min']">La cantidad debe ser 0 o mayor</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="compatibleVehicles" class="form-label">Vehículos Compatibles *</label>
+                <input type="text" id="compatibleVehicles" formControlName="compatibleVehiclesText" class="form-input"
+                    [class.error]="partForm.get('compatibleVehicles')?.invalid && partForm.get('compatibleVehicles')?.touched"
+                    placeholder="Ej: Toyota Corolla 2018-2023, Honda Civic 2019-2022 (separados por comas)">
+                <small class="form-help">Separa los vehículos compatibles con comas</small>
+                <div *ngIf="partForm.get('compatibleVehicles')?.invalid && partForm.get('compatibleVehicles')?.touched"
+                    class="error-message">
+                    <span>Especifica al menos un vehículo compatible</span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="warranty" class="form-label">Garantía (opcional)</label>
+                    <input type="text" id="warranty" formControlName="warranty" class="form-input"
+                        placeholder="Ej: 6 meses, 1 año, etc.">
+                </div>
+
+                <div class="form-group">
+                    <label for="weight" class="form-label">Peso (kg) (opcional)</label>
+                    <input type="number" id="weight" formControlName="weight" class="form-input" placeholder="0.0"
+                        min="0" step="0.1">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="dimensions" class="form-label">Dimensiones (opcional)</label>
+                <input type="text" id="dimensions" formControlName="dimensions" class="form-input"
+                    placeholder="Ej: 25cm x 15cm x 8cm">
+            </div>
+        </div>
+
+        <!-- Sección de Imágenes -->
+        <div class="form-section">
+            <h3>Imágenes del Repuesto</h3>
+            <app-image-upload formControlName="images" uploadType="part" label="Sube imágenes de tu repuesto"
+                [required]="false">
+            </app-image-upload>
+            <p class="form-hint">
+                Las imágenes ayudan a los clientes a ver el estado y características del repuesto. Puedes subir hasta 5
+                imágenes.
+            </p>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary" (click)="goBack()">
+                Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="loading || partForm.invalid">
+                <i *ngIf="loading" class="fa-solid fa-spinner fa-spin"></i>
+                {{ isEditMode ? 'Actualizar' : 'Crear' }} Repuesto
+            </button>
+        </div>
+    </form>
+
+    <div *ngIf="errorMessage" class="error-banner">
+        {{ errorMessage }}
+    </div>
+</div>
+`,

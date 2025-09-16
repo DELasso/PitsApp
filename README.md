@@ -6,7 +6,13 @@ PitsApp es una plataforma completa que conecta a los propietarios de vehículos 
 
 ## 🎯 Características Principales
 
-### 🔐 Sistema de Autenticación
+### 🔐 Sist- [ ] **Geolocalización** para talleres cercanos con mapas
+- [ ] **Perfiles detallados** de talleres y proveedores ampliados
+- [ ] **Sistema de reseñas** y calificaciones verificadas
+- [ ] **Carrito de compras** funcional
+- [ ] **Calendario de citas** para servicios
+
+### 📋 Fase 3 - Servicios Avanzados Autenticación
 - **Registro de usuarios** diferenciado para clientes y proveedores
 - **Login seguro** con encriptación de contraseñas (bcrypt)
 - **JWT (Json Web Tokens)** para manejo de sesiones
@@ -14,21 +20,28 @@ PitsApp es una plataforma completa que conecta a los propietarios de vehículos 
 - **Roles de usuario**: Cliente y Proveedor con campos específicos
 
 ### Para Clientes 👤
-- 🔍 **Búsqueda inteligente** de talleres por ubicación y especialidad
+- 🔍 **Búsqueda inteligente** de talleres y repuestos por ubicación y especialidad
 - 📍 **Geolocalización** para encontrar servicios cercanos
 - ⭐ **Sistema de reseñas** y calificaciones verificadas
 - 🏠 **Servicios a domicilio** para mayor comodidad
 - 🚨 **Atención de emergencia** 24/7
 - 💰 **Comparación de precios** transparente
 - 🚗 **Información de vehículos** personalizada
+- 🛒 **Carrito de compras** funcional con resumen de pedidos
+- 💳 **Proceso de checkout** completo con múltiples métodos de pago
+- 📄 **Páginas de detalle** para talleres con información completa
 
 ### Para Proveedores 🏢
-- 📊 **Panel de administración** para gestionar servicios
-- 📱 **Notificaciones en tiempo real** de solicitudes
+- 📊 **Panel de administración** para gestionar servicios y repuestos
+- 🏭 **Creación de talleres** con información detallada y ubicación
+- 🔧 **Gestión de repuestos** con categorías, precios y especificaciones
+- � **Subida de imágenes** para talleres y repuestos
+- �📱 **Notificaciones en tiempo real** de solicitudes
 - 💳 **Sistema de pagos** integrado
 - 📈 **Analytics** y estadísticas de negocio
 - 🏪 **Perfil de empresa** con información detallada
 - 📍 **Gestión de ubicación** y área de cobertura
+- 🎨 **Interfaz moderna** con paleta de colores Ferrari
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -50,16 +63,82 @@ PitsApp es una plataforma completa que conecta a los propietarios de vehículos 
 - **bcryptjs** - Encriptación de contraseñas
 - **class-validator** - Validación de DTOs
 - **Passport JWT** - Estrategia de autenticación
+- **Multer** - Manejo de subida de archivos e imágenes
+- **UUID** - Generación de identificadores únicos
 
 ### Almacenamiento de Datos
 - **Sistema de archivos JSON** - Almacenamiento persistente en disco
-- **Ubicación**: `backend/data/users.json`
+- **Ubicaciones**: 
+  - `backend/data/users.json` - Usuarios registrados
+  - `backend/data/workshops.json` - Talleres creados por proveedores
+  - `backend/data/parts.json` - Repuestos y autopartes
+  - `backend/uploads/` - Imágenes subidas por proveedores
 - **Características**:
   - ✅ Persistencia al reiniciar servidor
   - ✅ Contraseñas encriptadas con bcrypt
-  - ✅ Búsquedas por email e ID
+  - ✅ Búsquedas por email, ID y proveedor
   - ✅ Validación de duplicados
   - ✅ Logs de creación y actualización
+  - ✅ Subida y almacenamiento de imágenes
+  - ✅ URLs de imágenes accesibles vía HTTP
+
+## 🚀 Funcionalidades Implementadas
+
+### 🔐 Sistema de Autenticación Completo
+- **Registro diferenciado** para clientes y proveedores con validaciones específicas
+- **Login seguro** con JWT tokens y persistencia de sesión
+- **Protección de rutas** basada en roles de usuario
+- **Logout** con limpieza completa de sesión
+
+### 🏢 Gestión de Talleres para Proveedores
+- **Creación de talleres** con formulario completo y validaciones
+- **Subida de imágenes** opcional para mostrar instalaciones
+- **Información detallada**: servicios, ubicación, horarios, contacto
+- **Páginas de detalle** públicas con toda la información del taller
+- **Edición y gestión** de talleres existentes
+- **Filtrado por proveedor** para ver solo talleres propios
+
+### 🔧 Catálogo de Repuestos y Autopartes
+- **Creación de repuestos** con especificaciones técnicas completas
+- **Categorización** por tipo de repuesto (frenos, motor, suspensión, etc.)
+- **Gestión de precios** y condición (nuevo, usado, reconstruido)
+- **Subida de imágenes** para mostrar los productos
+- **Número de parte** y compatibilidad con marcas específicas
+- **Inventario** y disponibilidad en tiempo real
+
+### 📷 Sistema de Gestión de Imágenes
+- **Subida múltiple** de imágenes para talleres y repuestos
+- **Validación de archivos** (tipos permitidos, tamaño máximo)
+- **Almacenamiento seguro** en el servidor con URLs públicas
+- **Visualización optimizada** en listas y páginas de detalle
+- **Gestión de errores** y feedback visual durante la subida
+
+### 🛒 Carrito de Compras Funcional
+- **Agregar repuestos** al carrito con cantidad personalizable
+- **Gestión de items**: actualizar cantidad, eliminar productos
+- **Resumen de compra** con subtotal, impuestos y total
+- **Persistencia del carrito** durante la navegación
+- **Interfaz intuitiva** con contadores y botones de acción
+
+### 💳 Proceso de Checkout Completo
+- **Información de envío** con validación de datos personales
+- **Múltiples métodos de pago**: tarjeta de crédito, débito, PSE, Nequi
+- **Validación de formularios** con feedback en tiempo real
+- **Página de confirmación** con detalles de la orden
+- **Generación de orden** con ID único y timestamp
+
+### 👔 Dashboard de Proveedor
+- **Estadísticas en tiempo real**: número de talleres y repuestos
+- **Navegación rápida** a formularios de creación
+- **Resumen visual** del negocio con iconografía clara
+- **Acceso directo** a gestión de contenido propio
+
+### 🎨 Diseño Ferrari Premium
+- **Paleta de colores Ferrari** aplicada consistentemente
+- **Variables CSS personalizadas** para mantenimiento fácil
+- **Interfaz moderna** con transiciones suaves
+- **Responsive design** optimizado para móviles y desktop
+- **Iconografía profesional** con FontAwesome
 
 ## 🚀 Instalación y Configuración
 
@@ -161,11 +240,34 @@ PitsApp/
 │   │   │   │   └── 📁 entities/          # Modelos de datos
 │   │   │   │       └── user.entity.ts    # Modelo usuario
 │   │   │   ├── 📁 parts/       # 🔧 Repuestos y autopartes
+│   │   │   │   ├── parts.controller.ts   # CRUD repuestos
+│   │   │   │   ├── parts.service.ts      # Lógica de negocio
+│   │   │   │   ├── parts.module.ts       # Módulo repuestos
+│   │   │   │   ├── 📁 dto/               # Data Transfer Objects
+│   │   │   │   │   ├── create-part.dto.ts
+│   │   │   │   │   └── update-part.dto.ts
+│   │   │   │   └── 📁 entities/          # Modelos de datos
+│   │   │   │       └── part.entity.ts    # Modelo repuesto
 │   │   │   └── 📁 workshops/   # 🏢 Talleres mecánicos
+│   │   │       ├── workshops.controller.ts # CRUD talleres
+│   │   │       ├── workshops.service.ts    # Lógica de negocio
+│   │   │       ├── workshops.module.ts     # Módulo talleres
+│   │   │       ├── 📁 dto/                 # Data Transfer Objects
+│   │   │       │   ├── create-workshop.dto.ts
+│   │   │       │   └── update-workshop.dto.ts
+│   │   │       └── 📁 entities/            # Modelos de datos
+│   │   │           └── workshop.entity.ts  # Modelo taller
+│   │   ├── 📁 shared/         # 📎 Módulos compartidos
+│   │   │   ├── file-upload.controller.ts # Subida de imágenes
+│   │   │   ├── file-upload.service.ts    # Lógica de archivos
+│   │   │   └── shared.module.ts          # Módulo compartido
 │   │   ├── app.module.ts       # Módulo principal
 │   │   └── main.ts            # Punto de entrada
 │   ├── 📁 data/               # 💾 Almacenamiento de datos
-│   │   └── users.json         # Base de datos JSON usuarios
+│   │   ├── users.json         # Base de datos JSON usuarios
+│   │   ├── workshops.json     # Base de datos JSON talleres
+│   │   └── parts.json         # Base de datos JSON repuestos
+│   ├── 📁 uploads/            # 📷 Imágenes subidas por usuarios
 │   └── package.json           # Dependencias backend
 │
 ├── 📁 frontend/               # SPA con Angular
@@ -174,23 +276,41 @@ PitsApp/
 │   │   │   ├── 📁 services/   # 🛠️ Servicios Angular
 │   │   │   │   ├── auth.service.ts       # 🔐 Servicio autenticación
 │   │   │   │   ├── cart.service.ts       # 🛒 Carrito compras
+│   │   │   │   ├── file-upload.service.ts # 📷 Subida de imágenes
+│   │   │   │   ├── loading.service.ts    # ⏳ Estados de carga
+│   │   │   │   ├── order.service.ts      # 📦 Gestión de órdenes
 │   │   │   │   ├── parts.service.ts      # 🔧 Servicio repuestos
 │   │   │   │   └── workshops.service.ts  # 🏢 Servicio talleres
 │   │   │   ├── 📁 models/     # 📊 Modelos TypeScript
-│   │   │   │   ├── auth.model.ts         # Modelos autenticación
-│   │   │   │   ├── user.model.ts         # Modelo usuario
-│   │   │   │   ├── part.model.ts         # Modelo repuesto
-│   │   │   │   └── workshop.model.ts     # Modelo taller
+│   │   │   │   ├── api-response.model.ts  # Respuestas de API
+│   │   │   │   ├── auth.model.ts          # Modelos autenticación
+│   │   │   │   ├── cart.model.ts          # Modelo carrito compras
+│   │   │   │   ├── cart-item.model.ts     # Items del carrito
+│   │   │   │   ├── checkout.model.ts      # Proceso de pago
+│   │   │   │   ├── order.model.ts         # Modelo órdenes
+│   │   │   │   ├── part.model.ts          # Modelo repuesto
+│   │   │   │   ├── user.model.ts          # Modelo usuario
+│   │   │   │   └── workshop.model.ts      # Modelo taller
 │   │   │   ├── 📁 pages/      # 📄 Páginas principales
 │   │   │   │   ├── 📁 auth/              # 🔐 Login/Registro
 │   │   │   │   │   ├── login.component.*
 │   │   │   │   │   └── register.component.*
 │   │   │   │   ├── 📁 home/              # 🏠 Página inicio
 │   │   │   │   ├── 📁 parts/             # 🔧 Catálogo repuestos
+│   │   │   │   │   ├── parts.component.*         # Lista de repuestos
+│   │   │   │   │   └── part-form.component.*     # Formulario crear/editar
 │   │   │   │   ├── 📁 workshops/         # 🏢 Directorio talleres
+│   │   │   │   │   ├── workshops.component.*     # Lista de talleres
+│   │   │   │   │   ├── workshop-form.component.* # Formulario crear/editar
+│   │   │   │   │   └── workshop-detail.component.* # Página de detalle
+│   │   │   │   ├── 📁 provider/          # 👔 Dashboard proveedor
 │   │   │   │   ├── 📁 cart/              # 🛒 Carrito compras
 │   │   │   │   └── 📁 checkout/          # 💳 Proceso pago
+│   │   │   │       ├── checkout.component.*       # Formulario de pago
+│   │   │   │       └── confirmation.component.*   # Confirmación
 │   │   │   └── 📁 components/ # 🧩 Componentes reutilizables
+│   │   │       ├── 📁 image-upload/      # 📷 Subida de imágenes
+│   │   │       └── 📁 directives/        # Angular directives
 │   │   └── 📁 environments/   # ⚙️ Configuración entornos
 │   └── package.json          # Dependencias frontend
 │
@@ -318,10 +438,26 @@ npm install firebase @angular/fire
 
 PitsApp cuenta con un diseño moderno y responsivo que se adapta a todos los dispositivos:
 
-- **Paleta de colores** orientada a la industria automotriz
+- **Paleta de colores Ferrari** - Rojo característico (#FF0000) y negro elegante
+- **Variables CSS personalizadas** para consistencia visual
 - **Diseño mobile-first** para una experiencia óptima en móviles
-- **Iconografía clara** para facilitar la navegación
+- **Iconografía clara** con FontAwesome para facilitar la navegación
 - **Interfaz intuitiva** pensada para usuarios de todos los niveles técnicos
+- **Componentes reutilizables** con estilos coherentes
+- **Transiciones suaves** y efectos visuales modernos
+
+### 🎨 Sistema de Colores Ferrari
+```scss
+:root {
+  --ferrari-red: #FF0000;
+  --ferrari-dark-red: #CC0000;
+  --ferrari-black: #000000;
+  --ferrari-dark-gray: #1a1a1a;
+  --ferrari-light-gray: #f5f5f5;
+  --ferrari-white: #ffffff;
+  --ferrari-gold: #FFD700;
+}
+```
 
 ## 🧪 Testing y Calidad del Código
 
@@ -354,15 +490,25 @@ npm run lint          # ESLint + TypeScript
 - `PUT /users/:id` - Actualizar usuario
 - `DELETE /users/:id` - Eliminar usuario
 
-#### 🔧 Repuestos (En desarrollo)
-- `GET /parts` - Listar repuestos
+#### 🔧 Repuestos y Autopartes
+- `GET /parts` - Listar repuestos (público)
 - `GET /parts/:id` - Obtener repuesto por ID
-- `POST /parts` - Crear repuesto (proveedor)
+- `POST /parts` - Crear repuesto (requiere autenticación de proveedor)
+- `PUT /parts/:id` - Actualizar repuesto (solo propietario)
+- `DELETE /parts/:id` - Eliminar repuesto (solo propietario)
+- `GET /parts/provider/:providerId` - Repuestos de un proveedor específico
 
-#### 🏢 Talleres (En desarrollo)
-- `GET /workshops` - Listar talleres
+#### 🏢 Talleres
+- `GET /workshops` - Listar talleres (público)
 - `GET /workshops/:id` - Obtener taller por ID
-- `POST /workshops` - Registrar taller (proveedor)
+- `POST /workshops` - Crear taller (requiere autenticación de proveedor)
+- `PUT /workshops/:id` - Actualizar taller (solo propietario)
+- `DELETE /workshops/:id` - Eliminar taller (solo propietario)
+- `GET /workshops/provider/:providerId` - Talleres de un proveedor específico
+
+#### 📷 Gestión de Imágenes
+- `POST /shared/upload` - Subir imágenes (requiere autenticación de proveedor)
+- `GET /uploads/:filename` - Acceder a imágenes subidas (público)
 
 ### Variables de Entorno
 
@@ -402,12 +548,23 @@ export const environment = {
 - [x] Navegación entre páginas
 - [x] Arquitectura modular escalable
 
-### 🚧 Fase 2 - Funcionalidades Core (En progreso)
+### ✅ Fase 2 - Funcionalidades Core (Completada)
+- [x] **CRUD completo de talleres** con información detallada
+- [x] **CRUD completo de repuestos** con categorías y especificaciones
+- [x] **Sistema de subida de imágenes** para talleres y repuestos
+- [x] **Páginas de detalle** para talleres con información completa
+- [x] **Carrito de compras** funcional con gestión de items
+- [x] **Proceso de checkout** completo con múltiples métodos de pago
+- [x] **Dashboard de proveedor** con estadísticas y gestión
+- [x] **Paleta de colores Ferrari** aplicada en toda la aplicación
+- [x] **Filtrado y búsqueda** por proveedor y categorías
+- [x] **Validaciones robustas** en formularios y backend
+- [x] **Gestión de archivos estáticos** con Multer
+- [x] **Limpieza del repositorio** - código optimizado y sin archivos innecesarios
+
+### 🚧 Fase 3 - Servicios Avanzados (Próximamente)
 - [ ] **Base de datos relacional** (PostgreSQL + TypeORM)
-- [ ] **CRUD completo de talleres** con ubicación GPS
-- [ ] **CRUD completo de repuestos** con categorías
-- [ ] **Sistema de búsqueda** con filtros avanzados
-- [ ] **Geolocalización** para talleres cercanos
+- [ ] **Geolocalización** para talleres cercanos con mapas
 - [ ] **Perfiles detallados** de talleres y proveedores
 - [ ] **Sistema de reseñas** y calificaciones verificadas
 - [ ] **Carrito de compras** funcional
@@ -513,8 +670,8 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 
 ## 📞 Contacto
 
-- **Email**: contacto@pitsapp.com
-- **Website**: https://pitsapp.com
+- **Email**: davidlh2005@gmail.com
+- **Website**: https://pitsapp.shop
 - **LinkedIn**: [PitsApp](https://linkedin.com/company/pitsapp)
 
 ---

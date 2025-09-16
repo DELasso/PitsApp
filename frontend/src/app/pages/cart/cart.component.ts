@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CartService } from '../../services/cart.service';
+import { FileUploadService } from '../../services/file-upload.service';
 import { Cart, CartSummary } from '../../models/cart.model';
 import { CartItem } from '../../models/cart-item.model';
 
@@ -20,7 +21,11 @@ export class CartComponent implements OnInit, OnDestroy {
   isLoading = true;
   private destroy$ = new Subject<void>();
 
-  constructor(private cartService: CartService, private router: Router) {}
+  constructor(
+    private cartService: CartService, 
+    private router: Router,
+    private fileUploadService: FileUploadService
+  ) {}
 
   ngOnInit(): void {
     this.loadCart();
@@ -96,5 +101,9 @@ export class CartComponent implements OnInit, OnDestroy {
 
   continueShopping(): void {
     this.router.navigate(['/repuestos']);
+  }
+
+  getImageUrl(imagePath: string): string {
+    return this.fileUploadService.getImageUrl(imagePath);
   }
 }

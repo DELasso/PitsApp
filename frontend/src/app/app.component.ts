@@ -26,7 +26,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private authService: AuthService
   ) {
-    console.log('🚗 PitsApp Frontend iniciado correctamente');
   }
 
   ngOnInit(): void {

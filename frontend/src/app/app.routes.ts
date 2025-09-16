@@ -12,6 +12,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/workshops/workshops.component').then(m => m.WorkshopsComponent)
   },
   {
+    path: 'talleres/:id',
+    loadComponent: () => import('./pages/workshops/workshop-detail.component').then(m => m.WorkshopDetailComponent)
+  },
+  {
     path: 'repuestos',
     loadComponent: () => import('./pages/parts/parts.component').then(m => m.PartsComponent)
   },
@@ -50,21 +54,36 @@ export const routes: Routes = [
     canActivate: [BusinessTypeGuard],
     data: { businessType: BusinessType.TALLER_MECANICO }
   },
-  // TODO: Crear componentes de formulario para crear talleres y repuestos
-  // {
-  //   path: 'workshops/create',
-  //   loadComponent: () => import('./pages/workshops/workshop-form.component').then(m => m.WorkshopFormComponent)
-  // },
+  {
+    path: 'workshops/create',
+    loadComponent: () => import('./pages/workshops/workshop-form.component').then(m => m.WorkshopFormComponent),
+    canActivate: [BusinessTypeGuard],
+    data: { businessType: BusinessType.TALLER_MECANICO }
+  },
+  {
+    path: 'workshops/edit/:id',
+    loadComponent: () => import('./pages/workshops/workshop-form.component').then(m => m.WorkshopFormComponent),
+    canActivate: [BusinessTypeGuard],
+    data: { businessType: BusinessType.TALLER_MECANICO }
+  },
   {
     path: 'parts',
     loadComponent: () => import('./pages/parts/parts.component').then(m => m.PartsComponent),
     canActivate: [BusinessTypeGuard],
     data: { businessType: BusinessType.VENTA_REPUESTOS }
   },
-  // {
-  //   path: 'parts/create',
-  //   loadComponent: () => import('./pages/parts/part-form.component').then(m => m.PartFormComponent)
-  // },
+  {
+    path: 'parts/create',
+    loadComponent: () => import('./pages/parts/part-form.component').then(m => m.PartFormComponent),
+    canActivate: [BusinessTypeGuard],
+    data: { businessType: BusinessType.VENTA_REPUESTOS }
+  },
+  {
+    path: 'parts/edit/:id',
+    loadComponent: () => import('./pages/parts/part-form.component').then(m => m.PartFormComponent),
+    canActivate: [BusinessTypeGuard],
+    data: { businessType: BusinessType.VENTA_REPUESTOS }
+  },
   {
     path: '**',
     redirectTo: ''

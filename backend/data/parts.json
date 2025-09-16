@@ -1,1 +1,28 @@
-[]
+[
+    {
+        "id": "03adc0cb-9b24-4f04-a1aa-e09e0dc88082",
+        "name": "Frenos delanteros Cadillac 2025",
+        "description": "Frenos delanteros para Cadillac Escalade 2025",
+        "category": "Frenos",
+        "brand": "Otro",
+        "partNumber": "BR-CA-ES-2025",
+        "price": 1000000,
+        "condition": "original",
+        "vehicleType": "carro",
+        "compatibleVehicles": [
+            "Cadillac Escalade 2025"
+        ],
+        "stock": 4,
+        "warranty": "1 año",
+        "weight": null,
+        "dimensions": "",
+        "images": [
+            "/uploads/parts/43ba55887f0deedec368cd0a9d19d6b8"
+        ],
+        "rating": 0,
+        "reviewCount": 0,
+        "isAvailable": true,
+        "createdAt": "2025-09-16T01:37:41.372Z",
+        "updatedAt": "2025-09-16T01:37:41.372Z"
+    }
+]

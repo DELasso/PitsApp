@@ -11,7 +11,7 @@
     "start:frontend": "cd frontend && npm start",
     "build": "npm run build:backend && npm run build:frontend",
     "build:backend": "cd backend && npm run build",
-    "build:frontend": "cd frontend && npm build",
+    "build:frontend": "cd frontend && npm run build",
     "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install --legacy-peer-deps"
   },
   "keywords": [
@@ -25,11 +25,5 @@
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^7.6.0"
-  },
-  "dependencies": {
-    "@angular/cli": "^20.2.0",
-    "@fortawesome/angular-fontawesome": "^3.0.0",
-    "@fortawesome/fontawesome-svg-core": "^7.0.0",
-    "@fortawesome/free-solid-svg-icons": "^7.0.0"
   }
 }

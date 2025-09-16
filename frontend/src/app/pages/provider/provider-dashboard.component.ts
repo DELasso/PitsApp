@@ -1,8 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil, filter } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
+import { WorkshopsService } from '../../services/workshops.service';
+import { PartsService } from '../../services/parts.service';
 import { User, BusinessType } from '../../models/auth.model';
+import { Workshop } from '../../models/workshop.model';
+import { Part } from '../../models/part.model';
 
 @Component({
     selector: 'app-provider-dashboard',
@@ -11,13 +17,17 @@ import { User, BusinessType } from '../../models/auth.model';
     templateUrl: './provider-dashboard.component.html',
     styleUrls: ['./provider-dashboard.component.scss']
 })
-export class ProviderDashboardComponent implements OnInit {
+export class ProviderDashboardComponent implements OnInit, OnDestroy {
     user: User | null = null;
     workshopCount = 0;
     partsCount = 0;
+    loading = false;
+    private destroy$ = new Subject<void>();
 
     constructor(
         private authService: AuthService,
+        private workshopsService: WorkshopsService,
+        private partsService: PartsService,
         private router: Router
     ) { }
 
@@ -30,6 +40,24 @@ export class ProviderDashboardComponent implements OnInit {
 
         // Cargar estadísticas
         this.loadStats();
+
+        // Suscribirse a eventos de navegación para refrescar cuando se regrese al dashboard
+        this.router.events
+            .pipe(
+                filter(event => event instanceof NavigationEnd),
+                takeUntil(this.destroy$)
+            )
+            .subscribe((event: NavigationEnd) => {
+                if (event.url === '/provider/dashboard') {
+                    // Se regresó al dashboard, refrescar estadísticas
+                    this.loadStats();
+                }
+            });
+    }
+
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
     canManageWorkshops(): boolean {
@@ -88,14 +116,49 @@ export class ProviderDashboardComponent implements OnInit {
         this.router.navigate(['/parts/create']);
     }
 
+    refreshStats() {
+        this.loadStats();
+    }
+
     private loadStats() {
-        // TODO: Implementar llamadas a los servicios para obtener estadísticas
-        // Por ahora, valores ficticios
+        if (!this.user?.id) return;
+
+        this.loading = true;
+
+        // Cargar cantidad de talleres si el usuario puede gestionarlos
         if (this.canManageWorkshops()) {
-            this.workshopCount = 0; // workshopService.getWorkshopsByOwner(user.id).length
+            this.workshopsService.getMyWorkshops()
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (workshops: Workshop[]) => {
+                        this.workshopCount = workshops.length;
+                        console.log(`📊 Talleres del proveedor: ${this.workshopCount}`);
+                    },
+                    error: (error: any) => {
+                        console.error('Error cargando talleres:', error);
+                        this.workshopCount = 0;
+                    }
+                });
         }
+
+        // Cargar cantidad de repuestos si el usuario puede gestionarlos
         if (this.canManageParts()) {
-            this.partsCount = 0; // partsService.getPartsByOwner(user.id).length
+            this.partsService.getMyParts()
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (parts: Part[]) => {
+                        this.partsCount = parts.length;
+                        console.log(`📊 Repuestos del proveedor: ${this.partsCount}`);
+                        this.loading = false;
+                    },
+                    error: (error: any) => {
+                        console.error('Error cargando repuestos:', error);
+                        this.partsCount = 0;
+                        this.loading = false;
+                    }
+                });
+        } else {
+            this.loading = false;
         }
     }
 }

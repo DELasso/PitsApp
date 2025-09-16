@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Simple - Imágenes PitsApp</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .test-section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .image-test {
+            margin: 10px 0;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .image-test h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .image-container {
+            width: 200px;
+            height: 150px;
+            border: 1px solid #ccc;
+            margin: 10px;
+            display: inline-block;
+            position: relative;
+            background: #f8f9fa;
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .status {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        
+        .success { background: rgba(40, 167, 69, 0.8); }
+        .error { background: rgba(220, 53, 69, 0.8); }
+        
+        .url {
+            font-family: monospace;
+            background: #f8f9fa;
+            padding: 5px;
+            border-radius: 3px;
+            font-size: 12px;
+            word-break: break-all;
+        }
+        
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Test Simple - Verificación de Imágenes</h1>
+    
+    <div class="test-section">
+        <h2>🧪 Pruebas de URLs de Imagen</h2>
+        <button onclick="testAllImages()">🔄 Probar Todas las URLs</button>
+        <button onclick="clearLog()">🗑️ Limpiar Log</button>
+        
+        <div id="imageTests"></div>
+        <div class="log" id="testLog"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 Datos Actuales</h2>
+        <button onclick="loadCurrentData()">📥 Cargar Datos</button>
+        <div id="currentData"></div>
+    </div>
+    
+    <script>
+        const log = (message) => {
+            const logEl = document.getElementById('testLog');
+            const timestamp = new Date().toLocaleTimeString();
+            logEl.innerHTML += `[${timestamp}] ${message}<br>`;
+            logEl.scrollTop = logEl.scrollHeight;
+            console.log(message);
+        };
+        
+        const clearLog = () => {
+            document.getElementById('testLog').innerHTML = '';
+        };
+        
+        const testImageUrl = (url, name) => {
+            return new Promise((resolve) => {
+                const img = new Image();
+                const container = document.createElement('div');
+                container.className = 'image-container';
+                
+                const status = document.createElement('div');
+                status.className = 'status';
+                
+                img.onload = () => {
+                    status.textContent = '✅ OK';
+                    status.classList.add('success');
+                    container.appendChild(img);
+                    log(`✅ ${name}: Imagen cargada correctamente - ${url}`);
+                    resolve(true);
+                };
+                
+                img.onerror = () => {
+                    status.textContent = '❌ ERROR';
+                    status.classList.add('error');
+                    container.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#666;">❌ Error</div>';
+                    log(`❌ ${name}: Error cargando imagen - ${url}`);
+                    resolve(false);
+                };
+                
+                img.src = url;
+                container.appendChild(status);
+                
+                const urlDiv = document.createElement('div');
+                urlDiv.className = 'url';
+                urlDiv.textContent = url;
+                
+                const testDiv = document.createElement('div');
+                testDiv.className = 'image-test';
+                testDiv.innerHTML = `<h3>${name}</h3>`;
+                testDiv.appendChild(container);
+                testDiv.appendChild(urlDiv);
+                
+                document.getElementById('imageTests').appendChild(testDiv);
+            });
+        };
+        
+        const testAllImages = async () => {
+            document.getElementById('imageTests').innerHTML = '';
+            log('🚀 Iniciando pruebas de imágenes...');
+            
+            // URLs de prueba basadas en los datos reales
+            const testUrls = [
+                {
+                    name: 'Taller Pitsso',
+                    url: 'http://localhost:3000/uploads/workshops/05836c14b9508acd1769068e79d55046'
+                },
+                {
+                    name: 'Repuesto Frenos Cadillac',
+                    url: 'http://localhost:3000/uploads/parts/43ba55887f0deedec368cd0a9d19d6b8'
+                },
+                {
+                    name: 'Test Acceso Uploads',
+                    url: 'http://localhost:3000/uploads/'
+                },
+                {
+                    name: 'Test API Status',
+                    url: 'http://localhost:3000/api/'
+                }
+            ];
+            
+            for (const test of testUrls) {
+                await testImageUrl(test.url, test.name);
+                await new Promise(resolve => setTimeout(resolve, 500)); // Pausa entre tests
+            }
+            
+            log('✅ Pruebas completadas');
+        };
+        
+        const loadCurrentData = async () => {
+            log('📥 Cargando datos actuales...');
+            
+            try {
+                // Cargar talleres
+                const workshopsResponse = await fetch('http://localhost:3000/api/workshops');
+                const workshops = await workshopsResponse.json();
+                
+                // Cargar repuestos
+                const partsResponse = await fetch('http://localhost:3000/api/parts');
+                const parts = await partsResponse.json();
+                
+                const dataContainer = document.getElementById('currentData');
+                dataContainer.innerHTML = `
+                    <h3>📊 Resumen de Datos</h3>
+                    <p><strong>Talleres:</strong> ${workshops.length}</p>
+                    <p><strong>Repuestos:</strong> ${parts.length}</p>
+                    
+                    <h4>🔧 Talleres con Imágenes:</h4>
+                    ${workshops.map(w => `
+                        <div style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                            <strong>${w.name}</strong><br>
+                            <small>Imágenes: ${w.images ? w.images.length : 0}</small><br>
+                            ${w.images ? w.images.map(img => `<div class="url">${img}</div>`).join('') : '<em>Sin imágenes</em>'}
+                        </div>
+                    `).join('')}
+                    
+                    <h4>⚙️ Repuestos con Imágenes:</h4>
+                    ${parts.map(p => `
+                        <div style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 4px;">
+                            <strong>${p.name}</strong><br>
+                            <small>Imágenes: ${p.images ? p.images.length : 0}</small><br>
+                            ${p.images ? p.images.map(img => `<div class="url">${img}</div>`).join('') : '<em>Sin imágenes</em>'}
+                        </div>
+                    `).join('')}
+                `;
+                
+                log('✅ Datos cargados correctamente');
+                
+            } catch (error) {
+                log(`❌ Error cargando datos: ${error.message}`);
+            }
+        };
+        
+        // Auto-cargar al inicio
+        document.addEventListener('DOMContentLoaded', () => {
+            log('🌟 Test de imágenes iniciado');
+            loadCurrentData();
+        });
+    </script>
+</body>
+</html>

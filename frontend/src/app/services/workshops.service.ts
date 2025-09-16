@@ -45,6 +45,23 @@ export class WorkshopsService {
       .pipe(map(response => response.data));
   }
 
+  createWorkshop(workshopData: Partial<Workshop>): Observable<ApiResponse<Workshop>> {
+    return this.http.post<ApiResponse<Workshop>>(this.apiUrl, workshopData);
+  }
+
+  getMyWorkshops(): Observable<Workshop[]> {
+    return this.http.get<ApiResponse<Workshop[]>>(`${this.apiUrl}/my-workshops`)
+      .pipe(map(response => response.data));
+  }
+
+  updateWorkshop(id: string, workshopData: Partial<Workshop>): Observable<ApiResponse<Workshop>> {
+    return this.http.put<ApiResponse<Workshop>>(`${this.apiUrl}/${id}`, workshopData);
+  }
+
+  deleteWorkshop(id: string): Observable<ApiResponse<any>> {
+    return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`);
+  }
+
   // Métodos mockeados mientras no hay backend funcionando
   getWorkshopsMocked(): Observable<Workshop[]> {
     const workshops: Workshop[] = [

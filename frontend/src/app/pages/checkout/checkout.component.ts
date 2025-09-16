@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { CartService } from '../../services/cart.service';
 import { OrderService } from '../../services/order.service';
+import { FileUploadService } from '../../services/file-upload.service';
 import { Cart } from '../../models/cart.model';
 import { PaymentMethod, CustomerInfo, ShippingAddress, CheckoutData } from '../../models/checkout.model';
 import { OrderSummary } from '../../models/order.model';
@@ -85,7 +86,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private orderService: OrderService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private fileUploadService: FileUploadService
   ) {
     this.initializeForm();
   }
@@ -347,5 +349,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   goBackToCart(): void {
     this.router.navigate(['/carrito']);
+  }
+
+  getImageUrl(imagePath: string): string {
+    return this.fileUploadService.getImageUrl(imagePath);
   }
 }

@@ -82,10 +82,16 @@
         <div class="part-card" *ngFor="let part of partsToShow">
           <div class="part-image">
             <img 
-              [src]="part.images?.[0] || 'assets/logo-placeholder.txt'" 
+              *ngIf="part.images && part.images.length > 0; else defaultPartIcon"
+              [src]="getImageUrl(part.images[0])" 
               [alt]="part.name"
-              onerror="this.src='assets/logo-placeholder.txt'"
-            >
+              class="part-photo"
+              (error)="onPartImageError($event)">
+            <ng-template #defaultPartIcon>
+              <div class="part-placeholder">
+                <i class="fa-solid fa-gear"></i>
+              </div>
+            </ng-template>
             <div class="part-condition" [class]="getConditionClass(part.condition)">
               {{part.condition | titlecase}}
             </div>

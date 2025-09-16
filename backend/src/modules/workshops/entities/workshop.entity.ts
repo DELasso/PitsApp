@@ -17,7 +17,7 @@ export class Workshop {
   rating: number;
   reviewCount: number;
   isActive: boolean;
-  ownerId: string; // ID del proveedor que lo creó
+  ownerId: string;
   createdAt: Date;
   updatedAt: Date;
 

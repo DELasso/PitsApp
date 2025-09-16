@@ -39,7 +39,6 @@ export class UsersFileService {
     private saveUsers(users: User[]): void {
         try {
             writeFileSync(this.filePath, JSON.stringify(users, null, 2), 'utf-8');
-            console.log(`✅ Usuarios guardados en: ${this.filePath}`);
         } catch (error) {
             console.error('Error saving users file:', error);
             throw new Error('No se pudo guardar el usuario');
@@ -79,7 +78,6 @@ export class UsersFileService {
         users.push(newUser);
         this.saveUsers(users);
 
-        console.log(`✅ Usuario registrado: ${newUser.email} (ID: ${newUser.id})`);
         return newUser;
     }
 

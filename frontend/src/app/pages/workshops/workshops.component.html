@@ -71,7 +71,15 @@
         *ngFor="let workshop of filteredWorkshops"
         (click)="onWorkshopClick(workshop)">
         <div class="workshop-image">
-          <span class="workshop-icon"><i class="fa-solid fa-wrench"></i></span>
+          <img 
+            *ngIf="workshop.images && workshop.images.length > 0; else defaultIcon"
+            [src]="'http://localhost:3000' + workshop.images[0]" 
+            [alt]="workshop.name"
+            class="workshop-photo"
+            (error)="onImageError($event)">
+          <ng-template #defaultIcon>
+            <span class="workshop-icon"><i class="fa-solid fa-wrench"></i></span>
+          </ng-template>
         </div>
         <div class="workshop-info">
           <h3>{{ workshop.name }}</h3>

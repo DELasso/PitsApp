@@ -5,9 +5,10 @@ import { WorkshopsModule } from './modules/workshops/workshops.module';
 import { PartsModule } from './modules/parts/parts.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
-  imports: [WorkshopsModule, PartsModule, AuthModule, UsersModule],
+  imports: [WorkshopsModule, PartsModule, AuthModule, UsersModule, SharedModule],
   controllers: [AppController],
   providers: [AppService],
 })

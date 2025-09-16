@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber, IsOptional, IsArray, Min, IsEnum } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsOptional, IsArray, Min, Max, IsEnum, IsBoolean } from 'class-validator';
 
 export enum PartCondition {
   ORIGINAL = 'original',
@@ -57,10 +57,9 @@ export class CreatePartDto {
   @IsString({ each: true })
   images?: string[];
 
-  @IsOptional()
   @IsNumber()
   @Min(0)
-  stock?: number;
+  stock: number;
 
   @IsOptional()
   @IsString()
@@ -74,4 +73,19 @@ export class CreatePartDto {
   @IsOptional()
   @IsString()
   dimensions?: string;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @Max(5)
+  rating?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  reviewCount?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isAvailable?: boolean;
 }

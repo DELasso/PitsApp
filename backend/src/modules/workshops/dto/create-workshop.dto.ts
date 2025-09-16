@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsEmail, IsOptional, IsArray, IsNumber, Min, Max } from 'class-validator';
+import { IsString, IsNotEmpty, IsEmail, IsOptional, IsArray, IsNumber, Min, Max, IsBoolean } from 'class-validator';
 
 export class CreateWorkshopDto {
   @IsString()
@@ -59,4 +59,19 @@ export class CreateWorkshopDto {
   @IsArray()
   @IsString({ each: true })
   specialties?: string[];
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  @Max(5)
+  rating?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  reviewCount?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isActive?: boolean;
 }

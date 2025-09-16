@@ -295,7 +295,7 @@
           <!-- Items del carrito -->
           <div class="cart-items" *ngIf="cart">
             <div class="cart-item" *ngFor="let item of cart.items">
-              <img [src]="item.part.images?.[0] || 'assets/logo-placeholder.txt'" [alt]="item.part.name"
+              <img [src]="getImageUrl(item.part.images?.[0] || 'assets/logo-placeholder.txt')" [alt]="item.part.name"
                 class="item-image">
               <div class="item-details">
                 <h4>{{item.part.name}}</h4>

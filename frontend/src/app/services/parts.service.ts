@@ -60,6 +60,23 @@ export class PartsService {
       .pipe(map(response => response.data));
   }
 
+  createPart(partData: Partial<Part>): Observable<ApiResponse<Part>> {
+    return this.http.post<ApiResponse<Part>>(this.apiUrl, partData);
+  }
+
+  getMyParts(): Observable<Part[]> {
+    return this.http.get<ApiResponse<Part[]>>(`${this.apiUrl}/my-parts`)
+      .pipe(map(response => response.data));
+  }
+
+  updatePart(id: string, partData: Partial<Part>): Observable<ApiResponse<Part>> {
+    return this.http.put<ApiResponse<Part>>(`${this.apiUrl}/${id}`, partData);
+  }
+
+  deletePart(id: string): Observable<ApiResponse<any>> {
+    return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`);
+  }
+
   // Métodos mockeados mientras no hay backend funcionando
   getPartsMocked(): Observable<Part[]> {
     const parts: Part[] = [
