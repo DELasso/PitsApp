@@ -1,3 +1,4 @@
+import { Review } from './review.entity';
 export class Workshop {
   id: string;
   name: string;
@@ -18,6 +19,7 @@ export class Workshop {
   reviewCount: number;
   isActive: boolean;
   ownerId: string;
+  reviews: Review[] = [];
   createdAt: Date;
   updatedAt: Date;
 
@@ -28,5 +30,8 @@ export class Workshop {
     this.isActive = this.isActive !== undefined ? this.isActive : true;
     this.createdAt = this.createdAt || new Date();
     this.updatedAt = this.updatedAt || new Date();
+    if (!this.reviews) {
+      this.reviews = [];
+    }
   }
 }

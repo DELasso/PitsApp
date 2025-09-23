@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { Workshop, WorkshopSearchParams } from '../models/workshop.model';
 import { ApiResponse } from '../models/api-response.model';
 import { environment } from '../../environments/environment';
+import { Review } from '../models/review.model';
+import { CreateReviewDto } from '../models/create-review.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -60,6 +62,18 @@ export class WorkshopsService {
 
   deleteWorkshop(id: string): Observable<ApiResponse<any>> {
     return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`);
+  }
+
+  getReviews(workshopId: string): Observable<Review[]> {
+    return this.http.get<Review[]>(`${this.apiUrl}/${workshopId}/reviews`);
+  }
+
+  createReview(workshopId: string, review: CreateReviewDto): Observable<Review> {
+    return this.http.post<Review>(`${this.apiUrl}/${workshopId}/reviews`, review);
+  }
+
+  getAverageRating(workshopId: string): Observable<{ averageRating: number }> {
+    return this.http.get<{ averageRating: number }>(`${this.apiUrl}/${workshopId}/rating`);
   }
 
   // Métodos mockeados mientras no hay backend funcionando

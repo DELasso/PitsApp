@@ -6,19 +6,38 @@ import { takeUntil } from 'rxjs/operators';
 import { Workshop } from '../../models/workshop.model';
 import { WorkshopsService } from '../../services/workshops.service';
 import { FileUploadService } from '../../services/file-upload.service';
+import { Review } from '../../models/review.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-workshop-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './workshop-detail.component.html',
   styleUrls: ['./workshop-detail.component.scss']
 })
 export class WorkshopDetailComponent implements OnInit, OnDestroy {
+  // Propiedades del taller
   workshop: Workshop | null = null;
-  isLoading = true;
+  workshopId: string = '';
+  isLoading: boolean = true;
   error: string | null = null;
   private destroy$ = new Subject<void>();
+
+  // Propiedades para reseñas
+  reviews: Review[] = [];  // ← Array que controla si mostrar "no reseñas" o lista
+  averageRating: number = 0;
+  showNoReviewsMessage: boolean = true;  // ← Controla el mensaje "no reseñas"
+
+
+  // Formulario de nueva reseña
+  newComment: string = '';
+  newRating: number = 5;
+  isSubmitting: boolean = false;  // ← Para mostrar loading en el botón
+
+  // Mensaje de éxito
+  showSuccessMessage: boolean = false;
+  successMessage: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -44,6 +63,27 @@ export class WorkshopDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  loadReviews(): void {
+    this.workshopsService.getReviews(this.workshopId).subscribe(reviews => {
+      this.reviews = reviews;
+    });
+  }
+
+  loadAverageRating(): void {
+    this.workshopsService.getAverageRating(this.workshopId).subscribe(data => {
+      this.averageRating = data.averageRating;
+    });
+  }
+
+  addReview(): void {
+    const reviewData = { comment: this.newComment, rating: this.newRating, userId: 'user123' };
+    this.workshopsService.createReview(this.workshopId, reviewData).subscribe(() => {
+      this.newComment = '';
+      this.loadReviews();  // Recarga la lista
+      this.loadAverageRating();
+    });
   }
 
   private loadWorkshop(id: string): void {
@@ -94,11 +134,8 @@ export class WorkshopDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['/talleres']);
   }
 
-  getStarArray(rating: number): boolean[] {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      stars.push(i <= rating);
-    }
-    return stars;
-  }
+getStarArray(rating: number): number[] {
+  // Devuelve un array de números del 1 al 5
+  return Array.from({ length: 5 }, (_, index) => index + 1);
+}
 }

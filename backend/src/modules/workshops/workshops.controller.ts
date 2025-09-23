@@ -14,6 +14,7 @@ import {
   ForbiddenException
 } from '@nestjs/common';
 import { WorkshopsService } from './workshops.service';
+import { CreateReviewDto } from './dto/create-review.dto';
 import { CreateWorkshopDto } from './dto/create-workshop.dto';
 import { UpdateWorkshopDto } from './dto/update-workshop.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -135,6 +136,22 @@ export class WorkshopsController {
       data: workshop
     };
   }
+  
+  @Post(':id/reviews')
+  createReview(@Param('id') id: string, @Body() createReviewDto: CreateReviewDto) {
+    return this.workshopsService.createReview(id, createReviewDto, createReviewDto.userId);
+  }
+
+  @Get(':id/reviews')
+  getReviews(@Param('id') id: string) {
+    return this.workshopsService.getReviewsByWorkshop(id);
+  }
+
+  @Get(':id/rating')
+  getAverageRating(@Param('id') id: string) {
+    return { averageRating: this.workshopsService.getAverageRating(id) };
+  }
+
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)

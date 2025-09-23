@@ -162,6 +162,103 @@
           </div>
         </div>
       </div>
+
+      <!-- ✅ SECCIÓN DE RESEÑAS - MOVIDA AQUÍ, FUERA DEL CONTACTO -->
+      <!-- Solo se muestra cuando el taller está cargado -->
+      <section class="reviews-section" *ngIf="workshop && !isLoading">
+        <div class="reviews-header">
+          <h3><i class="fas fa-comments"></i> Reseñas del taller</h3>
+          <div class="average-rating" *ngIf="averageRating > 0">
+            <span class="rating-value">Promedio: {{ averageRating | number:'1.1-1' }}/5</span>
+            <div class="stars-display">
+              <i *ngFor="let star of getStarArray(averageRating)" 
+                 class="fas fa-star" 
+                 [class.filled]="star <= averageRating"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lista de reseñas existentes -->
+        <div class="reviews-list" *ngIf="reviews && reviews.length > 0; else noReviews">
+          <div class="review-card" *ngFor="let review of reviews">
+            <div class="review-header">
+              <div class="review-rating">
+                <span class="rating-number">{{ review.rating }}/5</span>
+                <div class="stars">
+                  <i *ngFor="let star of getStarArray(review.rating)" 
+                     class="fas fa-star" 
+                     [class.filled]="star <= review.rating"></i>
+                </div>
+              </div>
+              <small class="review-date">{{ review.createdAt | date:'dd/MM/yyyy HH:mm' }}</small>
+            </div>
+            <p class="review-comment">{{ review.comment }}</p>
+            <div class="review-author">
+              <i class="fas fa-user"></i>
+              <span>Usuario {{ review.userId }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mensaje cuando no hay reseñas -->
+        <ng-template #noReviews>
+          <div class="no-reviews">
+            <i class="fas fa-comment-slash"></i>
+            <h4>Aún no hay reseñas</h4>
+            <p>Sé el primero en compartir tu experiencia con este taller.</p>
+          </div>
+        </ng-template>
+
+        <!-- Formulario para agregar nueva reseña -->
+        <div class="add-review-section">
+          <h4><i class="fas fa-edit"></i> Comparte tu experiencia</h4>
+          
+          <form class="review-form" (ngSubmit)="addReview()">
+            <div class="form-group">
+              <label for="reviewComment">Tu comentario:</label>
+              <textarea 
+                id="reviewComment"
+                [(ngModel)]="newComment" 
+                name="comment"
+                placeholder="¿Qué te pareció el servicio? Comparte tu experiencia..." 
+                maxlength="500"
+                rows="4"
+                class="form-control"
+                required>
+              </textarea>
+              <div class="character-counter">
+                {{ newComment.length }}/500 caracteres
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="reviewRating">Calificación:</label>
+              <div class="rating-selector">
+                <select 
+                  id="reviewRating" 
+                  [(ngModel)]="newRating" 
+                  name="rating"
+                  class="form-control"
+                  required>
+                  <option value="5">★ ★ ★ ★ ★ Excelente (5)</option>
+                  <option value="4">★ ★ ★ ★ Bueno (4)</option>
+                  <option value="3">★ ★ ★ Regular (3)</option>
+                  <option value="2">★ ★ Malo (2)</option>
+                  <option value="1">★ Muy malo (1)</option>
+                </select>
+              </div>
+            </div>
+            
+            <button 
+              type="submit"
+              [disabled]="!newComment.trim() || newRating < 1 || newRating > 5"
+              class="btn btn-primary submit-review">
+              <i class="fas fa-paper-plane"></i>
+              Enviar reseña
+            </button>
+          </form>
+        </div>
+      </section>
     </div>
   </div>
 </div>
