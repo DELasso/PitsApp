@@ -100,6 +100,7 @@ export class WorkshopsComponent implements OnInit, OnDestroy {
         workshop.description.toLowerCase().includes(this.searchTerm.toLowerCase());
       
       const matchesService = !this.selectedService || 
+        workshop.services &&
         workshop.services.some(service => service.includes(this.selectedService));
       
       const matchesNeighborhood = !this.selectedNeighborhood || 

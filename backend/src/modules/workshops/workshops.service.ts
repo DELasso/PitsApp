@@ -80,7 +80,6 @@ export class WorkshopsService {
   }
 
   async createReview(workshopId: string, createReviewDto: CreateReviewDto, userId: string): Promise<Review> {
-    // Espera a que se resuelva la promesa del findOne
     const workshop = await this.findOne(workshopId);
     
     if (!workshop) {
@@ -90,34 +89,34 @@ export class WorkshopsService {
 
     const newReview = new Review({
       ...createReviewDto,
-      userId,  // Asegúrate de usar el userId del JWT
+      userId,  
     });
 
-    // Agrega la reseña al taller
+    
     workshop.reviews.push(newReview);
 
   
-    // ✅ AJUSTA ESTOS PARÁMETROS según tu método update existente
+    
     await this.update(workshopId, workshop,userId); 
 
     return newReview;
   }   
 
 
-// ✅ VERSIÓN CORREGIDA - Maneja async correctamente
+
   async getReviewsByWorkshop(workshopId: string): Promise<Review[]> {
     const workshop = await this.findOne(workshopId);
     return workshop ? workshop.reviews : [];
   }
 
-// ✅ VERSIÓN CORREGIDA - Maneja async y tipado
+
   async getAverageRating(workshopId: string): Promise<number> {
     const reviews = await this.getReviewsByWorkshop(workshopId);
     if (reviews.length === 0) return 0;
     
-    // Ahora sí puedes usar reduce porque 'reviews' es Review[], no Promise
+
     const average = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
-    return Number(average.toFixed(1)); // Redondea a 1 decimal
+    return Number(average.toFixed(1));
   }
 
 }

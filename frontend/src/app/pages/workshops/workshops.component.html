@@ -70,16 +70,13 @@
         class="workshop-card" 
         *ngFor="let workshop of filteredWorkshops"
         (click)="onWorkshopClick(workshop)">
-        <div class="workshop-image">
-          <img 
-            *ngIf="workshop.images && workshop.images.length > 0; else defaultIcon"
-            [src]="'http://localhost:3000' + workshop.images[0]" 
-            [alt]="workshop.name"
-            class="workshop-photo"
-            (error)="onImageError($event)">
-          <ng-template #defaultIcon>
-            <span class="workshop-icon"><i class="fa-solid fa-wrench"></i></span>
-          </ng-template>
+        <div class="workshop-image"> 
+        <ng-container *ngIf="workshop.images && workshop.images.length > 0; else defaultIcon">
+          <img [src]="'http://localhost:3000' + workshop.images[0]" alt="{{ workshop.name }}" class="workshop-image" />
+        </ng-container>
+        <ng-template #defaultIcon>
+          <i class="fas fa-car"></i>
+        </ng-template>
         </div>
         <div class="workshop-info">
           <h3>{{ workshop.name }}</h3>
@@ -94,9 +91,9 @@
             <span class="review-count">({{ workshop.reviewCount }} reseñas)</span>
           </div>
 
-          <div class="services">
+          <div class="services-section" *ngIf="workshop.services && workshop.services.length > 0">
             <span class="service-tag" *ngFor="let service of workshop.services.slice(0, 3)">
-              {{ service }}
+              <i class="fas fa-check"></i> {{ service }}
             </span>
             <span *ngIf="workshop.services.length > 3" class="service-tag more">
               +{{ workshop.services.length - 3 }} más

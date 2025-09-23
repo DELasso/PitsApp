@@ -10,7 +10,7 @@ export class CreateReviewDto {
   rating: number;
 
   @IsString()
-  userId: string;  // Debe venir del JWT
+  userId: string;  
 
   @IsOptional()
   @IsString()

@@ -40,9 +40,9 @@
           <div class="stars">
             <i *ngFor="let star of getStarArray(workshop.rating)" 
                class="fas fa-star" 
-               [class.filled]="star"></i>
+               [class.filled]="star <= workshop.rating"></i>
           </div>
-          <span class="rating-text">{{ workshop.rating }} ({{ workshop.reviewCount }} reseñas)</span>
+          <span class="rating-text">{{ workshop.rating | number:'1.1-1' }} ({{ workshop.reviewCount }} reseñas)</span>
         </div>
         <div class="workshop-location">
           <i class="fas fa-map-marker-alt"></i>
@@ -163,8 +163,7 @@
         </div>
       </div>
 
-      <!-- ✅ SECCIÓN DE RESEÑAS - MOVIDA AQUÍ, FUERA DEL CONTACTO -->
-      <!-- Solo se muestra cuando el taller está cargado -->
+      <!-- Sección de reseñas -->
       <section class="reviews-section" *ngIf="workshop && !isLoading">
         <div class="reviews-header">
           <h3><i class="fas fa-comments"></i> Reseñas del taller</h3>
@@ -212,21 +211,33 @@
         <!-- Formulario para agregar nueva reseña -->
         <div class="add-review-section">
           <h4><i class="fas fa-edit"></i> Comparte tu experiencia</h4>
-          
-          <form class="review-form" (ngSubmit)="addReview()">
+          <form class="review-form" (ngSubmit)="addReview()" #reviewForm="ngForm">
+            <!-- Mensaje de error temporal -->
+            <div class="error-message" *ngIf="error" role="alert">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ error }}
+            </div>
+
+            <!-- Mensaje de éxito -->
+            <div class="success-message" *ngIf="showSuccessMessage" role="alert">
+              <i class="fas fa-check-circle"></i>
+              {{ successMessage }}
+            </div>
+
             <div class="form-group">
               <label for="reviewComment">Tu comentario:</label>
               <textarea 
                 id="reviewComment"
                 [(ngModel)]="newComment" 
                 name="comment"
-                placeholder="¿Qué te pareció el servicio? Comparte tu experiencia..." 
+                placeholder="¿Qué te pareció el servicio? Comparte tu experiencia con otros conductores..." 
                 maxlength="500"
                 rows="4"
                 class="form-control"
+                [class.error]="error"
                 required>
               </textarea>
-              <div class="character-counter">
+              <div class="character-counter" [class]="characterCounterClass">
                 {{ newComment.length }}/500 caracteres
               </div>
             </div>
@@ -246,15 +257,27 @@
                   <option value="2">★ ★ Malo (2)</option>
                   <option value="1">★ Muy malo (1)</option>
                 </select>
+                <div class="rating-preview">
+                  <i *ngFor="let star of getStarArray(newRating)" 
+                     class="fas fa-star" 
+                     [class.filled]="star <= newRating"></i>
+                  {{ newRating }}/5
+                </div>
               </div>
             </div>
             
             <button 
               type="submit"
-              [disabled]="!newComment.trim() || newRating < 1 || newRating > 5"
-              class="btn btn-primary submit-review">
-              <i class="fas fa-paper-plane"></i>
-              Enviar reseña
+              [disabled]="!reviewForm.valid || isSubmitting"
+              class="submit-review">
+              <span *ngIf="!isSubmitting">
+                <i class="fas fa-paper-plane"></i>
+                Enviar reseña
+              </span>
+              <span *ngIf="isSubmitting">
+                <i class="fas fa-spinner fa-spin"></i>
+                Enviando...
+              </span>
             </button>
           </form>
         </div>

@@ -341,14 +341,15 @@ export class WorkshopFormComponent implements OnInit {
     });
 
     // Marcar servicios seleccionados
+    if (workshop.services){
     workshop.services.forEach(service => {
       const checkbox = document.getElementById(service) as HTMLInputElement;
       if (checkbox) {
         checkbox.checked = true;
       }
     });
+    }
   }
-
   onSubmit() {
     if (this.workshopForm.valid) {
       this.loading = true;
