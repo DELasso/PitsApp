@@ -6,11 +6,12 @@ import { takeUntil } from 'rxjs/operators';
 import { Workshop } from '../../models/workshop.model';
 import { WorkshopsService } from '../../services/workshops.service';
 import { FileUploadService } from '../../services/file-upload.service';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @Component({
   selector: 'app-workshop-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, GoogleMapsModule],
   templateUrl: './workshop-detail.component.html',
   styleUrls: ['./workshop-detail.component.scss']
 })
@@ -19,6 +20,8 @@ export class WorkshopDetailComponent implements OnInit, OnDestroy {
   isLoading = true;
   error: string | null = null;
   private destroy$ = new Subject<void>();
+  center: google.maps.LatLngLiteral | undefined;
+  zoom = 15;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,18 +31,28 @@ export class WorkshopDetailComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.route.params
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(params => {
-        const id = params['id'];
-        if (id) {
-          this.loadWorkshop(id);
-        } else {
-          this.error = 'ID del taller no encontrado';
-          this.isLoading = false;
-        }
-      });
-  }
+  this.route.params
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(params => {
+      const id = params['id'];
+      if (id) {
+        this.workshopsService.getWorkshop(id).subscribe({
+          next: (data) => {
+            this.workshop = data;
+            this.isLoading = false;
+          },
+          error: (err) => {
+            this.error = 'Error cargando taller';
+            console.error(err);
+            this.isLoading = false;
+          }
+        });
+      } else {
+        this.error = 'ID del taller no encontrado';
+        this.isLoading = false;
+      }
+    });
+}
 
   ngOnDestroy(): void {
     this.destroy$.next();

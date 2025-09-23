@@ -85,6 +85,11 @@ export const routes: Routes = [
     data: { businessType: BusinessType.VENTA_REPUESTOS }
   },
   {
+  path: 'maps',
+  loadComponent: () =>
+    import('./pages/maps/maps.component').then(m => m.MapsComponent)
+},
+  {
     path: '**',
     redirectTo: ''
   }

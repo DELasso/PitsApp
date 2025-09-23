@@ -6,11 +6,17 @@ import { importProvidersFrom } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './app/interceptors/auth.interceptor';
+import { GoogleMapsModule } from '@angular/google-maps'; 
+
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes, withPreloading(PreloadAllModules)),
-    importProvidersFrom(BrowserAnimationsModule, HttpClientModule),
+    importProvidersFrom(
+      BrowserAnimationsModule,
+      HttpClientModule,
+      GoogleMapsModule 
+    ),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

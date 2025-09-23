@@ -62,6 +62,10 @@ export class WorkshopsService {
     return this.http.delete<ApiResponse<any>>(`${this.apiUrl}/${id}`);
   }
 
+  getCercanos(lat: number, lng: number, radio: number = 5): Observable<Workshop[]> {
+    return this.http.get<Workshop[]>(`${this.apiUrl}/cercanos?lat=${lat}&lng=${lng}&radioKm=${radio}`);
+  }
+
   // Métodos mockeados mientras no hay backend funcionando
   getWorkshopsMocked(): Observable<Workshop[]> {
     const workshops: Workshop[] = [

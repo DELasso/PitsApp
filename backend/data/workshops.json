@@ -27,8 +27,8 @@
         "specialties": [
             "Todo tipo de carros y motos"
         ],
-        "latitude": 0,
-        "longitude": 0,
+        "latitude": 6.2442,
+        "longitude": -75.5812,
         "rating": 0,
         "reviewCount": 0,
         "isActive": true,
@@ -62,8 +62,8 @@
         "specialties": [
             "Autos y motos deportivas"
         ],
-        "latitude": 0,
-        "longitude": 0,
+        "latitude": 4.7110,
+        "longitude": -74.0721,
         "rating": 0,
         "reviewCount": 0,
         "isActive": true,
