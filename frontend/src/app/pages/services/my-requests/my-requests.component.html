@@ -1,0 +1,89 @@
+<div class="my-requests">
+  <div class="container">
+    <div class="header">
+      <h1>Mis Solicitudes de Servicio</h1>
+      <button class="btn-create" (click)="createNewRequest()">
+        <fa-icon [icon]="faPlus"></fa-icon>
+        Nueva Solicitud
+      </button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">
+      <fa-icon [icon]="faSpinner" animation="spin"></fa-icon>
+      <p>Cargando solicitudes...</p>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="!isLoading && myRequests.length === 0" class="empty-state">
+      <h2>No tienes solicitudes aún</h2>
+      <p>Crea tu primera solicitud y recibe ofertas de talleres especializados</p>
+      <button class="btn btn-primary" (click)="createNewRequest()">
+        <fa-icon [icon]="faPlus"></fa-icon>
+        Crear Primera Solicitud
+      </button>
+    </div>
+
+    <div *ngIf="!isLoading && myRequests.length > 0" class="requests-grid">
+      <div *ngFor="let request of myRequests" class="request-card">
+        <div class="card-header">
+          <div class="service-type">
+            <h3>{{ serviceTypeLabels[request.serviceType] }}</h3>
+            <span class="vehicle-info">{{ request.vehicleBrand }} {{ request.vehicleModel }}</span>
+          </div>
+          <div class="status-badge" [ngClass]="getStatusClass(request.status)">
+            <fa-icon [icon]="getStatusIcon(request.status)"></fa-icon>
+            {{ statusLabels[request.status] }}
+          </div>
+        </div>
+
+        <div class="card-body">
+          <p class="description">{{ request.description }}</p>
+
+          <div class="request-meta">
+            <div class="meta-item">
+              <strong>Presupuesto:</strong>
+              <span *ngIf="request.budgetMin && request.budgetMax">
+                {{ formatCurrency(request.budgetMin) }} - {{ formatCurrency(request.budgetMax) }}
+              </span>
+              <span *ngIf="!request.budgetMin || !request.budgetMax">No especificado</span>
+            </div>
+            <div class="meta-item">
+              <strong>Urgencia:</strong>
+              <span [ngClass]="'urgency-' + request.urgencyLevel">
+                {{ request.urgencyLevel === 'low' ? 'Baja' :
+                request.urgencyLevel === 'medium' ? 'Media' :
+                request.urgencyLevel === 'high' ? 'Alta' : 'Emergencia' }}
+              </span>
+            </div>
+            <div class="meta-item">
+              <strong>Fecha:</strong>
+              <span>{{ formatDate(request.createdAt) }}</span>
+            </div>
+          </div>
+
+          <div class="bids-info">
+            <span class="bids-count">
+              <strong>{{ request.bidsCount }}</strong>
+              {{ request.bidsCount === 1 ? 'oferta recibida' : 'ofertas recibidas' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn btn-primary-outline" (click)="viewBids(request.id)" *ngIf="request.bidsCount > 0">
+            <fa-icon [icon]="faEye"></fa-icon>
+            Ver Ofertas
+          </button>
+          <button class="btn btn-danger-outline" (click)="deleteRequest(request.id)"
+            *ngIf="request.status === 'pending' || request.status === 'cancelled'">
+            <fa-icon [icon]="faTrash"></fa-icon>
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

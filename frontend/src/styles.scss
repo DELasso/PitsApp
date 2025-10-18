@@ -1,13 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
 
-/* Reset básico */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Variables de colores Ferrari para PitsApp */
 :root {
   --ferrari-red: #DC143C;
   --ferrari-red-dark: #B71C1C;
@@ -19,8 +16,7 @@
   --ferrari-gold-dark: #FFA000;
   --ferrari-white: #FFFFFF;
   --ferrari-silver: #C0C0C0;
-  
-  /* Mapeo para compatibilidad */
+
   --primary-color: var(--ferrari-red);
   --primary-dark: var(--ferrari-red-dark);
   --primary-light: var(--ferrari-red-light);
@@ -169,11 +165,11 @@ p {
   &.btn-secondary {
     background: linear-gradient(135deg, var(--ferrari-gold), var(--ferrari-gold-dark));
     color: var(--ferrari-black);
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(223, 44, 44, 0.3);
     
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+      box-shadow: 0 8px 25px rgba(255, 38, 0, 0.4);
       background: linear-gradient(135deg, var(--ferrari-gold-dark), var(--ferrari-gold));
     }
     

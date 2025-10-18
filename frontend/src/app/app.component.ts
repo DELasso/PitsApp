@@ -1,22 +1,26 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CartService } from './services/cart.service';
 import { AuthService } from './services/auth.service';
 import { CartSummary } from './models/cart.model';
-import { User } from './models/auth.model';
+import { User, UserRole } from './models/auth.model';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule, FontAwesomeModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'PitsApp';
+  faShoppingCart = faShoppingCart;
+  UserRole = UserRole;
   cartSummary: CartSummary | null = null;
   currentUser: User | null = null;
   isLoggedIn = false;

@@ -1,0 +1,221 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" 
+      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" 
+      crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;1,300&family=Special+Gothic+Expanded+One&family=Special+Gothic:wght@400..700&family=Telex&display=swap" rel="stylesheet">
+<div class="form-container">
+      <div class="form-header">
+        <h1>{{ isEditMode ? 'Editar Taller' : 'Crear Nuevo Taller' }}</h1>
+        <button class="btn-back" (click)="goBack()">
+          <i class="fa-solid fa-arrow-left"></i> Volver
+        </button>
+      </div>
+
+      <form [formGroup]="workshopForm" (ngSubmit)="onSubmit()" class="workshop-form">
+        <div class="form-section">
+          <h3>Información Básica</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name" class="form-label">Nombre del Taller *</label>
+              <input 
+                type="text" 
+                id="name" 
+                formControlName="name" 
+                class="form-input"
+                [class.error]="name?.invalid && name?.touched"
+                placeholder="Ej: Taller Mecánico Rodriguez">
+              <div *ngIf="name?.invalid && name?.touched" class="error-message">
+                <span *ngIf="name?.errors?.['required']">El nombre es requerido</span>
+                <span *ngIf="name?.errors?.['minlength']">Mínimo 3 caracteres</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="phone" class="form-label">Teléfono *</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                formControlName="phone" 
+                class="form-input"
+                [class.error]="phone?.invalid && phone?.touched"
+                placeholder="Ej: +57 300 123 4567">
+              <div *ngIf="phone?.invalid && phone?.touched" class="error-message">
+                <span *ngIf="phone?.errors?.['required']">El teléfono es requerido</span>
+                <span *ngIf="phone?.errors?.['pattern']">Formato de teléfono inválido</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label">Email *</label>
+            <input 
+              type="email" 
+              id="email" 
+              formControlName="email" 
+              class="form-input"
+              [class.error]="email?.invalid && email?.touched"
+              placeholder="contacto@taller.com">
+            <div *ngIf="email?.invalid && email?.touched" class="error-message">
+              <span *ngIf="email?.errors?.['required']">El email es requerido</span>
+              <span *ngIf="email?.errors?.['email']">Formato de email inválido</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="description" class="form-label">Descripción *</label>
+            <textarea 
+              id="description" 
+              formControlName="description" 
+              class="form-textarea"
+              [class.error]="description?.invalid && description?.touched"
+              rows="4"
+              placeholder="Describe tu taller, especialidades y servicios destacados..."></textarea>
+            <div *ngIf="description?.invalid && description?.touched" class="error-message">
+              <span *ngIf="description?.errors?.['required']">La descripción es requerida</span>
+              <span *ngIf="description?.errors?.['minlength']">Mínimo 20 caracteres</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Ubicación</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city" class="form-label">Ciudad *</label>
+              <select 
+                id="city" 
+                formControlName="city" 
+                class="form-select"
+                [class.error]="city?.invalid && city?.touched">
+                <option value="">Selecciona una ciudad</option>
+                <option value="Bogotá">Bogotá</option>
+                <option value="Medellín">Medellín</option>
+                <option value="Cali">Cali</option>
+                <option value="Barranquilla">Barranquilla</option>
+                <option value="Cartagena">Cartagena</option>
+                <option value="Bucaramanga">Bucaramanga</option>
+                <option value="Pereira">Pereira</option>
+                <option value="Manizales">Manizales</option>
+              </select>
+              <div *ngIf="city?.invalid && city?.touched" class="error-message">
+                <span *ngIf="city?.errors?.['required']">La ciudad es requerida</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="neighborhood" class="form-label">Barrio *</label>
+              <input 
+                type="text" 
+                id="neighborhood" 
+                formControlName="neighborhood" 
+                class="form-input"
+                [class.error]="neighborhood?.invalid && neighborhood?.touched"
+                placeholder="Ej: Chapinero, Poblado, etc.">
+              <div *ngIf="neighborhood?.invalid && neighborhood?.touched" class="error-message">
+                <span *ngIf="neighborhood?.errors?.['required']">El barrio es requerido</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="address" class="form-label">Dirección *</label>
+            <input 
+              type="text" 
+              id="address" 
+              formControlName="address" 
+              class="form-input"
+              [class.error]="address?.invalid && address?.touched"
+              placeholder="Ej: Calle 123 # 45-67">
+            <div *ngIf="address?.invalid && address?.touched" class="error-message">
+              <span *ngIf="address?.errors?.['required']">La dirección es requerida</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Servicios y Especialidades</h3>
+          
+          <div class="form-group">
+            <label class="form-label">Servicios Ofrecidos *</label>
+            <div class="checkbox-grid">
+              <div *ngFor="let service of availableServices" class="checkbox-item">
+                <input 
+                  type="checkbox" 
+                  [id]="service" 
+                  [value]="service"
+                  (change)="onServiceChange($event)">
+                <label [for]="service">{{ service }}</label>
+              </div>
+            </div>
+            <div *ngIf="workshopForm.get('services')?.invalid && workshopForm.get('services')?.touched" class="error-message">
+              <span>Selecciona al menos un servicio</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="specialties" class="form-label">Especialidades (opcional)</label>
+            <input 
+              type="text" 
+              id="specialties" 
+              formControlName="specialtiesText" 
+              class="form-input"
+              placeholder="Ej: Autos europeos, Motos deportivas, Carros clásicos (separadas por comas)">
+            <small class="form-help">Separa las especialidades con comas</small>
+          </div>
+
+          <div class="form-group">
+            <label for="workingHours" class="form-label">Horarios de Atención (opcional)</label>
+            <input 
+              type="text" 
+              id="workingHours" 
+              formControlName="workingHours" 
+              class="form-input"
+              placeholder="Ej: Lun-Vie 8:00-18:00, Sáb 8:00-14:00">
+          </div>
+
+          <div class="form-group">
+            <label for="website" class="form-label">Sitio Web (opcional)</label>
+            <input 
+              type="url" 
+              id="website" 
+              formControlName="website" 
+              class="form-input"
+              placeholder="https://www.miweb.com">
+          </div>
+        </div>
+
+        <!-- Sección de Imágenes -->
+        <div class="form-section">
+          <h3>Imágenes del Taller</h3>
+          <app-image-upload 
+            formControlName="images"
+            uploadType="workshop"
+            label="Sube imágenes de tu taller"
+            [required]="false">
+          </app-image-upload>
+          <p class="form-hint">
+            Las imágenes ayudan a los clientes a conocer mejor tu taller. Puedes subir hasta 5 imágenes.
+          </p>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" (click)="goBack()">
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            class="btn btn-primary" 
+            [disabled]="loading || workshopForm.invalid">
+            <i *ngIf="loading" class="fa-solid fa-spinner fa-spin"></i>
+            {{ isEditMode ? 'Actualizar' : 'Crear' }} Taller
+          </button>
+        </div>
+      </form>
+
+      <div *ngIf="errorMessage" class="error-banner">
+        {{ errorMessage }}
+      </div>
+    </div>

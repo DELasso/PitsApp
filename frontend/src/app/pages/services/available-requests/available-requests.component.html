@@ -1,0 +1,188 @@
+<div class="available-requests-container">
+  <div class="header-section">
+    <div class="title-area">
+      <h1>
+        <fa-icon [icon]="faSearch"></fa-icon>
+        Solicitudes Disponibles
+      </h1>
+      <p class="subtitle">Encuentra y oferta en solicitudes de servicio que coincidan con tu especialidad</p>
+    </div>
+
+    <div class="filters-section">
+      <div class="filter-group">
+        <label for="serviceType">
+          <fa-icon [icon]="faFilter"></fa-icon>
+          Tipo de Servicio
+        </label>
+        <select id="serviceType" (change)="onServiceTypeChange($event)" [(ngModel)]="selectedServiceType">
+          <option value="all">Todos los servicios</option>
+          <option value="home_service">Servicio a Domicilio</option>
+          <option value="tow_truck">Grúa y Remolque</option>
+          <option value="express_oil_change">Cambio de Aceite</option>
+          <option value="mechanical_diagnosis">Diagnóstico Mecánico</option>
+          <option value="specific_repair">Reparación Específica</option>
+          <option value="emergency_service">Emergencia</option>
+          <option value="tire_change">Cambio de Llantas</option>
+          <option value="battery_service">Servicio de Batería</option>
+          <option value="other">Otro</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="urgency">
+          <fa-icon [icon]="faClock"></fa-icon>
+          Urgencia
+        </label>
+        <select id="urgency" (change)="onUrgencyChange($event)" [(ngModel)]="selectedUrgency">
+          <option value="all">Todas las urgencias</option>
+          <option value="low">Baja</option>
+          <option value="medium">Media</option>
+          <option value="high">Alta</option>
+          <option value="emergency">Emergencia</option>
+        </select>
+      </div>
+
+      <div class="filter-group search-group">
+        <label for="search">
+          <fa-icon [icon]="faSearch"></fa-icon>
+          Buscar
+        </label>
+        <input 
+          type="text" 
+          id="search" 
+          placeholder="Buscar por descripción, marca, modelo..."
+          (input)="onSearchChange($event)"
+          [(ngModel)]="searchTerm">
+      </div>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <fa-icon [icon]="faSpinner" animation="spin" size="3x"></fa-icon>
+      <p>Cargando solicitudes disponibles...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="!isLoading && errorMessage" class="error-state">
+      <p>{{ errorMessage }}</p>
+      <button class="btn-retry" (click)="loadAvailableRequests()">Reintentar</button>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && !errorMessage && filteredRequests.length === 0 && availableRequests.length === 0" class="empty-state">
+      <fa-icon [icon]="faSearch" size="3x"></fa-icon>
+      <h3>No hay solicitudes disponibles</h3>
+      <p>En este momento no hay solicitudes de servicio abiertas para ofertar.</p>
+    </div>
+
+    <!-- No Results State -->
+    <div *ngIf="!isLoading && !errorMessage && filteredRequests.length === 0 && availableRequests.length > 0" class="empty-state">
+      <fa-icon [icon]="faSearch" size="3x"></fa-icon>
+      <h3>No se encontraron resultados</h3>
+      <p>Intenta ajustar los filtros de búsqueda.</p>
+    </div>
+
+    <!-- Request Cards -->
+    <div *ngIf="!isLoading && !errorMessage && filteredRequests.length > 0" class="requests-grid">
+      <div *ngFor="let request of filteredRequests" class="request-card">
+        <div class="card-header">
+          <div class="service-type-badge">
+            <fa-icon [icon]="faCar"></fa-icon>
+            {{ serviceTypeLabels[request.serviceType] }}
+          </div>
+          <div class="urgency-badge" [ngClass]="getUrgencyClass(request.urgencyLevel)">
+            <fa-icon [icon]="faClock"></fa-icon>
+            {{ getUrgencyLabel(request.urgencyLevel) }}
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="vehicle-info" *ngIf="request.vehicleBrand && request.vehicleModel">
+            <fa-icon [icon]="faCar"></fa-icon>
+            <span>{{ request.vehicleBrand }} {{ request.vehicleModel }}</span>
+            <span class="year" *ngIf="request.vehicleYear"> ({{ request.vehicleYear }})</span>
+          </div>
+
+          <p class="description">{{ request.description }}</p>
+
+          <div class="request-details">
+            <div class="detail-item" *ngIf="request.estimatedBudget">
+              <fa-icon [icon]="faDollarSign"></fa-icon>
+              <span>Presupuesto estimado: <strong>{{ formatCurrency(request.estimatedBudget) }}</strong></span>
+            </div>
+
+            <div class="detail-item">
+              <fa-icon [icon]="faClock"></fa-icon>
+              <span>Publicado {{ formatDate(request.createdAt) }}</span>
+            </div>
+
+            <div class="detail-item" *ngIf="request.preferredDate">
+              <fa-icon [icon]="faClock"></fa-icon>
+              <span>Fecha preferida: {{ request.preferredDate | date: 'short' }}</span>
+            </div>
+          </div>
+
+          <!-- Service-specific details -->
+          <div class="service-specific" *ngIf="request.homeServiceDetails || request.towTruckDetails || request.diagnosisDetails || request.repairDetails">
+            <!-- Home Service -->
+            <div *ngIf="request.serviceType === 'home_service' && request.homeServiceDetails">
+              <div class="detail-item">
+                <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
+                <span>{{ request.homeServiceDetails.address }}</span>
+              </div>
+            </div>
+
+            <!-- Tow Truck -->
+            <div *ngIf="request.serviceType === 'tow_truck' && request.towTruckDetails">
+              <div class="detail-item">
+                <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
+                <span>Desde: {{ request.towTruckDetails.pickupAddress }}</span>
+              </div>
+              <div class="detail-item">
+                <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
+                <span>Hasta: {{ request.towTruckDetails.deliveryAddress }}</span>
+              </div>
+            </div>
+
+            <!-- Diagnosis -->
+            <div *ngIf="request.serviceType === 'mechanical_diagnosis' && request.diagnosisDetails">
+              <div class="detail-item">
+                <span><strong>Síntomas:</strong> {{ request.diagnosisDetails.symptoms }}</span>
+              </div>
+            </div>
+
+            <!-- Repair -->
+            <div *ngIf="request.serviceType === 'specific_repair' && request.repairDetails">
+              <div class="detail-item">
+                <span><strong>Falla:</strong> {{ request.repairDetails.problemDescription }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bid-count" *ngIf="request.bidsCount && request.bidsCount > 0">
+            <span class="count-badge">{{ request.bidsCount }}</span>
+            <span>{{ request.bidsCount === 1 ? 'oferta recibida' : 'ofertas recibidas' }}</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button class="btn-secondary" (click)="viewDetails(request.id)">
+            <fa-icon [icon]="faEye"></fa-icon>
+            Ver Detalles
+          </button>
+          <button class="btn-primary" (click)="makeOffer(request.id)">
+            <fa-icon [icon]="faDollarSign"></fa-icon>
+            Hacer Oferta
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Count -->
+    <div *ngIf="!isLoading && !errorMessage && filteredRequests.length > 0" class="results-count">
+      Mostrando {{ filteredRequests.length }} de {{ availableRequests.length }} solicitudes
+    </div>
+  </div>
+</div>

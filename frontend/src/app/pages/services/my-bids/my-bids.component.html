@@ -1,0 +1,168 @@
+<div class="my-bids-container">
+  <div class="header-section">
+    <div class="title-area">
+      <h1>
+        <fa-icon [icon]="faList"></fa-icon>
+        Mis Ofertas
+      </h1>
+      <p class="subtitle">Gestiona y da seguimiento a todas tus ofertas de servicio</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+      <div class="stat-card total">
+        <div class="stat-icon">
+          <fa-icon [icon]="faList"></fa-icon>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ totalBids }}</span>
+          <span class="stat-label">Total de Ofertas</span>
+        </div>
+      </div>
+
+      <div class="stat-card pending">
+        <div class="stat-icon">
+          <fa-icon [icon]="faClock"></fa-icon>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ pendingBids }}</span>
+          <span class="stat-label">Pendientes</span>
+        </div>
+      </div>
+
+      <div class="stat-card accepted">
+        <div class="stat-icon">
+          <fa-icon [icon]="faCheck"></fa-icon>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ acceptedBids }}</span>
+          <span class="stat-label">Aceptadas</span>
+        </div>
+      </div>
+
+      <div class="stat-card rejected">
+        <div class="stat-icon">
+          <fa-icon [icon]="faTimes"></fa-icon>
+        </div>
+        <div class="stat-content">
+          <span class="stat-value">{{ rejectedBids }}</span>
+          <span class="stat-label">Rechazadas</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <fa-icon [icon]="faSpinner" animation="spin" size="3x"></fa-icon>
+      <p>Cargando tus ofertas...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="!isLoading && errorMessage" class="error-state">
+      <p>{{ errorMessage }}</p>
+      <button class="btn-retry" (click)="loadMyBids()">Reintentar</button>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && !errorMessage && bids.length === 0" class="empty-state">
+      <fa-icon [icon]="faList" size="3x"></fa-icon>
+      <h3>No tienes ofertas aún</h3>
+      <p>Comienza a ofertar en solicitudes de servicio para que aparezcan aquí.</p>
+      <button class="btn-browse" routerLink="/services/available">
+        Explorar Solicitudes
+      </button>
+    </div>
+
+    <!-- Bids List -->
+    <div *ngIf="!isLoading && !errorMessage && bids.length > 0" class="bids-list">
+      <div *ngFor="let bid of bids" class="bid-card">
+        <div class="card-header">
+          <div class="status-badge" [ngClass]="getStatusClass(bid.status)">
+            <fa-icon [icon]="getStatusIcon(bid.status)"></fa-icon>
+            {{ getStatusLabel(bid.status) }}
+          </div>
+          <div class="bid-date">
+            {{ formatDate(bid.createdAt) }}
+          </div>
+        </div>
+
+        <div class="card-body">
+          <div class="amount-section">
+            <fa-icon [icon]="faDollarSign"></fa-icon>
+            <span class="amount">{{ formatCurrency(bid.totalAmount) }}</span>
+          </div>
+
+          <!-- Bid Items -->
+          <div class="items-section" *ngIf="bid.items && bid.items.length > 0">
+            <h4>Desglose de Servicios/Productos:</h4>
+            <div class="items-list">
+              <div *ngFor="let item of bid.items" class="item-row">
+                <span class="item-desc">{{ item.description }}</span>
+                <span class="item-qty">x{{ item.quantity }}</span>
+                <span class="item-price">{{ formatCurrency(item.unitPrice) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="details-grid">
+            <div class="detail-item">
+              <fa-icon [icon]="faClock"></fa-icon>
+              <span>Tiempo: <strong>{{ formatCompletionTime(bid.estimatedCompletionTime) }}</strong></span>
+            </div>
+
+            <div class="detail-item" *ngIf="bid.warrantyPeriod">
+              <fa-icon [icon]="faShieldAlt" class="warranty-icon"></fa-icon>
+              <span>Garantía: <strong>{{ formatWarrantyPeriod(bid.warrantyPeriod) }}</strong></span>
+            </div>
+          </div>
+
+          <div class="warranty-details" *ngIf="bid.warrantyDetails">
+            <h5>Detalles de Garantía:</h5>
+            <p>{{ bid.warrantyDetails }}</p>
+          </div>
+
+          <div class="payment-terms">
+            <strong>Términos de Pago:</strong> {{ bid.paymentTerms }}
+          </div>
+
+          <div class="notes-section" *ngIf="bid.notes">
+            <h5>Notas Adicionales:</h5>
+            <p>{{ bid.notes }}</p>
+          </div>
+
+          <!-- Status Messages -->
+          <div *ngIf="bid.status === BidStatus.ACCEPTED" class="status-message accepted-message">
+            <fa-icon [icon]="faCheck"></fa-icon>
+            <span>¡Felicitaciones! Tu oferta fue aceptada el {{ formatDate(bid.acceptedAt!) }}</span>
+          </div>
+
+          <div *ngIf="bid.status === BidStatus.REJECTED" class="status-message rejected-message">
+            <fa-icon [icon]="faTimes"></fa-icon>
+            <span>Esta oferta fue rechazada el {{ formatDate(bid.rejectedAt!) }}</span>
+          </div>
+
+          <div *ngIf="bid.status === BidStatus.WITHDRAWN" class="status-message withdrawn-message">
+            <fa-icon [icon]="faTimes"></fa-icon>
+            <span>Retiraste esta oferta el {{ formatDate(bid.withdrawnAt!) }}</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button class="btn-secondary" (click)="viewRequest(bid.serviceRequestId)">
+            <fa-icon [icon]="faEye"></fa-icon>
+            Ver Solicitud
+          </button>
+          <button 
+            *ngIf="canWithdraw(bid)" 
+            class="btn-danger" 
+            (click)="withdrawBid(bid.id)">
+            <fa-icon [icon]="faTrash"></fa-icon>
+            Retirar Oferta
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

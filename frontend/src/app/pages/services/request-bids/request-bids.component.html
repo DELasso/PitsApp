@@ -1,0 +1,204 @@
+<div class="request-bids">
+  <div class="container">
+    <!-- Header -->
+    <div class="page-header">
+      <button class="back-button" (click)="goBack()">
+        <fa-icon [icon]="faArrowLeft"></fa-icon>
+        Volver a Mis Solicitudes
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading">
+      <fa-icon [icon]="faSpinner" animation="spin"></fa-icon>
+      <p>Cargando ofertas...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Content -->
+    <div *ngIf="!isLoading && serviceRequest" class="content">
+      <!-- Service Request Summary -->
+      <div class="request-summary">
+        <div class="summary-header">
+          <h1>{{ serviceTypeLabels[serviceRequest.serviceType] }}</h1>
+          <div class="bids-count">
+            <strong>{{ bids.length }}</strong> 
+            {{ bids.length === 1 ? 'oferta recibida' : 'ofertas recibidas' }}
+          </div>
+        </div>
+        
+        <div class="summary-details">
+          <div class="detail-item">
+            <strong>Vehículo:</strong>
+            <span>{{ serviceRequest.vehicleBrand }} {{ serviceRequest.vehicleModel }} {{ serviceRequest.vehicleYear }}</span>
+          </div>
+          <div class="detail-item">
+            <strong>Descripción:</strong>
+            <p>{{ serviceRequest.description }}</p>
+          </div>
+          <div class="detail-item" *ngIf="serviceRequest.budgetMin && serviceRequest.budgetMax">
+            <strong>Presupuesto:</strong>
+            <span>{{ formatCurrency(serviceRequest.budgetMin) }} - {{ formatCurrency(serviceRequest.budgetMax) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Bids State -->
+      <div *ngIf="bids.length === 0" class="empty-state">
+        <h2>Aún no hay ofertas</h2>
+        <p>Los talleres están revisando tu solicitud. Recibirás notificaciones cuando lleguen ofertas.</p>
+      </div>
+
+      <!-- Bids List -->
+      <div *ngIf="bids.length > 0" class="bids-section">
+        <div class="section-header">
+          <h2>Ofertas Recibidas</h2>
+          <p class="tip">💡 Compara precio, calificación, tiempo y servicios incluidos</p>
+        </div>
+
+        <div class="bids-list">
+          <div 
+            *ngFor="let bid of bids; let i = index" 
+            class="bid-card"
+            [ngClass]="{
+              'bid-accepted': bid.status === 'accepted',
+              'bid-rejected': bid.status === 'rejected',
+              'bid-lowest': isLowestBid(bid),
+              'bid-highest-rated': isHighestRated(bid)
+            }"
+          >
+            <!-- Badge de mejor oferta -->
+            <div class="best-badge" *ngIf="isLowestBid(bid) && bid.status === 'pending'">
+              🏆 MEJOR PRECIO
+            </div>
+            <div class="best-badge rating-badge" *ngIf="isHighestRated(bid) && bid.status === 'pending' && !isLowestBid(bid)">
+              ⭐ MEJOR CALIFICACIÓN
+            </div>
+
+            <!-- Header del Bid -->
+            <div class="bid-header">
+              <div class="provider-info">
+                <h3>{{ bid.providerName }}</h3>
+                <div class="rating" *ngIf="bid.providerRating">
+                  <fa-icon 
+                    *ngFor="let filled of getStarArray(bid.providerRating)" 
+                    [icon]="faStar" 
+                    [class.filled]="filled"
+                  ></fa-icon>
+                  <span class="rating-value">{{ bid.providerRating.toFixed(1) }}</span>
+                </div>
+              </div>
+              <div class="bid-status" [ngClass]="getBidStatusClass(bid.status)">
+                {{ getBidStatusLabel(bid.status) }}
+              </div>
+            </div>
+
+            <!-- Precio Principal -->
+            <div class="bid-price">
+              <div class="price-label">Precio Total</div>
+              <div class="price-amount">{{ formatCurrency(bid.totalAmount) }}</div>
+            </div>
+
+            <!-- Detalles de la Oferta -->
+            <div class="bid-details">
+              <div class="detail-row">
+                <fa-icon [icon]="faClock"></fa-icon>
+                <div>
+                  <strong>Tiempo Estimado:</strong>
+                  <span>{{ formatCompletionTime(bid.estimatedCompletionTime) }}</span>
+                </div>
+              </div>
+
+              <div class="detail-row" *ngIf="bid.warrantyPeriod">
+                <fa-icon [icon]="faShieldAlt"></fa-icon>
+                <div>
+                  <strong>Garantía:</strong>
+                  <span>{{ formatWarrantyPeriod(bid.warrantyPeriod) }}</span>
+                </div>
+              </div>
+
+              <div class="detail-row" *ngIf="bid.warrantyDetails">
+                <div>
+                  <strong>Detalles de Garantía:</strong>
+                  <span>{{ bid.warrantyDetails }}</span>
+                </div>
+              </div>
+
+              <div class="detail-row">
+                <div>
+                  <strong>Términos de Pago:</strong>
+                  <span>{{ bid.paymentTerms }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notas del Proveedor -->
+            <div class="bid-message" *ngIf="bid.notes">
+              <h4>Notas adicionales:</h4>
+              <p>{{ bid.notes }}</p>
+            </div>
+
+            <!-- Desglose de Items -->
+            <div class="bid-items" *ngIf="bid.items && bid.items.length > 0">
+              <h4>Desglose:</h4>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Descripción</th>
+                    <th>Cant.</th>
+                    <th>Precio Unit.</th>
+                    <th>Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of bid.items">
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ formatCurrency(item.unitPrice) }}</td>
+                    <td>{{ formatCurrency(item.quantity * item.unitPrice) }}</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="3"><strong>Total:</strong></td>
+                    <td><strong>{{ formatCurrency(bid.totalAmount) }}</strong></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <!-- Términos de Pago -->
+            <div class="payment-terms" *ngIf="bid.paymentTerms">
+              <fa-icon [icon]="faDollarSign"></fa-icon>
+              <div>
+                <strong>Términos de Pago:</strong>
+                <span>{{ bid.paymentTerms }}</span>
+              </div>
+            </div>
+
+            <!-- Botón de Aceptar -->
+            <div class="bid-actions" *ngIf="canAcceptBid(bid)">
+              <button 
+                class="btn btn-accept" 
+                (click)="acceptBid(bid)"
+                [disabled]="isAccepting"
+              >
+                <fa-icon [icon]="faCheck"></fa-icon>
+                {{ isAccepting ? 'Aceptando...' : 'Aceptar Oferta' }}
+              </button>
+            </div>
+
+            <!-- Fecha de Creación -->
+            <div class="bid-footer">
+              <small>Oferta enviada: {{ formatDate(bid.createdAt) }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

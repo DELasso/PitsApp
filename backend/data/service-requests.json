@@ -1,0 +1,23 @@
+[
+  {
+    "id": "743a816d-15cf-4658-a6dc-a59e90649340",
+    "serviceType": "emergency_service",
+    "vehicleType": "car",
+    "vehicleBrand": "Toyota",
+    "vehicleModel": "Corolla",
+    "vehicleYear": 2020,
+    "vehiclePlate": "BBC404",
+    "description": "Lo que sea, lo necesito es pero ya",
+    "urgencyLevel": "emergency",
+    "budgetMin": 1000000,
+    "budgetMax": 5000000,
+    "preferredDate": "",
+    "preferredTimeSlot": "flexible",
+    "additionalNotes": "",
+    "status": "pending",
+    "bidsCount": 0,
+    "createdAt": "2025-10-18T04:40:19.143Z",
+    "updatedAt": "2025-10-18T04:40:19.143Z",
+    "expiresAt": "2025-10-25T04:40:19.143Z"
+  }
+]

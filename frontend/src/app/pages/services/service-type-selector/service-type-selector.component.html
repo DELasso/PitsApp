@@ -1,0 +1,55 @@
+<div class="service-type-selector">
+  <div class="container">
+    <div class="header">
+      <h1>¿Qué servicio necesitas?</h1>
+      <p class="subtitle">Selecciona el tipo de servicio y recibe múltiples ofertas de talleres especializados</p>
+    </div>
+    <div class="action-buttons" *ngIf="currentUser$ | async as currentUser">
+      <button 
+        *ngIf="currentUser.role === UserRole.CLIENTE" 
+        class="btn-action btn-primary"
+        (click)="viewMyRequests()"
+      >
+        <fa-icon [icon]="faList"></fa-icon>
+        Ver Mis Solicitudes
+      </button>
+      <button 
+        *ngIf="currentUser.role === UserRole.PROVEEDOR" 
+        class="btn-action btn-provider"
+        (click)="viewAvailableRequests()"
+      >
+        <fa-icon [icon]="faClipboardList"></fa-icon>
+        Ver Solicitudes Disponibles
+      </button>
+    </div>
+
+    <div class="services-grid">
+      <div 
+        *ngFor="let service of serviceTypes" 
+        class="service-card"
+        [style.--card-color]="service.color"
+        (click)="selectServiceType(service.type)"
+      >
+        <div class="service-icon">
+          <fa-icon [icon]="service.icon"></fa-icon>
+        </div>
+        <h3>{{ service.title }}</h3>
+        <p>{{ service.description }}</p>
+        <div class="card-overlay"></div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-card">
+        <h3>¿Cómo funciona?</h3>
+        <ol>
+          <li>Selecciona el tipo de servicio que necesitas</li>
+          <li>Completa los detalles de tu solicitud</li>
+          <li>Recibe ofertas de múltiples talleres</li>
+          <li>Compara precios, tiempos y calificaciones</li>
+          <li>Elige la mejor oferta y agenda tu servicio</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,359 @@
+<div class="service-request-form">
+  <div class="container">
+    <!-- Header -->
+    <div class="form-header">
+      <button class="back-button" (click)="goBack()">
+        <fa-icon [icon]="faArrowLeft"></fa-icon>
+        Volver
+      </button>
+      <h1>{{ serviceTypeLabels[serviceType] }}</h1>
+      <p class="subtitle">Completa los detalles y recibe múltiples ofertas de talleres certificados</p>
+    </div>
+
+    <!-- Mensajes -->
+    <div *ngIf="errorMessage" class="alert alert-error">
+      {{ errorMessage }}
+    </div>
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+
+    <!-- Formulario -->
+    <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()" class="service-form">
+
+      <!-- Información del Vehículo -->
+      <div class="form-section">
+        <h2>Información del Vehículo</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="vehicleType">Tipo de Vehículo *</label>
+            <select id="vehicleType" formControlName="vehicleType" class="form-control">
+              <option value="">Selecciona</option>
+              <option value="car">Automóvil</option>
+              <option value="motorcycle">Motocicleta</option>
+              <option value="suv">SUV</option>
+              <option value="truck">Camioneta</option>
+              <option value="van">Van</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="vehicleBrand">Marca</label>
+            <input type="text" id="vehicleBrand" formControlName="vehicleBrand" class="form-control"
+              placeholder="Ej: Toyota">
+          </div>
+
+          <div class="form-group">
+            <label for="vehicleModel">Modelo</label>
+            <input type="text" id="vehicleModel" formControlName="vehicleModel" class="form-control"
+              placeholder="Ej: Corolla">
+          </div>
+
+          <div class="form-group">
+            <label for="vehicleYear">Año</label>
+            <input type="number" id="vehicleYear" formControlName="vehicleYear" class="form-control"
+              placeholder="Ej: 2020" min="1950" max="2026">
+          </div>
+
+          <div class="form-group">
+            <label for="vehiclePlate">Placa</label>
+            <input type="text" id="vehiclePlate" formControlName="vehiclePlate" class="form-control"
+              placeholder="Ej: ABC123">
+          </div>
+        </div>
+      </div>
+
+      <!-- Detalles Específicos del Servicio -->
+
+      <!-- SERVICIO A DOMICILIO -->
+      <div *ngIf="serviceType === ServiceType.HOME_SERVICE" class="form-section">
+        <h2>Ubicación del Servicio</h2>
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="address">Dirección *</label>
+            <input type="text" id="address" formControlName="address" class="form-control"
+              placeholder="Calle 50 # 70-80">
+          </div>
+
+          <div class="form-group">
+            <label for="city">Ciudad *</label>
+            <input type="text" id="city" formControlName="city" class="form-control" placeholder="Medellín">
+          </div>
+
+          <div class="form-group">
+            <label for="neighborhood">Barrio</label>
+            <input type="text" id="neighborhood" formControlName="neighborhood" class="form-control"
+              placeholder="Laureles">
+          </div>
+
+          <div class="form-group">
+            <label for="unitType">Tipo de Unidad</label>
+            <select id="unitType" formControlName="unitType" class="form-control">
+              <option value="house">Casa</option>
+              <option value="apartment">Apartamento</option>
+              <option value="building">Edificio</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="unitNumber">Número de Unidad</label>
+            <input type="text" id="unitNumber" formControlName="unitNumber" class="form-control" placeholder="Apto 501">
+          </div>
+
+          <div class="form-group">
+            <label for="floor">Piso</label>
+            <input type="text" id="floor" formControlName="floor" class="form-control" placeholder="Piso 5">
+          </div>
+
+          <div class="form-group full-width">
+            <label for="additionalDirections">Indicaciones Adicionales</label>
+            <textarea id="additionalDirections" formControlName="additionalDirections" class="form-control" rows="2"
+              placeholder="Torre A, portón verde"></textarea>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label>
+              <input type="checkbox" formControlName="hasParking">
+              ¿Tiene parqueadero disponible?
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRÚA Y REMOLQUE -->
+      <div *ngIf="serviceType === ServiceType.TOW_TRUCK" class="form-section">
+        <h2>Detalles del Remolque</h2>
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="pickupAddress">Dirección de Recogida *</label>
+            <input type="text" id="pickupAddress" formControlName="pickupAddress" class="form-control"
+              placeholder="Autopista Sur Km 15">
+          </div>
+
+          <div class="form-group">
+            <label for="pickupCity">Ciudad de Recogida *</label>
+            <input type="text" id="pickupCity" formControlName="pickupCity" class="form-control" placeholder="Medellín">
+          </div>
+
+          <div class="form-group full-width">
+            <label for="deliveryAddress">Dirección de Entrega *</label>
+            <input type="text" id="deliveryAddress" formControlName="deliveryAddress" class="form-control"
+              placeholder="Calle 10 # 20-30">
+          </div>
+
+          <div class="form-group">
+            <label for="deliveryCity">Ciudad de Entrega *</label>
+            <input type="text" id="deliveryCity" formControlName="deliveryCity" class="form-control"
+              placeholder="Envigado">
+          </div>
+
+          <div class="form-group">
+            <label for="estimatedDistance">Distancia Estimada (km)</label>
+            <input type="number" id="estimatedDistance" formControlName="estimatedDistance" class="form-control"
+              placeholder="12" min="0">
+          </div>
+
+          <div class="form-group">
+            <label for="vehicleCondition">Condición del Vehículo *</label>
+            <select id="vehicleCondition" formControlName="vehicleCondition" class="form-control">
+              <option value="running">Funciona</option>
+              <option value="not_running">No funciona</option>
+              <option value="accident">Accidentado</option>
+            </select>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label>
+              <input type="checkbox" formControlName="needsFlatbed">
+              ¿Necesita plataforma (flatbed)?
+            </label>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="towAdditionalInfo">Información Adicional</label>
+            <textarea id="towAdditionalInfo" formControlName="towAdditionalInfo" class="form-control" rows="3"
+              placeholder="Descripción de daños, problemas especiales, etc."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAMBIO DE ACEITE EXPRESS -->
+      <div *ngIf="serviceType === ServiceType.EXPRESS_OIL_CHANGE" class="form-section">
+        <h2>Detalles del Cambio de Aceite</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="currentMileage">Kilometraje Actual *</label>
+            <input type="number" id="currentMileage" formControlName="currentMileage" class="form-control"
+              placeholder="45000" min="0">
+          </div>
+
+          <div class="form-group">
+            <label for="lastOilChange">Último Cambio (km)</label>
+            <input type="number" id="lastOilChange" formControlName="lastOilChange" class="form-control"
+              placeholder="40000" min="0">
+          </div>
+
+          <div class="form-group">
+            <label for="preferredOilBrand">Marca de Aceite Preferida</label>
+            <input type="text" id="preferredOilBrand" formControlName="preferredOilBrand" class="form-control"
+              placeholder="Mobil 1, Castrol, etc.">
+          </div>
+
+          <div class="form-group">
+            <label for="oilType">Tipo de Aceite</label>
+            <select id="oilType" formControlName="oilType" class="form-control">
+              <option value="synthetic">Sintético</option>
+              <option value="semi-synthetic">Semi-Sintético</option>
+              <option value="conventional">Convencional</option>
+            </select>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label>
+              <input type="checkbox" formControlName="includeFilter">
+              ¿Incluir cambio de filtro?
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIAGNÓSTICO MECÁNICO -->
+      <div *ngIf="serviceType === ServiceType.MECHANICAL_DIAGNOSIS" class="form-section">
+        <h2>Detalles del Diagnóstico</h2>
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="symptoms">Síntomas *</label>
+            <textarea id="symptoms" formControlName="symptoms" class="form-control" rows="4"
+              placeholder="Describe detalladamente los síntomas que presenta el vehículo..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="whenStarted">¿Cuándo comenzó?</label>
+            <input type="text" id="whenStarted" formControlName="whenStarted" class="form-control"
+              placeholder="Hace 3 días">
+          </div>
+
+          <div class="form-group">
+            <label for="recentRepairs">Reparaciones Recientes</label>
+            <textarea id="recentRepairs" formControlName="recentRepairs" class="form-control" rows="2"
+              placeholder="Cambio de correa hace 1 mes"></textarea>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label>
+              <input type="checkbox" formControlName="needsScanner">
+              ¿Necesita escáner automotriz?
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- REPARACIÓN ESPECÍFICA -->
+      <div *ngIf="serviceType === ServiceType.SPECIFIC_REPAIR" class="form-section">
+        <h2>Detalles de la Reparación</h2>
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="problemDescription">Descripción del Problema *</label>
+            <textarea id="problemDescription" formControlName="problemDescription" class="form-control" rows="4"
+              placeholder="Describe detalladamente qué necesita ser reparado..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="previousDiagnosis">Diagnóstico Previo</label>
+            <textarea id="previousDiagnosis" formControlName="previousDiagnosis" class="form-control" rows="2"
+              placeholder="Si ya tienes un diagnóstico, descríbelo aquí"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="preferredParts">Tipo de Repuestos Preferido</label>
+            <select id="preferredParts" formControlName="preferredParts" class="form-control">
+              <option value="original">Originales</option>
+              <option value="aftermarket">Aftermarket (compatibles)</option>
+              <option value="used">Usados</option>
+            </select>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label>
+              <input type="checkbox" formControlName="hasWarranty">
+              ¿El vehículo está en garantía?
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Descripción General -->
+      <div class="form-section">
+        <h2>Descripción del Servicio</h2>
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="description">Descripción General *</label>
+            <textarea id="description" formControlName="description" class="form-control" rows="4"
+              placeholder="Describe lo que necesitas. Mínimo 10 caracteres."></textarea>
+          </div>
+
+          <div class="form-group full-width">
+            <label for="additionalNotes">Notas Adicionales</label>
+            <textarea id="additionalNotes" formControlName="additionalNotes" class="form-control" rows="3"
+              placeholder="Cualquier información adicional que pueda ser útil"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Presupuesto y Preferencias -->
+      <div class="form-section">
+        <h2>Presupuesto y Preferencias</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="budgetMin">Presupuesto Mínimo ($)</label>
+            <input type="number" id="budgetMin" formControlName="budgetMin" class="form-control" placeholder="100000"
+              min="0">
+          </div>
+
+          <div class="form-group">
+            <label for="budgetMax">Presupuesto Máximo ($)</label>
+            <input type="number" id="budgetMax" formControlName="budgetMax" class="form-control" placeholder="200000"
+              min="0">
+          </div>
+
+          <div class="form-group">
+            <label for="preferredDate">Fecha Preferida</label>
+            <input type="date" id="preferredDate" formControlName="preferredDate" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="preferredTimeSlot">Horario Preferido</label>
+            <select id="preferredTimeSlot" formControlName="preferredTimeSlot" class="form-control">
+              <option value="flexible">Flexible</option>
+              <option value="morning">Mañana (8am - 12pm)</option>
+              <option value="afternoon">Tarde (12pm - 5pm)</option>
+              <option value="evening">Noche (5pm - 8pm)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="urgencyLevel">Nivel de Urgencia *</label>
+            <select id="urgencyLevel" formControlName="urgencyLevel" class="form-control">
+              <option value="low">Baja - Puedo esperar</option>
+              <option value="medium">Media - En los próximos días</option>
+              <option value="high">Alta - Lo antes posible</option>
+              <option value="emergency">Emergencia - Inmediato</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="goBack()" [disabled]="isSubmitting">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+          <fa-icon *ngIf="!isSubmitting" [icon]="faCheck"></fa-icon>
+          <fa-icon *ngIf="isSubmitting" [icon]="faSpinner" animation="spin"></fa-icon>
+          {{ isSubmitting ? 'Publicando...' : 'Publicar Solicitud' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

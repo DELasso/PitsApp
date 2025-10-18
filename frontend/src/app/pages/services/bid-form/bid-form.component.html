@@ -1,0 +1,279 @@
+<div class="bid-form-container">
+  <div class="header-section">
+    <button class="btn-back" (click)="goBack()">
+      <fa-icon [icon]="faArrowLeft"></fa-icon>
+      Volver a Solicitudes
+    </button>
+
+    <div class="title-area">
+      <h1>
+        <fa-icon [icon]="faDollarSign"></fa-icon>
+        Crear Oferta
+      </h1>
+      <p class="subtitle">Prepara tu oferta detallada para esta solicitud de servicio</p>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-state">
+    <fa-icon [icon]="faSpinner" animation="spin" size="3x"></fa-icon>
+    <p>Cargando información...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && errorMessage && !serviceRequest" class="error-state">
+    <p>{{ errorMessage }}</p>
+    <button class="btn-retry" (click)="loadServiceRequest()">Reintentar</button>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!isLoading && serviceRequest" class="content-section">
+    <!-- Service Request Summary -->
+    <div class="request-summary-card">
+      <h2>Detalles de la Solicitud</h2>
+      
+      <div class="summary-content">
+        <div class="info-row">
+          <span class="label">Tipo de Servicio:</span>
+          <span class="value">{{ getServiceTypeLabel(serviceRequest.serviceType) }}</span>
+        </div>
+
+        <div class="info-row" *ngIf="serviceRequest.vehicleBrand && serviceRequest.vehicleModel">
+          <span class="label">Vehículo:</span>
+          <span class="value">{{ serviceRequest.vehicleBrand }} {{ serviceRequest.vehicleModel }} {{ serviceRequest.vehicleYear }}</span>
+        </div>
+
+        <div class="info-row">
+          <span class="label">Descripción:</span>
+          <span class="value">{{ serviceRequest.description }}</span>
+        </div>
+
+        <div class="info-row" *ngIf="serviceRequest.estimatedBudget">
+          <span class="label">Presupuesto Estimado:</span>
+          <span class="value budget">{{ formatCurrency(serviceRequest.estimatedBudget) }}</span>
+        </div>
+
+        <div class="info-row" *ngIf="serviceRequest.preferredDate">
+          <span class="label">Fecha Preferida:</span>
+          <span class="value">{{ serviceRequest.preferredDate | date: 'short' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bid Form -->
+    <form [formGroup]="bidForm" (ngSubmit)="onSubmit()" class="bid-form">
+      <!-- Items Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <h3>
+            <fa-icon [icon]="faFileAlt"></fa-icon>
+            Desglose de Servicios/Productos
+          </h3>
+          <button type="button" class="btn-add-item" (click)="addItem()">
+            <fa-icon [icon]="faPlus"></fa-icon>
+            Agregar Ítem
+          </button>
+        </div>
+
+        <div class="items-list" formArrayName="items">
+          <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i" class="item-card">
+            <div class="item-header">
+              <span class="item-number">Ítem #{{ i + 1 }}</span>
+              <button 
+                type="button" 
+                class="btn-remove-item" 
+                (click)="removeItem(i)"
+                [disabled]="items.length === 1">
+                <fa-icon [icon]="faTrash"></fa-icon>
+              </button>
+            </div>
+
+            <div class="item-fields">
+              <div class="form-group full-width">
+                <label>Descripción *</label>
+                <input 
+                  type="text" 
+                  formControlName="description"
+                  placeholder="Ej: Cambio de aceite sintético 5W-30"
+                  [class.invalid]="isItemFieldInvalid(i, 'description')">
+                <span *ngIf="isItemFieldInvalid(i, 'description')" class="error-message">
+                  La descripción es requerida
+                </span>
+              </div>
+
+              <div class="form-group">
+                <label>Cantidad *</label>
+                <input 
+                  type="number" 
+                  formControlName="quantity"
+                  min="1"
+                  [class.invalid]="isItemFieldInvalid(i, 'quantity')">
+                <span *ngIf="isItemFieldInvalid(i, 'quantity')" class="error-message">
+                  Cantidad inválida
+                </span>
+              </div>
+
+              <div class="form-group">
+                <label>Precio Unitario *</label>
+                <input 
+                  type="number" 
+                  formControlName="unitPrice"
+                  min="0"
+                  placeholder="0"
+                  [class.invalid]="isItemFieldInvalid(i, 'unitPrice')">
+                <span *ngIf="isItemFieldInvalid(i, 'unitPrice')" class="error-message">
+                  Precio inválido
+                </span>
+              </div>
+
+              <div class="form-group">
+                <label>Subtotal</label>
+                <input 
+                  type="text" 
+                  formControlName="subtotal"
+                  [value]="formatCurrency(item.get('subtotal')?.value || 0)"
+                  [disabled]="true"
+                  class="subtotal-field">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="total-amount-display">
+          <span class="label">Total:</span>
+          <span class="amount">{{ formatCurrency(bidForm.get('totalAmount')?.value || 0) }}</span>
+        </div>
+      </div>
+
+      <!-- Timing Section -->
+      <div class="form-section">
+        <h3>
+          <fa-icon [icon]="faClock"></fa-icon>
+          Tiempo de Ejecución
+        </h3>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tiempo Estimado *</label>
+            <input 
+              type="number" 
+              formControlName="estimatedCompletionTime"
+              min="1"
+              placeholder="0"
+              [class.invalid]="isFieldInvalid('estimatedCompletionTime')">
+            <span *ngIf="isFieldInvalid('estimatedCompletionTime')" class="error-message">
+              El tiempo es requerido
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label>Unidad</label>
+            <select formControlName="estimatedTimeUnit">
+              <option value="hours">Horas</option>
+              <option value="days">Días</option>
+              <option value="weeks">Semanas</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Warranty Section -->
+      <div class="form-section">
+        <h3>
+          <fa-icon [icon]="faShieldAlt"></fa-icon>
+          Garantía
+        </h3>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Período de Garantía *</label>
+            <input 
+              type="number" 
+              formControlName="warrantyPeriod"
+              min="0"
+              placeholder="0"
+              [class.invalid]="isFieldInvalid('warrantyPeriod')">
+            <span *ngIf="isFieldInvalid('warrantyPeriod')" class="error-message">
+              El período de garantía es requerido
+            </span>
+          </div>
+
+          <div class="form-group">
+            <label>Unidad</label>
+            <select formControlName="warrantyPeriodUnit">
+              <option value="days">Días</option>
+              <option value="weeks">Semanas</option>
+              <option value="months">Meses</option>
+              <option value="years">Años</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group full-width">
+          <label>Detalles de la Garantía</label>
+          <textarea 
+            formControlName="warrantyDetails"
+            rows="3"
+            placeholder="Describe qué cubre la garantía, condiciones, exclusiones, etc."></textarea>
+        </div>
+      </div>
+
+      <!-- Payment Terms Section -->
+      <div class="form-section">
+        <h3>
+          <fa-icon [icon]="faDollarSign"></fa-icon>
+          Términos de Pago
+        </h3>
+
+        <div class="form-group full-width">
+          <label>Modalidad de Pago *</label>
+          <select formControlName="paymentTerms" [class.invalid]="isFieldInvalid('paymentTerms')">
+            <option *ngFor="let option of paymentTermsOptions" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+          <span *ngIf="isFieldInvalid('paymentTerms')" class="error-message">
+            Selecciona una modalidad de pago
+          </span>
+        </div>
+      </div>
+
+      <!-- Notes Section -->
+      <div class="form-section">
+        <h3>
+          <fa-icon [icon]="faInfoCircle"></fa-icon>
+          Notas Adicionales
+        </h3>
+
+        <div class="form-group full-width">
+          <label>Comentarios o Información Adicional</label>
+          <textarea 
+            formControlName="notes"
+            rows="4"
+            maxlength="1000"
+            placeholder="Agrega cualquier información adicional que consideres relevante para tu oferta..."></textarea>
+          <span class="char-count">
+            {{ bidForm.get('notes')?.value?.length || 0 }} / 1000 caracteres
+          </span>
+        </div>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="form-error-message">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="goBack()" [disabled]="isSubmitting">
+          Cancelar
+        </button>
+        <button type="submit" class="btn-submit" [disabled]="isSubmitting || bidForm.invalid">
+          <fa-icon *ngIf="isSubmitting" [icon]="faSpinner" animation="spin"></fa-icon>
+          <fa-icon *ngIf="!isSubmitting" [icon]="faSave"></fa-icon>
+          {{ isSubmitting ? 'Enviando...' : 'Enviar Oferta' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
