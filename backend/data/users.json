@@ -42,9 +42,175 @@
     "phone": "3003279434",
     "role": "cliente",
     "dateOfBirth": "2001-10-08T00:00:00.000Z",
-    "vehicleInfo": "Ferrari SF-25",
+    "vehicleInfo": {
+      "brand": "Ferrari",
+      "model": "SF-25",
+      "year": 2025,
+      "plate": "FRR125",
+      "type": "car"
+    },
     "isActive": true,
     "createdAt": "2025-09-16T02:52:45.724Z",
     "updatedAt": "2025-09-16T02:52:45.724Z"
+  },
+  {
+    "id": "13",
+    "email": "carlos.mendez@gmail.com",
+    "password": "$2b$10$ji9zcgPQnFlxLo0WezYAyO3.XyiwPzwM8lHAOGV18tnc6Abla9naa",
+    "firstName": "Carlos",
+    "lastName": "Méndez",
+    "phone": "3001234567",
+    "role": "cliente",
+    "dateOfBirth": "1988-05-15T00:00:00.000Z",
+    "vehicleInfo": {
+      "brand": "Toyota",
+      "model": "Corolla",
+      "year": 2020,
+      "plate": "ABC123",
+      "type": "car"
+    },
+    "isActive": true,
+    "createdAt": "2025-10-01T10:15:30.000Z",
+    "updatedAt": "2025-10-01T10:15:30.000Z"
+  },
+  {
+    "id": "14",
+    "email": "maria.rodriguez@gmail.com",
+    "password": "$2b$10$ji9zcgPQnFlxLo0WezYAyO3.XyiwPzwM8lHAOGV18tnc6Abla9naa",
+    "firstName": "María",
+    "lastName": "Rodríguez",
+    "phone": "3009876543",
+    "role": "cliente",
+    "dateOfBirth": "1992-11-22T00:00:00.000Z",
+    "vehicleInfo": {
+      "brand": "Chevrolet",
+      "model": "Spark GT",
+      "year": 2019,
+      "plate": "DEF456",
+      "type": "car"
+    },
+    "isActive": true,
+    "createdAt": "2025-10-02T14:20:45.000Z",
+    "updatedAt": "2025-10-02T14:20:45.000Z"
+  },
+  {
+    "id": "15",
+    "email": "juan.garcia@gmail.com",
+    "password": "$2b$10$ji9zcgPQnFlxLo0WezYAyO3.XyiwPzwM8lHAOGV18tnc6Abla9naa",
+    "firstName": "Juan",
+    "lastName": "García",
+    "phone": "3015551234",
+    "role": "cliente",
+    "dateOfBirth": "1985-03-08T00:00:00.000Z",
+    "vehicleInfo": {
+      "brand": "Ford",
+      "model": "Ranger",
+      "year": 2021,
+      "plate": "GHI789",
+      "type": "truck"
+    },
+    "isActive": true,
+    "createdAt": "2025-10-03T09:30:15.000Z",
+    "updatedAt": "2025-10-03T09:30:15.000Z"
+  },
+  {
+    "id": "16",
+    "email": "laura.martinez@gmail.com",
+    "password": "$2b$10$ji9zcgPQnFlxLo0WezYAyO3.XyiwPzwM8lHAOGV18tnc6Abla9naa",
+    "firstName": "Laura",
+    "lastName": "Martínez",
+    "phone": "3027778888",
+    "role": "cliente",
+    "dateOfBirth": "1995-07-30T00:00:00.000Z",
+    "vehicleInfo": {
+      "brand": "Mazda",
+      "model": "CX-5",
+      "year": 2022,
+      "plate": "JKL012",
+      "type": "suv"
+    },
+    "isActive": true,
+    "createdAt": "2025-10-04T16:45:20.000Z",
+    "updatedAt": "2025-10-04T16:45:20.000Z"
+  },
+  {
+    "id": "17",
+    "email": "pedro.lopez@gmail.com",
+    "password": "$2b$10$ji9zcgPQnFlxLo0WezYAyO3.XyiwPzwM8lHAOGV18tnc6Abla9naa",
+    "firstName": "Pedro",
+    "lastName": "López",
+    "phone": "3013334444",
+    "role": "cliente",
+    "dateOfBirth": "1990-12-12T00:00:00.000Z",
+    "vehicleInfo": {
+      "brand": "Yamaha",
+      "model": "MT-07",
+      "year": 2023,
+      "plate": "MNO345",
+      "type": "motorcycle"
+    },
+    "isActive": true,
+    "createdAt": "2025-10-05T11:00:00.000Z",
+    "updatedAt": "2025-10-05T11:00:00.000Z"
+  },
+  {
+    "id": "18",
+    "email": "sofia.ramirez@gmail.com",
+    "password": "$2b$10$ji9zcgPQnFlxLo0WezYAyO3.XyiwPzwM8lHAOGV18tnc6Abla9naa",
+    "firstName": "Sofía",
+    "lastName": "Ramírez",
+    "phone": "3045556666",
+    "role": "cliente",
+    "dateOfBirth": "1993-09-18T00:00:00.000Z",
+    "vehicleInfo": {
+      "brand": "Renault",
+      "model": "Duster",
+      "year": 2020,
+      "plate": "PQR678",
+      "type": "suv"
+    },
+    "isActive": true,
+    "createdAt": "2025-10-06T13:25:30.000Z",
+    "updatedAt": "2025-10-06T13:25:30.000Z"
+  },
+  {
+    "id": "19",
+    "email": "andres.castro@gmail.com",
+    "password": "$2b$10$ji9zcgPQnFlxLo0WezYAyO3.XyiwPzwM8lHAOGV18tnc6Abla9naa",
+    "firstName": "Andrés",
+    "lastName": "Castro",
+    "phone": "3017778899",
+    "role": "cliente",
+    "dateOfBirth": "1987-04-25T00:00:00.000Z",
+    "vehicleInfo": {
+      "brand": "Nissan",
+      "model": "Frontier",
+      "year": 2018,
+      "plate": "STU901",
+      "type": "truck"
+    },
+    "isActive": true,
+    "createdAt": "2025-10-07T08:10:45.000Z",
+    "updatedAt": "2025-10-07T08:10:45.000Z"
+  },
+  {
+    "id": "20",
+    "email": "camila.torres@gmail.com",
+    "password": "$2b$10$ji9zcgPQnFlxLo0WezYAyO3.XyiwPzwM8lHAOGV18tnc6Abla9naa",
+    "firstName": "Camila",
+    "lastName": "Torres",
+    "phone": "3022223333",
+    "role": "cliente",
+    "dateOfBirth": "1996-06-14T00:00:00.000Z",
+    "vehicleInfo": {
+      "brand": "Kia",
+      "model": "Sportage",
+      "year": 2021,
+      "plate": "VWX234",
+      "type": "suv"
+    },
+    "isActive": true,
+    "createdAt": "2025-10-08T15:30:20.000Z",
+    "updatedAt": "2025-10-08T15:30:20.000Z"
   }
 ]

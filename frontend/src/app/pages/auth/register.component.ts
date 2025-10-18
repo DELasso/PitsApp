@@ -47,7 +47,11 @@ export class RegisterComponent {
       city: [''],
       description: [''],
       dateOfBirth: [''],
-      vehicleInfo: ['']
+      vehicleBrand: [''],
+      vehicleModel: [''],
+      vehicleYear: [''],
+      vehiclePlate: [''],
+      vehicleType: ['']
     }, { validators: this.passwordMatchValidator });
 
     // Observar cambios en el rol para mostrar/ocultar campos
@@ -112,7 +116,22 @@ export class RegisterComponent {
         registerData.description = this.registerForm.value.description;
       } else {
         registerData.dateOfBirth = this.registerForm.value.dateOfBirth;
-        registerData.vehicleInfo = this.registerForm.value.vehicleInfo;
+        
+        // Solo incluir vehicleInfo si al menos uno de los campos está lleno
+        const vehicleBrand = this.registerForm.value.vehicleBrand;
+        const vehicleModel = this.registerForm.value.vehicleModel;
+        const vehicleYear = this.registerForm.value.vehicleYear;
+        const vehiclePlate = this.registerForm.value.vehiclePlate;
+        
+        if (vehicleBrand || vehicleModel || vehicleYear || vehiclePlate) {
+          registerData.vehicleInfo = {
+            brand: vehicleBrand || '',
+            model: vehicleModel || '',
+            year: vehicleYear ? parseInt(vehicleYear) : 0,
+            plate: vehiclePlate || '',
+            type: this.registerForm.value.vehicleType || ''
+          };
+        }
       }
 
       this.authService.register(registerData).subscribe({

@@ -6,6 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowLeft, faCheck, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { ServiceRequestService } from '../../../services/service-request.service';
 import { ServiceType, VehicleType, UrgencyLevel } from '../../../models/service-request.model';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-service-request-form',
@@ -24,6 +25,7 @@ export class ServiceRequestFormComponent implements OnInit {
   isSubmitting = false;
   errorMessage = '';
   successMessage = '';
+  vehicleInfoLoaded = false;
 
   ServiceType = ServiceType;
   VehicleType = VehicleType;
@@ -48,12 +50,28 @@ export class ServiceRequestFormComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private serviceRequestService: ServiceRequestService
+    private serviceRequestService: ServiceRequestService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.serviceType = this.route.snapshot.paramMap.get('type') as ServiceType;
     this.initializeForm();
+    this.loadUserVehicleInfo();
+  }
+
+  loadUserVehicleInfo(): void {
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser?.vehicleInfo) {
+      const vehicle = currentUser.vehicleInfo;
+      this.serviceForm.patchValue({
+        vehicleBrand: vehicle.brand || '',
+        vehicleModel: vehicle.model || '',
+        vehicleYear: vehicle.year || '',
+        vehiclePlate: vehicle.plate || ''
+      });
+      this.vehicleInfoLoaded = true;
+    }
   }
 
   initializeForm(): void {

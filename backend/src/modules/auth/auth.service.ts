@@ -80,7 +80,11 @@ export class AuthService {
   async validateUser(payload: any): Promise<any> {
     const user = await this.usersService.findByIdSafe(payload.sub);
     if (user && user.isActive) {
-      return user;
+      // Agregar userId para que los controladores puedan accederlo fácilmente
+      return {
+        ...user,
+        userId: user.id
+      };
     }
     return null;
   }

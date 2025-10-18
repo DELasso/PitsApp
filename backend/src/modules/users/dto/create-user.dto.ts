@@ -51,6 +51,11 @@ export class CreateUserDto {
   dateOfBirth?: Date;
 
   @IsOptional()
-  @IsString()
-  vehicleInfo?: string;
+  vehicleInfo?: {
+    brand: string;
+    model: string;
+    year: number;
+    plate: string;
+    type?: string;
+  };
 }

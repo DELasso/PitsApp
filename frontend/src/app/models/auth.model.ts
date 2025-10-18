@@ -9,6 +9,14 @@ export enum BusinessType {
   TALLER_Y_REPUESTOS = 'taller_y_repuestos',
 }
 
+export interface VehicleInfo {
+  brand: string;
+  model: string;
+  year: number;
+  plate: string;
+  type?: string;
+}
+
 export interface User {
   id: string;
   email: string;
@@ -29,7 +37,7 @@ export interface User {
   
   // Campos específicos para clientes
   dateOfBirth?: string;
-  vehicleInfo?: string;
+  vehicleInfo?: VehicleInfo;
 }
 
 export interface AuthResponse {
@@ -60,5 +68,5 @@ export interface RegisterRequest {
   
   // Campos opcionales para clientes
   dateOfBirth?: string;
-  vehicleInfo?: string;
+  vehicleInfo?: VehicleInfo;
 }

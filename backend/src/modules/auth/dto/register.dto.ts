@@ -52,6 +52,11 @@ export class RegisterDto {
   dateOfBirth?: string;
 
   @IsOptional()
-  @IsString()
-  vehicleInfo?: string;
+  vehicleInfo?: {
+    brand: string;
+    model: string;
+    year: number;
+    plate: string;
+    type?: string;
+  };
 }

@@ -1,6 +1,7 @@
 [
   {
     "id": "743a816d-15cf-4658-a6dc-a59e90649340",
+    "clientId": "12",
     "serviceType": "emergency_service",
     "vehicleType": "car",
     "vehicleBrand": "Toyota",
@@ -19,5 +20,35 @@
     "createdAt": "2025-10-18T04:40:19.143Z",
     "updatedAt": "2025-10-18T04:40:19.143Z",
     "expiresAt": "2025-10-25T04:40:19.143Z"
+  },
+  {
+    "id": "f42937f6-10f8-4501-8c05-117357302c99",
+    "clientId": "19",
+    "serviceType": "express_oil_change",
+    "vehicleType": "car",
+    "vehicleBrand": "Nissan",
+    "vehicleModel": "Frontier",
+    "vehicleYear": 2018,
+    "vehiclePlate": "STU901",
+    "description": "Necesito un cambio de aceite lo más pronto posible",
+    "urgencyLevel": "medium",
+    "budgetMin": 100000,
+    "budgetMax": 500000,
+    "preferredDate": "2025-10-19",
+    "preferredTimeSlot": "flexible",
+    "additionalNotes": "",
+    "oilChangeDetails": {
+      "currentMileage": 45000,
+      "lastOilChange": 40000,
+      "preferredOilBrand": "Mobil",
+      "oilType": "synthetic",
+      "includeFilter": true,
+      "additionalServices": []
+    },
+    "status": "pending",
+    "bidsCount": 0,
+    "createdAt": "2025-10-18T23:18:41.416Z",
+    "updatedAt": "2025-10-18T23:18:41.416Z",
+    "expiresAt": "2025-10-25T23:18:41.416Z"
   }
 ]

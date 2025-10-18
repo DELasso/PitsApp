@@ -23,7 +23,13 @@
 
       <!-- Información del Vehículo -->
       <div class="form-section">
-        <h2>Información del Vehículo</h2>
+        <div class="section-header-with-badge">
+          <h2>Información del Vehículo</h2>
+          <span class="auto-complete-badge" *ngIf="vehicleInfoLoaded">
+            <i class="fa-solid fa-check-circle"></i>
+            Datos cargados automáticamente
+          </span>
+        </div>
         <div class="form-grid">
           <div class="form-group">
             <label for="vehicleType">Tipo de Vehículo *</label>
