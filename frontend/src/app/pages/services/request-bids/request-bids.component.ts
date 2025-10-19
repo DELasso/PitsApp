@@ -195,7 +195,7 @@ export class RequestBidsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/services/my-requests']);
+    this.router.navigate(['/servicios/mis-solicitudes']);
   }
 
   canAcceptBid(bid: Bid): boolean {

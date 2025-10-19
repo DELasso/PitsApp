@@ -119,16 +119,16 @@ export class ServiceTypeSelectorComponent implements OnInit {
     console.log('Cantidad de servicios disponibles:', this.serviceTypes.length);
   }
 
-  selectServiceType(serviceType: ServiceType): void {
-    console.log('Navegando a:', '/services/request', serviceType);
-    this.router.navigate(['/services/request', serviceType]);
+  selectServiceType(serviceType: string): void {
+    console.log('Navegando a:', '/servicios/solicitud', serviceType);
+    this.router.navigate(['/servicios/solicitud', serviceType]);
   }
 
   viewMyRequests(): void {
-    this.router.navigate(['/services/my-requests']);
+    this.router.navigate(['/servicios/mis-solicitudes']);
   }
 
   viewAvailableRequests(): void {
-    this.router.navigate(['/services/available']);
+    this.router.navigate(['/servicios/disponibles']);
   }
 }

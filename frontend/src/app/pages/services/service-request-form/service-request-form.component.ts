@@ -181,7 +181,7 @@ export class ServiceRequestFormComponent implements OnInit {
       next: (response) => {
         this.successMessage = '¡Solicitud creada exitosamente! Pronto recibirás ofertas.';
         setTimeout(() => {
-          this.router.navigate(['/services/my-requests']);
+          this.router.navigate(['/servicios/mis-solicitudes']);
         }, 2000);
       },
       error: (error) => {

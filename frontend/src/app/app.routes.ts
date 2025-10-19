@@ -31,41 +31,71 @@ export const routes: Routes = [
     path: 'checkout/confirmation',
     loadComponent: () => import('./pages/checkout/confirmation.component').then(m => m.ConfirmationComponent)
   },
+  // Redirecciones de rutas antiguas en inglés a español
   {
     path: 'services',
-    redirectTo: 'services',
+    redirectTo: 'servicios',
     pathMatch: 'full'
   },
   {
-    path: 'services',
-    loadComponent: () => import('./pages/services/service-type-selector/service-type-selector.component').then(m => m.ServiceTypeSelectorComponent)
-  },
-  {
     path: 'services/request/:type',
-    loadComponent: () => import('./pages/services/service-request-form/service-request-form.component').then(m => m.ServiceRequestFormComponent)
+    redirectTo: 'servicios/solicitud/:type'
   },
   {
     path: 'services/my-requests',
-    loadComponent: () => import('./pages/services/my-requests/my-requests.component').then(m => m.MyRequestsComponent)
+    redirectTo: 'servicios/mis-solicitudes'
   },
   {
     path: 'services/request/:id/bids',
-    loadComponent: () => import('./pages/services/request-bids/request-bids.component').then(m => m.RequestBidsComponent)
+    redirectTo: 'servicios/solicitud/:id/ofertas'
   },
   {
     path: 'services/available',
-    loadComponent: () => import('./pages/services/available-requests/available-requests.component').then(m => m.AvailableRequestsComponent)
+    redirectTo: 'servicios/disponibles'
   },
   {
     path: 'services/available/:id',
-    loadComponent: () => import('./pages/services/service-request-detail/service-request-detail.component').then(m => m.ServiceRequestDetailComponent)
+    redirectTo: 'servicios/disponibles/:id'
   },
   {
     path: 'services/available/:id/bid',
-    loadComponent: () => import('./pages/services/bid-form/bid-form.component').then(m => m.BidFormComponent)
+    redirectTo: 'servicios/disponibles/:id/ofertar'
   },
   {
     path: 'services/my-bids',
+    redirectTo: 'servicios/mis-ofertas'
+  },
+  // Rutas en español
+  {
+    path: 'servicios',
+    loadComponent: () => import('./pages/services/service-type-selector/service-type-selector.component').then(m => m.ServiceTypeSelectorComponent)
+  },
+  {
+    path: 'servicios/solicitud/:type',
+    loadComponent: () => import('./pages/services/service-request-form/service-request-form.component').then(m => m.ServiceRequestFormComponent)
+  },
+  {
+    path: 'servicios/mis-solicitudes',
+    loadComponent: () => import('./pages/services/my-requests/my-requests.component').then(m => m.MyRequestsComponent)
+  },
+  {
+    path: 'servicios/solicitud/:id/ofertas',
+    loadComponent: () => import('./pages/services/request-bids/request-bids.component').then(m => m.RequestBidsComponent)
+  },
+  {
+    path: 'servicios/disponibles',
+    loadComponent: () => import('./pages/services/available-requests/available-requests.component').then(m => m.AvailableRequestsComponent)
+  },
+  {
+    path: 'servicios/disponibles/:id',
+    loadComponent: () => import('./pages/services/service-request-detail/service-request-detail.component').then(m => m.ServiceRequestDetailComponent)
+  },
+  {
+    path: 'servicios/disponibles/:id/ofertar',
+    loadComponent: () => import('./pages/services/bid-form/bid-form.component').then(m => m.BidFormComponent)
+  },
+  {
+    path: 'servicios/mis-ofertas',
     loadComponent: () => import('./pages/services/my-bids/my-bids.component').then(m => m.MyBidsComponent)
   },
   {

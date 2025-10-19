@@ -98,15 +98,13 @@ export class ServiceRequestDetailComponent implements OnInit {
         });
     }
 
-    goBack(): void {
-        this.router.navigate(['/services/available']);
-    }
+  goBack(): void {
+    this.router.navigate(['/servicios/disponibles']);
+  }
 
-    makeOffer(): void {
-        this.router.navigate(['/services/available', this.requestId, 'bid']);
-    }
-
-    formatCurrency(amount: number): string {
+  makeOffer(): void {
+    this.router.navigate(['/servicios/disponibles', this.requestId, 'ofertar']);
+  }    formatCurrency(amount: number): string {
         return new Intl.NumberFormat('es-CO', {
             style: 'currency',
             currency: 'COP',

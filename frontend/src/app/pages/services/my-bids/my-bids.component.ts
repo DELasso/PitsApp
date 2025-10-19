@@ -80,8 +80,8 @@ export class MyBidsComponent implements OnInit {
     this.rejectedBids = this.bids.filter(b => b.status === BidStatus.REJECTED).length;
   }
 
-  viewRequest(requestId: string): void {
-    this.router.navigate(['/services/available', requestId]);
+  viewRequestDetails(requestId: string): void {
+    this.router.navigate(['/servicios/disponibles', requestId]);
   }
 
   withdrawBid(bidId: string): void {

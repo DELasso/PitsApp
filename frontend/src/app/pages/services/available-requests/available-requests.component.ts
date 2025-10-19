@@ -134,11 +134,11 @@ export class AvailableRequestsComponent implements OnInit {
   }
 
   viewDetails(requestId: string): void {
-    this.router.navigate(['/services/available', requestId]);
+    this.router.navigate(['/servicios/disponibles', requestId]);
   }
 
   makeOffer(requestId: string): void {
-    this.router.navigate(['/services/available', requestId, 'bid']);
+    this.router.navigate(['/servicios/disponibles', requestId, 'ofertar']);
   }
 
   formatCurrency(amount: number): string {

@@ -70,7 +70,7 @@
       <fa-icon [icon]="faList" size="3x"></fa-icon>
       <h3>No tienes ofertas aún</h3>
       <p>Comienza a ofertar en solicitudes de servicio para que aparezcan aquí.</p>
-      <button class="btn-browse" routerLink="/services/available">
+      <button class="btn-browse" routerLink="/servicios/disponibles">
         Explorar Solicitudes
       </button>
     </div>
@@ -150,7 +150,7 @@
         </div>
 
         <div class="card-footer">
-          <button class="btn-secondary" (click)="viewRequest(bid.serviceRequestId)">
+          <button class="btn-secondary" (click)="viewRequestDetails(bid.serviceRequestId)">
             <fa-icon [icon]="faEye"></fa-icon>
             Ver Solicitud
           </button>

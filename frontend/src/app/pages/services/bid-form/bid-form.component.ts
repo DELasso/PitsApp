@@ -204,7 +204,7 @@ export class BidFormComponent implements OnInit {
     this.bidService.create(createBidDto).subscribe({
       next: (bid) => {
         // Navigate back to available requests
-        this.router.navigate(['/services/available']);
+        this.router.navigate(['/servicios/disponibles']);
       },
       error: (error) => {
         console.error('Error creating bid:', error);
@@ -215,7 +215,7 @@ export class BidFormComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/services/available']);
+    this.router.navigate(['/servicios/disponibles']);
   }
 
   formatCurrency(amount: number): string {

@@ -82,7 +82,7 @@ export class MyRequestsComponent implements OnInit {
   }
 
   viewBids(requestId: string): void {
-    this.router.navigate(['/services/request', requestId, 'bids']);
+    this.router.navigate(['/servicios/solicitud', requestId, 'ofertas']);
   }
 
   deleteRequest(id: string): void {
@@ -154,6 +154,6 @@ export class MyRequestsComponent implements OnInit {
   }
 
   createNewRequest(): void {
-    this.router.navigate(['/services']);
+    this.router.navigate(['/servicios']);
   }
 }
