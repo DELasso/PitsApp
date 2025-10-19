@@ -57,6 +57,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/services/available-requests/available-requests.component').then(m => m.AvailableRequestsComponent)
   },
   {
+    path: 'services/available/:id',
+    loadComponent: () => import('./pages/services/service-request-detail/service-request-detail.component').then(m => m.ServiceRequestDetailComponent)
+  },
+  {
     path: 'services/available/:id/bid',
     loadComponent: () => import('./pages/services/bid-form/bid-form.component').then(m => m.BidFormComponent)
   },

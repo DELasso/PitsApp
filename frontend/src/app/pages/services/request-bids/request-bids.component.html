@@ -27,7 +27,7 @@
           <h1>{{ serviceTypeLabels[serviceRequest.serviceType] }}</h1>
           <div class="bids-count">
             <strong>{{ bids.length }}</strong> 
-            {{ bids.length === 1 ? 'oferta recibida' : 'ofertas recibidas' }}
+            {{ bids.length === 1 ? ' OFERTA RECIBIDA' : 'OFERTAS RECIBIDAS' }}
           </div>
         </div>
         
@@ -57,7 +57,7 @@
       <div *ngIf="bids.length > 0" class="bids-section">
         <div class="section-header">
           <h2>Ofertas Recibidas</h2>
-          <p class="tip">💡 Compara precio, calificación, tiempo y servicios incluidos</p>
+          <p class="tip">Compara precio, calificación, tiempo y servicios incluidos</p>
         </div>
 
         <div class="bids-list">
@@ -73,10 +73,10 @@
           >
             <!-- Badge de mejor oferta -->
             <div class="best-badge" *ngIf="isLowestBid(bid) && bid.status === 'pending'">
-              🏆 MEJOR PRECIO
+              MEJOR PRECIO
             </div>
             <div class="best-badge rating-badge" *ngIf="isHighestRated(bid) && bid.status === 'pending' && !isLowestBid(bid)">
-              ⭐ MEJOR CALIFICACIÓN
+              MEJOR CALIFICACIÓN
             </div>
 
             <!-- Header del Bid -->

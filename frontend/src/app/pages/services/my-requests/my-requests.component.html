@@ -35,7 +35,7 @@
           </div>
           <div class="status-badge" [ngClass]="getStatusClass(request.status)">
             <fa-icon [icon]="getStatusIcon(request.status)"></fa-icon>
-            {{ statusLabels[request.status] }}
+            {{ statusLabels[request.status] || request.status }}
           </div>
         </div>
 

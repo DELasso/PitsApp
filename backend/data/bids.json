@@ -1,1 +1,116 @@
-[]
+[
+  {
+    "id": "bid-001",
+    "serviceRequestId": "743a816d-15cf-4658-a6dc-a59e90649340",
+    "providerId": "10",
+    "providerName": "Pitsso",
+    "providerRating": 4.8,
+    "items": [
+      {
+        "description": "Revisión completa del sistema eléctrico",
+        "quantity": 1,
+        "unitPrice": 150000,
+        "totalPrice": 150000
+      },
+      {
+        "description": "Cambio de fusibles y relés",
+        "quantity": 5,
+        "unitPrice": 15000,
+        "totalPrice": 75000
+      },
+      {
+        "description": "Escaneo de códigos de error",
+        "quantity": 1,
+        "unitPrice": 80000,
+        "totalPrice": 80000
+      }
+    ],
+    "totalAmount": 305000,
+    "estimatedCompletionTime": "2-3 horas",
+    "warranty": {
+      "period": 6,
+      "coverage": "Repuestos y mano de obra"
+    },
+    "paymentTerms": "50% adelantado, 50% al finalizar",
+    "additionalNotes": "Contamos con equipos de diagnóstico de última generación. Servicio a domicilio sin costo adicional.",
+    "status": "pending",
+    "createdAt": "2025-10-18T05:30:00.000Z",
+    "updatedAt": "2025-10-18T05:30:00.000Z"
+  },
+  {
+    "id": "bid-002",
+    "serviceRequestId": "743a816d-15cf-4658-a6dc-a59e90649340",
+    "providerId": "11",
+    "providerName": "HerreraPits",
+    "providerRating": 4.6,
+    "items": [
+      {
+        "description": "Diagnóstico eléctrico completo",
+        "quantity": 1,
+        "unitPrice": 120000,
+        "totalPrice": 120000
+      },
+      {
+        "description": "Reparación de sistema eléctrico",
+        "quantity": 1,
+        "unitPrice": 200000,
+        "totalPrice": 200000
+      },
+      {
+        "description": "Reemplazo de componentes defectuosos",
+        "quantity": 1,
+        "unitPrice": 100000,
+        "totalPrice": 100000
+      }
+    ],
+    "totalAmount": 420000,
+    "estimatedCompletionTime": "3-4 horas",
+    "warranty": {
+      "period": 3,
+      "coverage": "Mano de obra únicamente"
+    },
+    "paymentTerms": "Pago total al finalizar",
+    "additionalNotes": "Especialistas en sistemas eléctricos. Atención inmediata.",
+    "status": "pending",
+    "createdAt": "2025-10-18T06:15:00.000Z",
+    "updatedAt": "2025-10-18T06:15:00.000Z"
+  },
+  {
+    "id": "bid-003",
+    "serviceRequestId": "f42937f6-10f8-4501-8c05-117357302c99",
+    "providerId": "10",
+    "providerName": "Pitsso",
+    "providerRating": 4.8,
+    "items": [
+      {
+        "description": "Cambio de aceite sintético Mobil 1 5W-30",
+        "quantity": 4,
+        "unitPrice": 45000,
+        "totalPrice": 180000
+      },
+      {
+        "description": "Filtro de aceite premium",
+        "quantity": 1,
+        "unitPrice": 35000,
+        "totalPrice": 35000
+      },
+      {
+        "description": "Mano de obra",
+        "quantity": 1,
+        "unitPrice": 50000,
+        "totalPrice": 50000
+      }
+    ],
+    "totalAmount": 265000,
+    "estimatedCompletionTime": "45 minutos",
+    "warranty": {
+      "period": 6,
+      "coverage": "Aceite y filtro"
+    },
+    "paymentTerms": "Pago al finalizar",
+    "additionalNotes": "Aceite sintético de alta calidad. Incluye revisión de niveles de fluidos sin costo.",
+    "status": "accepted",
+    "createdAt": "2025-10-19T00:30:00.000Z",
+    "updatedAt": "2025-10-19T04:30:04.295Z"
+  }
+]

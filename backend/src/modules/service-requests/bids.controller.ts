@@ -22,11 +22,12 @@ export class BidsController {
   @UseGuards(JwtAuthGuard)
   create(@Body() createDto: CreateBidDto, @Request() req) {
     const user = req.user;
+    const providerName = user.companyName || `${user.firstName} ${user.lastName}`;
     return this.bidsService.create(
       createDto,
       user.userId,
-      user.name || 'Proveedor',
-      user.rating,
+      providerName,
+      user.rating || 4.5,
     );
   }
 

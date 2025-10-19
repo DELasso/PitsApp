@@ -92,9 +92,9 @@
             <fa-icon [icon]="faCar"></fa-icon>
             {{ serviceTypeLabels[request.serviceType] }}
           </div>
-          <div class="urgency-badge" [ngClass]="getUrgencyClass(request.urgencyLevel)">
+          <div class="urgency-badge" [ngClass]="getUrgencyClass(request.urgencyLevel!)" *ngIf="request.urgencyLevel">
             <fa-icon [icon]="faClock"></fa-icon>
-            {{ getUrgencyLabel(request.urgencyLevel) }}
+            {{ getUrgencyLabel(request.urgencyLevel!) }}
           </div>
         </div>
 

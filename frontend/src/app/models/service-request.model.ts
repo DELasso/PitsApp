@@ -81,15 +81,24 @@ export interface RepairDetails {
   preferredParts?: 'original' | 'aftermarket' | 'used';
 }
 
+export interface VehicleInfo {
+  brand: string;
+  model: string;
+  year: number;
+  plate: string;
+  type?: string;
+}
+
 export interface ServiceRequest {
   id: string;
   clientId: string;
-  serviceType: ServiceType;
-  vehicleType: VehicleType;
+  serviceType: string;
+  vehicleType?: VehicleType;
   vehicleBrand?: string;
   vehicleModel?: string;
   vehicleYear?: number;
   vehiclePlate?: string;
+  vehicleInfo?: VehicleInfo;
   
   homeServiceDetails?: HomeServiceDetails;
   towTruckDetails?: TowTruckDetails;
@@ -97,14 +106,17 @@ export interface ServiceRequest {
   diagnosisDetails?: DiagnosisDetails;
   repairDetails?: RepairDetails;
   
+  location?: string;
+  budgetEstimate?: number;
   budgetMin?: number;
   budgetMax?: number;
   estimatedBudget?: number; // Agregado para compatibilidad
   preferredDate?: string;
   preferredTimeSlot?: 'morning' | 'afternoon' | 'evening' | 'flexible';
-  urgencyLevel: UrgencyLevel;
+  urgency?: string;
+  urgencyLevel?: UrgencyLevel;
   
-  status: ServiceStatus;
+  status: ServiceStatus | string;
   description: string;
   additionalNotes?: string;
   

@@ -46,13 +46,13 @@ export class MyRequestsComponent implements OnInit {
     'other': 'Otro'
   };
 
-  statusLabels: Record<ServiceStatus, string> = {
-    [ServiceStatus.PENDING]: 'Esperando ofertas',
-    [ServiceStatus.RECEIVING_BIDS]: 'Recibiendo ofertas',
-    [ServiceStatus.BID_ACCEPTED]: 'Oferta aceptada',
-    [ServiceStatus.IN_PROGRESS]: 'En progreso',
-    [ServiceStatus.COMPLETED]: 'Completado',
-    [ServiceStatus.CANCELLED]: 'Cancelado'
+  statusLabels: Record<string, string> = {
+    'pending': 'Esperando ofertas',
+    'receiving_bids': 'Recibiendo ofertas',
+    'bid_accepted': 'Oferta aceptada',
+    'in_progress': 'En progreso',
+    'completed': 'Completado',
+    'cancelled': 'Cancelado'
   };
 
   constructor(
@@ -99,35 +99,37 @@ export class MyRequestsComponent implements OnInit {
     }
   }
 
-  getStatusIcon(status: ServiceStatus): any {
-    switch (status) {
-      case ServiceStatus.PENDING:
-      case ServiceStatus.RECEIVING_BIDS:
+  getStatusIcon(status: ServiceStatus | string): any {
+    const statusStr = status as string;
+    switch (statusStr) {
+      case 'pending':
+      case 'receiving_bids':
         return faClock;
-      case ServiceStatus.BID_ACCEPTED:
-      case ServiceStatus.COMPLETED:
+      case 'bid_accepted':
+      case 'completed':
         return faCheckCircle;
-      case ServiceStatus.IN_PROGRESS:
+      case 'in_progress':
         return faSpinner;
-      case ServiceStatus.CANCELLED:
+      case 'cancelled':
         return faTimesCircle;
       default:
         return faClock;
     }
   }
 
-  getStatusClass(status: ServiceStatus): string {
-    switch (status) {
-      case ServiceStatus.PENDING:
-      case ServiceStatus.RECEIVING_BIDS:
+  getStatusClass(status: ServiceStatus | string): string {
+    const statusStr = status as string;
+    switch (statusStr) {
+      case 'pending':
+      case 'receiving_bids':
         return 'status-pending';
-      case ServiceStatus.BID_ACCEPTED:
+      case 'bid_accepted':
         return 'status-accepted';
-      case ServiceStatus.IN_PROGRESS:
+      case 'in_progress':
         return 'status-progress';
-      case ServiceStatus.COMPLETED:
+      case 'completed':
         return 'status-completed';
-      case ServiceStatus.CANCELLED:
+      case 'cancelled':
         return 'status-cancelled';
       default:
         return 'status-pending';

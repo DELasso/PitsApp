@@ -1,0 +1,282 @@
+<div class="service-request-detail-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <fa-icon [icon]="faSpinner" animation="spin" size="3x"></fa-icon>
+    <p>Cargando detalles de la solicitud...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && errorMessage" class="error-container">
+    <fa-icon [icon]="faExclamationTriangle" size="3x"></fa-icon>
+    <p>{{ errorMessage }}</p>
+    <button class="btn-back" (click)="goBack()">
+      <fa-icon [icon]="faArrowLeft"></fa-icon>
+      Volver a Solicitudes
+    </button>
+  </div>
+
+  <!-- Service Request Detail -->
+  <div *ngIf="!isLoading && !errorMessage && serviceRequest" class="detail-content">
+    <!-- Header -->
+    <div class="detail-header">
+      <button class="btn-back-header" (click)="goBack()">
+        <fa-icon [icon]="faArrowLeft"></fa-icon>
+        Volver
+      </button>
+      <h1>Detalles de la Solicitud</h1>
+      <div class="urgency-badge" [ngClass]="getUrgencyClass((serviceRequest.urgency || serviceRequest.urgencyLevel) || 'medium')" *ngIf="serviceRequest.urgency || serviceRequest.urgencyLevel">
+        <fa-icon [icon]="faExclamationTriangle"></fa-icon>
+        {{ urgencyLabels[(serviceRequest.urgency || serviceRequest.urgencyLevel) || 'medium'] }}
+      </div>
+    </div>
+
+    <!-- Main Information Card -->
+    <div class="info-card main-card">
+      <div class="card-header">
+        <fa-icon [icon]="faFileAlt"></fa-icon>
+        <h2>Información General</h2>
+      </div>
+      <div class="card-content">
+        <div class="info-row">
+          <span class="label">
+            <fa-icon [icon]="faTools"></fa-icon>
+            Tipo de Servicio:
+          </span>
+          <span class="value">{{ serviceTypeLabels[serviceRequest.serviceType] || serviceRequest.serviceType }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">
+            <fa-icon [icon]="faCalendar"></fa-icon>
+            Fecha de Solicitud:
+          </span>
+          <span class="value">{{ formatDate(serviceRequest.createdAt) }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">
+            <fa-icon [icon]="faMoneyBillWave"></fa-icon>
+            Presupuesto:
+          </span>
+          <span class="value budget" *ngIf="serviceRequest.budgetEstimate">
+            {{ formatCurrency(serviceRequest.budgetEstimate) }}
+          </span>
+          <span class="value budget" *ngIf="!serviceRequest.budgetEstimate && serviceRequest.budgetMin && serviceRequest.budgetMax">
+            {{ formatCurrency(serviceRequest.budgetMin) }} - {{ formatCurrency(serviceRequest.budgetMax) }}
+          </span>
+        </div>
+        <div class="info-row full-width" *ngIf="serviceRequest.description">
+          <span class="label">
+            <fa-icon [icon]="faFileAlt"></fa-icon>
+            Descripción:
+          </span>
+          <p class="description">{{ serviceRequest.description }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vehicle Information Card -->
+    <div class="info-card vehicle-card" *ngIf="serviceRequest.vehicleInfo || serviceRequest.vehicleBrand">
+      <div class="card-header">
+        <fa-icon [icon]="faCar"></fa-icon>
+        <h2>Información del Vehículo</h2>
+      </div>
+      <div class="card-content">
+        <!-- Using vehicleInfo object if available -->
+        <ng-container *ngIf="serviceRequest.vehicleInfo">
+          <div class="info-row">
+            <span class="label">Marca:</span>
+            <span class="value">{{ serviceRequest.vehicleInfo.brand }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Modelo:</span>
+            <span class="value">{{ serviceRequest.vehicleInfo.model }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Año:</span>
+            <span class="value">{{ serviceRequest.vehicleInfo.year }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Placa:</span>
+            <span class="value">{{ serviceRequest.vehicleInfo.plate }}</span>
+          </div>
+          <div class="info-row" *ngIf="serviceRequest.vehicleInfo.type">
+            <span class="label">Tipo:</span>
+            <span class="value">{{ vehicleTypeLabels[serviceRequest.vehicleInfo.type] || serviceRequest.vehicleInfo.type }}</span>
+          </div>
+        </ng-container>
+        
+        <!-- Using individual fields if vehicleInfo not available -->
+        <ng-container *ngIf="!serviceRequest.vehicleInfo">
+          <div class="info-row" *ngIf="serviceRequest.vehicleBrand">
+            <span class="label">Marca:</span>
+            <span class="value">{{ serviceRequest.vehicleBrand }}</span>
+          </div>
+          <div class="info-row" *ngIf="serviceRequest.vehicleModel">
+            <span class="label">Modelo:</span>
+            <span class="value">{{ serviceRequest.vehicleModel }}</span>
+          </div>
+          <div class="info-row" *ngIf="serviceRequest.vehicleYear">
+            <span class="label">Año:</span>
+            <span class="value">{{ serviceRequest.vehicleYear }}</span>
+          </div>
+          <div class="info-row" *ngIf="serviceRequest.vehiclePlate">
+            <span class="label">Placa:</span>
+            <span class="value">{{ serviceRequest.vehiclePlate }}</span>
+          </div>
+          <div class="info-row" *ngIf="serviceRequest.vehicleType">
+            <span class="label">Tipo:</span>
+            <span class="value">{{ vehicleTypeLabels[serviceRequest.vehicleType] || serviceRequest.vehicleType }}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Location Card -->
+    <div class="info-card location-card" *ngIf="serviceRequest.location || serviceRequest.homeServiceDetails">
+      <div class="card-header">
+        <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
+        <h2>Ubicación</h2>
+      </div>
+      <div class="card-content">
+        <div class="info-row full-width" *ngIf="serviceRequest.location">
+          <span class="label">Dirección:</span>
+          <p class="address">{{ serviceRequest.location }}</p>
+        </div>
+        <div class="info-row full-width" *ngIf="!serviceRequest.location && serviceRequest.homeServiceDetails">
+          <span class="label">Dirección:</span>
+          <p class="address">{{ serviceRequest.homeServiceDetails.address }}, {{ serviceRequest.homeServiceDetails.city }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Service-Specific Details -->
+    <div class="info-card specific-details-card" *ngIf="hasSpecificDetails()">
+      <div class="card-header">
+        <fa-icon [icon]="faTools"></fa-icon>
+        <h2>Detalles Específicos</h2>
+      </div>
+      <div class="card-content">
+        <!-- Home Service -->
+        <div *ngIf="serviceRequest.homeServiceDetails">
+          <div class="info-row" *ngIf="serviceRequest.homeServiceDetails.hasParking !== undefined">
+            <span class="label">Tiene Parqueadero:</span>
+            <span class="value">{{ serviceRequest.homeServiceDetails.hasParking ? 'Sí' : 'No' }}</span>
+          </div>
+          <div class="info-row full-width" *ngIf="serviceRequest.homeServiceDetails.additionalDirections">
+            <span class="label">Indicaciones Adicionales:</span>
+            <p class="description">{{ serviceRequest.homeServiceDetails.additionalDirections }}</p>
+          </div>
+        </div>
+
+        <!-- Tow Truck -->
+        <div *ngIf="serviceRequest.towTruckDetails">
+          <div class="info-row full-width">
+            <span class="label">Punto de Recogida:</span>
+            <p class="address">{{ serviceRequest.towTruckDetails.pickupAddress }}, {{ serviceRequest.towTruckDetails.pickupCity }}</p>
+          </div>
+          <div class="info-row full-width">
+            <span class="label">Destino:</span>
+            <p class="address">{{ serviceRequest.towTruckDetails.deliveryAddress }}, {{ serviceRequest.towTruckDetails.deliveryCity }}</p>
+          </div>
+          <div class="info-row">
+            <span class="label">Condición del Vehículo:</span>
+            <span class="value">
+              {{ serviceRequest.towTruckDetails.vehicleCondition === 'running' ? 'Operativo' : 
+                 serviceRequest.towTruckDetails.vehicleCondition === 'not_running' ? 'No Operativo' : 'Accidente' }}
+            </span>
+          </div>
+          <div class="info-row">
+            <span class="label">Necesita Plataforma:</span>
+            <span class="value">{{ serviceRequest.towTruckDetails.needsFlatbed ? 'Sí' : 'No' }}</span>
+          </div>
+        </div>
+
+        <!-- Oil Change -->
+        <div *ngIf="serviceRequest.oilChangeDetails">
+          <div class="info-row">
+            <span class="label">Kilometraje Actual:</span>
+            <span class="value">{{ serviceRequest.oilChangeDetails.currentMileage }} km</span>
+          </div>
+          <div class="info-row" *ngIf="serviceRequest.oilChangeDetails.oilType">
+            <span class="label">Tipo de Aceite:</span>
+            <span class="value">
+              {{ serviceRequest.oilChangeDetails.oilType === 'synthetic' ? 'Sintético' :
+                 serviceRequest.oilChangeDetails.oilType === 'semi-synthetic' ? 'Semi-Sintético' : 'Convencional' }}
+            </span>
+          </div>
+          <div class="info-row">
+            <span class="label">Incluye Filtro:</span>
+            <span class="value">{{ serviceRequest.oilChangeDetails.includeFilter ? 'Sí' : 'No' }}</span>
+          </div>
+          <div class="info-row" *ngIf="serviceRequest.oilChangeDetails.preferredOilBrand">
+            <span class="label">Marca Preferida:</span>
+            <span class="value">{{ serviceRequest.oilChangeDetails.preferredOilBrand }}</span>
+          </div>
+        </div>
+
+        <!-- Mechanical Diagnosis -->
+        <div *ngIf="serviceRequest.diagnosisDetails">
+          <div class="info-row full-width">
+            <span class="label">Síntomas:</span>
+            <p class="description">{{ serviceRequest.diagnosisDetails.symptoms }}</p>
+          </div>
+          <div class="info-row">
+            <span class="label">Necesita Escáner:</span>
+            <span class="value">{{ serviceRequest.diagnosisDetails.needsScanner ? 'Sí' : 'No' }}</span>
+          </div>
+          <div class="info-row full-width" *ngIf="serviceRequest.diagnosisDetails.recentRepairs">
+            <span class="label">Reparaciones Recientes:</span>
+            <p class="description">{{ serviceRequest.diagnosisDetails.recentRepairs }}</p>
+          </div>
+        </div>
+
+        <!-- Specific Repair -->
+        <div *ngIf="serviceRequest.repairDetails">
+          <div class="info-row full-width">
+            <span class="label">Descripción del Problema:</span>
+            <p class="description">{{ serviceRequest.repairDetails.problemDescription }}</p>
+          </div>
+          <div class="info-row full-width" *ngIf="serviceRequest.repairDetails.affectedParts?.length">
+            <span class="label">Partes Afectadas:</span>
+            <ul class="parts-list">
+              <li *ngFor="let part of serviceRequest.repairDetails.affectedParts">{{ part }}</li>
+            </ul>
+          </div>
+          <div class="info-row" *ngIf="serviceRequest.repairDetails.preferredParts">
+            <span class="label">Tipo de Partes:</span>
+            <span class="value">
+              {{ serviceRequest.repairDetails.preferredParts === 'original' ? 'Originales' :
+                 serviceRequest.repairDetails.preferredParts === 'aftermarket' ? 'Alternativas' : 'Usadas' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bids Summary -->
+    <div class="info-card bids-card" *ngIf="serviceRequest.bidsCount > 0">
+      <div class="card-header">
+        <fa-icon [icon]="faMoneyBillWave"></fa-icon>
+        <h2>Ofertas Recibidas</h2>
+      </div>
+      <div class="card-content">
+        <div class="bids-summary">
+          <p>Esta solicitud ya tiene <strong>{{ serviceRequest.bidsCount }}</strong> 
+            {{ serviceRequest.bidsCount === 1 ? 'oferta' : 'ofertas' }} de otros proveedores.</p>
+          <p class="competitive-note">¡Haz una oferta competitiva para ganar este cliente!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn-secondary" (click)="goBack()">
+        <fa-icon [icon]="faArrowLeft"></fa-icon>
+        Volver
+      </button>
+      <button class="btn-primary" (click)="makeOffer()">
+        <fa-icon [icon]="faMoneyBillWave"></fa-icon>
+        Hacer Oferta
+      </button>
+    </div>
+  </div>
+</div>
