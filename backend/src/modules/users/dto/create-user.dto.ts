@@ -47,10 +47,6 @@ export class CreateUserDto {
 
   // Campos opcionales para clientes
   @IsOptional()
-  @IsDate()
-  dateOfBirth?: Date;
-
-  @IsOptional()
   vehicleInfo?: {
     brand: string;
     model: string;

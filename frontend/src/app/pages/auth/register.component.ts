@@ -46,7 +46,6 @@ export class RegisterComponent {
       address: [''],
       city: [''],
       description: [''],
-      dateOfBirth: [''],
       vehicleBrand: [''],
       vehicleModel: [''],
       vehicleYear: [''],
@@ -115,8 +114,6 @@ export class RegisterComponent {
         registerData.city = this.registerForm.value.city;
         registerData.description = this.registerForm.value.description;
       } else {
-        registerData.dateOfBirth = this.registerForm.value.dateOfBirth;
-        
         // Solo incluir vehicleInfo si al menos uno de los campos está lleno
         const vehicleBrand = this.registerForm.value.vehicleBrand;
         const vehicleModel = this.registerForm.value.vehicleModel;

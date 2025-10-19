@@ -36,7 +36,6 @@ export interface User {
   description?: string;
   
   // Campos específicos para clientes
-  dateOfBirth?: string;
   vehicleInfo?: VehicleInfo;
 }
 
@@ -67,6 +66,5 @@ export interface RegisterRequest {
   description?: string;
   
   // Campos opcionales para clientes
-  dateOfBirth?: string;
   vehicleInfo?: VehicleInfo;
 }

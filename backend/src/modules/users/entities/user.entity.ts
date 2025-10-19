@@ -37,6 +37,5 @@ export interface User {
   description?: string;
   
   // Campos específicos para clientes
-  dateOfBirth?: Date;
   vehicleInfo?: VehicleInfo;
 }

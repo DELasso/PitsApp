@@ -41,7 +41,6 @@
     "lastName": "Aponte",
     "phone": "3003279434",
     "role": "cliente",
-    "dateOfBirth": "2001-10-08T00:00:00.000Z",
     "vehicleInfo": {
       "brand": "Ferrari",
       "model": "SF-25",
@@ -61,7 +60,6 @@
     "lastName": "Méndez",
     "phone": "3001234567",
     "role": "cliente",
-    "dateOfBirth": "1988-05-15T00:00:00.000Z",
     "vehicleInfo": {
       "brand": "Toyota",
       "model": "Corolla",
@@ -81,7 +79,6 @@
     "lastName": "Rodríguez",
     "phone": "3009876543",
     "role": "cliente",
-    "dateOfBirth": "1992-11-22T00:00:00.000Z",
     "vehicleInfo": {
       "brand": "Chevrolet",
       "model": "Spark GT",
@@ -101,7 +98,6 @@
     "lastName": "García",
     "phone": "3015551234",
     "role": "cliente",
-    "dateOfBirth": "1985-03-08T00:00:00.000Z",
     "vehicleInfo": {
       "brand": "Ford",
       "model": "Ranger",
@@ -121,7 +117,6 @@
     "lastName": "Martínez",
     "phone": "3027778888",
     "role": "cliente",
-    "dateOfBirth": "1995-07-30T00:00:00.000Z",
     "vehicleInfo": {
       "brand": "Mazda",
       "model": "CX-5",
@@ -141,7 +136,6 @@
     "lastName": "López",
     "phone": "3013334444",
     "role": "cliente",
-    "dateOfBirth": "1990-12-12T00:00:00.000Z",
     "vehicleInfo": {
       "brand": "Yamaha",
       "model": "MT-07",
@@ -161,7 +155,6 @@
     "lastName": "Ramírez",
     "phone": "3045556666",
     "role": "cliente",
-    "dateOfBirth": "1993-09-18T00:00:00.000Z",
     "vehicleInfo": {
       "brand": "Renault",
       "model": "Duster",
@@ -181,7 +174,6 @@
     "lastName": "Castro",
     "phone": "3017778899",
     "role": "cliente",
-    "dateOfBirth": "1987-04-25T00:00:00.000Z",
     "vehicleInfo": {
       "brand": "Nissan",
       "model": "Frontier",
@@ -201,7 +193,6 @@
     "lastName": "Torres",
     "phone": "3022223333",
     "role": "cliente",
-    "dateOfBirth": "1996-06-14T00:00:00.000Z",
     "vehicleInfo": {
       "brand": "Kia",
       "model": "Sportage",

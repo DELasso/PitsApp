@@ -201,16 +201,6 @@
 
         <!-- Campos específicos para Clientes -->
         <div *ngIf="registerForm.get('role')?.value === UserRole.CLIENTE" class="client-fields">
-          <h3 class="section-title">Información Personal</h3>
-
-          <div class="form-group">
-            <label for="dateOfBirth" class="form-label">Fecha de Nacimiento</label>
-            <div class="input-wrapper">
-              <span class="input-icon"><i class="fa-solid fa-calendar"></i></span>
-              <input type="date" id="dateOfBirth" formControlName="dateOfBirth" class="form-input">
-            </div>
-          </div>
-
           <h3 class="section-title">Información del Vehículo (Opcional)</h3>
           <p class="section-subtitle">Guarda los datos de tu vehículo para completar formularios automáticamente</p>
 
