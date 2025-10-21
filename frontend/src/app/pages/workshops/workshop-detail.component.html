@@ -91,6 +91,27 @@
           </div>
         </div>
 
+        
+          <!-- Map -->
+           <div *ngIf="isLoading" class="loading">Cargando taller...</div>
+        <div *ngIf="error" class="error">{{ error }}</div>
+
+        <div *ngIf="workshop" class="workshop-detail">
+          <h2>{{ workshop.name }}</h2>
+          <!-- Mapa de ubicación -->
+          <div class="map-container">
+            <google-map
+              height="200px"
+              width="100%"
+              [center]="{ lat: workshop.latitude, lng: workshop.longitude }"
+              [zoom]="15">
+              <map-marker
+                [position]="{ lat: workshop.latitude, lng: workshop.longitude }"
+                [title]="workshop.name">
+              </map-marker>
+            </google-map>
+        </div>
+
         <!-- Right Column - Contact & Location -->
         <div class="workshop-contact">
           <!-- Contact Info -->
@@ -153,14 +174,6 @@
               Cómo Llegar
             </button>
           </div>
-
-          <!-- Map placeholder -->
-          <div class="map-placeholder">
-            <i class="fas fa-map"></i>
-            <p>Mapa de ubicación</p>
-            <small>{{ workshop.address }}, {{ workshop.city }}</small>
-          </div>
-        </div>
       </div>
     </div>
   </div>

@@ -1,73 +1,105 @@
 [
-    {
-        "id": "627b25a4-d31c-46e7-944b-539a68f65d72",
-        "name": "Pitsso",
-        "description": "El mejor taller que puedes tener cerca de ti.",
-        "address": "Cl 10 #25-18",
-        "city": "Medellín",
-        "neighborhood": "Poblado",
-        "phone": "3005995878",
-        "email": "lasso@gmail.com",
-        "services": [
-            "Cambio de aceite",
-            "Transmisión",
-            "Sistema eléctrico",
-            "Llantas",
-            "Embrague",
-            "Frenos",
-            "Motor",
-            "Diagnóstico computarizado",
-            "Batería"
-        ],
-        "website": "pitsapp.shop",
-        "workingHours": "Lun-Vie 6:00-22:00",
-        "images": [
-            "/uploads/workshops/05836c14b9508acd1769068e79d55046"
-        ],
-        "specialties": [
-            "Todo tipo de carros y motos"
-        ],
-        "latitude": 0,
-        "longitude": 0,
-        "rating": 0,
-        "reviewCount": 0,
-        "isActive": true,
-        "createdAt": "2025-09-16T01:34:55.274Z",
-        "updatedAt": "2025-09-16T01:34:55.274Z"
-    },
-    {
-        "id": "4659ba77-453e-4369-9e10-5ee3ba1163e2",
-        "name": "HerreraPits",
-        "description": "El mejor taller para traer tus motos y carros deportivos.",
-        "address": "Calle 44 # 85 - 54",
-        "city": "Cartagena",
-        "neighborhood": "Castillogrande",
-        "phone": "3004883291",
-        "email": "esteban@gmail.com",
-        "services": [
-            "Suspensión",
-            "Aire acondicionado",
-            "Alineación y balanceo",
-            "Pintura y carrocería",
-            "Radiador",
-            "Escape",
-            "Diagnóstico computarizado",
-            "Batería"
-        ],
-        "website": "pitsapp.shop",
-        "workingHours": "Sáb 8:00 - 18:00",
-        "images": [
-            "/uploads/2cc7c35fb3a952342a41d46e39617e11.jpg"
-        ],
-        "specialties": [
-            "Autos y motos deportivas"
-        ],
-        "latitude": 0,
-        "longitude": 0,
-        "rating": 0,
-        "reviewCount": 0,
-        "isActive": true,
-        "createdAt": "2025-09-16T02:23:32.952Z",
-        "updatedAt": "2025-09-16T02:23:32.952Z"
-    }
+  {
+    "id": "627b25a4-d31c-46e7-944b-539a68f65d72",
+    "name": "Pitsso",
+    "description": "El mejor taller que puedes tener cerca de ti.",
+    "address": "Cl 10 #25-18",
+    "city": "Medellín",
+    "neighborhood": "Poblado",
+    "phone": "3005995878",
+    "email": "lasso@gmail.com",
+    "services": [
+      "Cambio de aceite",
+      "Transmisión",
+      "Sistema eléctrico",
+      "Llantas",
+      "Embrague",
+      "Frenos",
+      "Motor",
+      "Diagnóstico computarizado",
+      "Batería"
+    ],
+    "website": "pitsapp.shop",
+    "workingHours": "Lun-Vie 6:00-22:00",
+    "images": [
+      "/uploads/workshops/05836c14b9508acd1769068e79d55046"
+    ],
+    "specialties": [
+      "Todo tipo de carros y motos"
+    ],
+    "latitude": 4.711,
+    "longitude": -74.0721,
+    "rating": 0,
+    "reviewCount": 0,
+    "isActive": true,
+    "createdAt": "2025-09-16T01:34:55.274Z",
+    "updatedAt": "2025-09-16T01:34:55.274Z"
+  },
+  {
+    "id": "4659ba77-453e-4369-9e10-5ee3ba1163e2",
+    "name": "HerreraPits",
+    "description": "El mejor taller para traer tus motos y carros deportivos.",
+    "address": "Calle 44 # 85 - 54",
+    "city": "Cartagena",
+    "neighborhood": "Castillogrande",
+    "phone": "3004883291",
+    "email": "esteban@gmail.com",
+    "services": [
+      "Suspensión",
+      "Aire acondicionado",
+      "Alineación y balanceo",
+      "Pintura y carrocería",
+      "Radiador",
+      "Escape",
+      "Diagnóstico computarizado",
+      "Batería"
+    ],
+    "website": "pitsapp.shop",
+    "workingHours": "Sáb 8:00 - 18:00",
+    "images": [
+      "/uploads/2cc7c35fb3a952342a41d46e39617e11.jpg"
+    ],
+    "specialties": [
+      "Autos y motos deportivas"
+    ],
+    "latitude": 4.711,
+    "longitude": -74.0721,
+    "rating": 0,
+    "reviewCount": 0,
+    "isActive": true,
+    "createdAt": "2025-09-16T02:23:32.952Z",
+    "updatedAt": "2025-09-16T02:23:32.952Z"
+  },
+  {
+    "id": "fbc58e9b-4c2f-4272-9a45-8249be088808",
+    "name": "sky motors",
+    "description": "taller automotriz especializado en los sistemas eléctricos para cualquier tipo de vehiculos",
+    "address": "cra 50 # 92 - 70",
+    "city": "Medellín",
+    "neighborhood": "Aranjuez",
+    "phone": "3205647896",
+    "email": "sky@gmail.com",
+    "services": [
+      "Sistema eléctrico",
+      "Diagnóstico computarizado",
+      "Batería",
+      "Aire acondicionado",
+      "Radiador"
+    ],
+    "website": "",
+    "workingHours": "Lun-Vie 8",
+    "images": [
+      "/uploads/87fc7a28deb74edbe3548b82bf67683a.jpg"
+    ],
+    "specialties": [
+      "autos"
+    ],
+    "rating": 0,
+    "reviewCount": 0,
+    "isActive": true,
+    "latitude": 6.284078,
+    "longitude": -75.55784899999999,
+    "createdAt": "2025-10-21T06:00:24.307Z",
+    "updatedAt": "2025-10-21T06:00:24.307Z"
+  }
 ]

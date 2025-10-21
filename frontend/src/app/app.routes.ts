@@ -31,6 +31,10 @@ export const routes: Routes = [
     path: 'checkout/confirmation',
     loadComponent: () => import('./pages/checkout/confirmation.component').then(m => m.ConfirmationComponent)
   },
+  {
+    path: 'maps',
+    loadComponent: () => import('./pages/maps/maps.components').then(m => m.MapsComponent)
+  },
   // Redirecciones de rutas antiguas en inglés a español
   {
     path: 'services',

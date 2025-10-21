@@ -1,0 +1,32 @@
+<!-- Contenedor del mapa -->
+<google-map
+  height="400px"
+  width="100%"
+  [center]="center"
+  [zoom]="zoom">
+  
+  <!-- Marcadores -->
+  <map-marker
+    *ngFor="let m of markers; let i = index"
+    [position]="m.position"
+    [title]="m.title"
+    (mapClick)="selectMarker(m)">
+  </map-marker>
+</google-map>
+
+<!-- Lista de talleres -->
+<ul>
+  <li *ngFor="let w of workshops; let i = index" (click)="goToMarker(i)">
+    {{ w.name }}
+  </li>
+</ul>
+
+<!-- Información del taller seleccionado -->
+<div *ngIf="selected" class="info-card">
+  <h4>{{ selected.info.name }}</h4>
+  <p>{{ selected.info.address }}</p>
+  <p><strong>Tel:</strong> {{ selected.info.phone }}</p>
+  <p><strong>Servicios:</strong> {{ selected.info.services.join(', ') }}</p>
+  <p *ngIf="selected.info.rating">⭐ {{ selected.info.rating }} ({{ selected.info.reviewCount }})</p>
+  <img *ngIf="selected.info.website" [src]="selected.info.website" alt="Imagen del taller">
+</div>

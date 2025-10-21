@@ -6,6 +6,7 @@ import { WorkshopsService } from '../../services/workshops.service';
 import { AuthService } from '../../services/auth.service';
 import { Workshop } from '../../models/workshop.model';
 import { ImageUploadComponent } from '../../components/image-upload/image-upload.component';
+import { MapsApiService } from '../../services/google-maps.service';
 
 @Component({
   selector: 'app-workshop-form',
@@ -44,7 +45,8 @@ export class WorkshopFormComponent implements OnInit {
     private workshopsService: WorkshopsService,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private mapsApiService: MapsApiService
   ) {
     this.initForm();
   }
@@ -132,59 +134,68 @@ export class WorkshopFormComponent implements OnInit {
     });
   }
 
-  onSubmit() {
-    if (this.workshopForm.valid) {
-      this.loading = true;
-      this.errorMessage = '';
+ onSubmit() {
+  if (this.workshopForm.valid) {
+    this.loading = true;
+    this.errorMessage = '';
 
-      const formData = this.workshopForm.value;
-      const specialties = formData.specialtiesText 
-        ? formData.specialtiesText.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0)
-        : [];
+    const formData = this.workshopForm.value;
+    const specialties = formData.specialtiesText 
+      ? formData.specialtiesText.split(',').map((s: string) => s.trim()).filter((s: string) => s.length > 0)
+      : [];
 
-      const workshopData = {
-        ...formData,
-        specialties,
-        images: formData.images || [],
-        latitude: 0,
-        longitude: 0,
-        rating: 0,
-        reviewCount: 0,
-        isActive: true
-      };
+    const workshopData: any = {
+      ...formData,
+      specialties,
+      images: formData.images || [],
+      rating: 0,
+      reviewCount: 0,
+      isActive: true
+    };
 
-      delete workshopData.specialtiesText;
+    delete workshopData.specialtiesText;
 
-      // Verificar token
-      const token = this.authService.getToken();
+    // 🗺️ Dirección completa para geocodificar
+    const fullAddress = `${formData.address}, ${formData.city}, ${formData.neighborhood}`;
 
-      const operation = this.isEditMode 
-        ? this.workshopsService.updateWorkshop(this.workshopId!, workshopData)
-        : this.workshopsService.createWorkshop(workshopData);
+    // 🔹 Mostrar spinner específico mientras se obtienen las coordenadas
+    this.errorMessage = 'Obteniendo coordenadas del taller...';
 
-      operation.subscribe({
-        next: (response) => {
-          this.loading = false;
-          this.goBack();
-        },
-        error: (error) => {
-          this.loading = false;
-          
-          if (error.status === 401) {
-            this.errorMessage = 'Error de autenticación. Por favor, inicia sesión nuevamente.';
-            this.authService.logout();
-            this.router.navigate(['/auth/login']);
-          } else if (error.status === 403) {
-            this.errorMessage = 'No tienes permisos para realizar esta acción.';
-          } else {
-            this.errorMessage = error.error?.message || 'Error al guardar el taller';
+    this.mapsApiService.getCoordinates(fullAddress).subscribe({
+      next: (coords: any) => {
+        workshopData.latitude = coords.lat;
+        workshopData.longitude = coords.lng;
+
+        // ✅ Ahora guardamos el taller con las coordenadas incluidas
+        this.errorMessage = 'Guardando información del taller...';
+
+        const operation = this.isEditMode
+          ? this.workshopsService.updateWorkshop(this.workshopId!, workshopData)
+          : this.workshopsService.createWorkshop(workshopData);
+
+        operation.subscribe({
+          next: () => {
+            this.loading = false;
+            this.errorMessage = '';
+            this.goBack();
+          },
+          error: (error) => {
+            this.loading = false;
+            this.errorMessage = this.handleError(error);
           }
-        }
-      });
-    } else {
-      this.markFormGroupTouched();
-    }
+        });
+      },
+      error: (err) => {
+        this.loading = false;
+        console.error('Error al obtener coordenadas:', err);
+        this.errorMessage = 'No se pudieron obtener las coordenadas del taller.';
+      }
+    });
+  } else {
+    this.markFormGroupTouched();
   }
+}
+
 
   markFormGroupTouched() {
     Object.keys(this.workshopForm.controls).forEach(key => {
@@ -205,4 +216,30 @@ export class WorkshopFormComponent implements OnInit {
   get neighborhood() { return this.workshopForm.get('neighborhood'); }
   get phone() { return this.workshopForm.get('phone'); }
   get email() { return this.workshopForm.get('email'); }
+
+  private handleError(error: any): string {
+    console.error('WorkshopFormComponent error:', error);
+
+    // If backend returns a string message in error.error
+    if (error && error.error) {
+      if (typeof error.error === 'string') {
+        return error.error;
+      }
+      if (typeof error.error === 'object' && error.error.message) {
+        return error.error.message;
+      }
+    }
+
+    // Generic error.message
+    if (error && error.message) {
+      return error.message;
+    }
+
+    // HTTP status fallback
+    if (error && error.status) {
+      return `Error ${error.status}: ${error.statusText || 'Unknown error'}`;
+    }
+
+    return 'Ocurrió un error. Intente de nuevo.';
+  }
 }

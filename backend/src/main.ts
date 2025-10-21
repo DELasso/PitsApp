@@ -3,9 +3,13 @@ import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import * as dotenv from 'dotenv';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  //habilitar dovent
+  dotenv.config();
   
   // Habilitar CORS para el frontend
   app.enableCors({

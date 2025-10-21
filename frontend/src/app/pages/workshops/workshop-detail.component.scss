@@ -354,31 +354,16 @@
 }
 
 /* Map Placeholder */
-.map-placeholder {
-  background: var(--ferrari-light-grey);
-  border: 2px dashed var(--ferrari-silver);
-  border-radius: 15px;
-  padding: 40px 20px;
-  text-align: center;
-  color: var(--ferrari-dark-grey);
+.map-container {
+  margin-top: 10px;
 }
 
-.map-placeholder i {
-  font-size: 3rem;
-  margin-bottom: 15px;
-  color: var(--ferrari-red);
+google-map {
+  display: block;
+  border-radius: 8px;
+  height: 200px; // obligatorio
 }
 
-.map-placeholder p {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0 0 5px 0;
-  color: var(--ferrari-black);
-}
-
-.map-placeholder small {
-  font-size: 0.9rem;
-}
 
 /* Responsive Design */
 @media (max-width: 1024px) {
