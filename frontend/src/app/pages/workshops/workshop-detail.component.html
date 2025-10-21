@@ -1,9 +1,11 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" 
-      integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" 
-      crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+  integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;1,300&family=Special+Gothic+Expanded+One&family=Special+Gothic:wght@400..700&family=Telex&display=swap" rel="stylesheet">
+<link
+  href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;1,300&family=Special+Gothic+Expanded+One&family=Special+Gothic:wght@400..700&family=Telex&display=swap"
+  rel="stylesheet">
 
 <div class="workshop-detail-container">
   <!-- Loading State -->
@@ -33,14 +35,12 @@
         <i class="fas fa-arrow-left"></i>
         Volver a Talleres
       </button>
-      
+
       <div class="workshop-title-section">
         <h1>{{ workshop.name }}</h1>
         <div class="workshop-rating">
           <div class="stars">
-            <i *ngFor="let star of getStarArray(workshop.rating)" 
-               class="fas fa-star" 
-               [class.filled]="star"></i>
+            <i *ngFor="let star of getStarArray(workshop.rating)" class="fas fa-star" [class.filled]="star"></i>
           </div>
           <span class="rating-text">{{ workshop.rating }} ({{ workshop.reviewCount }} reseñas)</span>
         </div>
@@ -117,7 +117,7 @@
           <!-- Contact Info -->
           <div class="contact-card">
             <h3><i class="fas fa-address-book"></i> Información de Contacto</h3>
-            
+
             <div class="contact-item">
               <i class="fas fa-map-marker-alt"></i>
               <div class="contact-details">
@@ -158,23 +158,131 @@
               <i class="fas fa-phone"></i>
               Llamar Ahora
             </button>
-            
+
             <button class="btn btn-secondary" (click)="onEmailClick(workshop.email)" *ngIf="workshop.email">
               <i class="fas fa-envelope"></i>
               Enviar Email
             </button>
-            
+
             <button class="btn btn-outline" (click)="onWebsiteClick(workshop.website)" *ngIf="workshop.website">
               <i class="fas fa-globe"></i>
               Visitar Sitio Web
             </button>
-            
+
             <button class="btn btn-success" (click)="onDirectionsClick()">
               <i class="fas fa-directions"></i>
               Cómo Llegar
             </button>
           </div>
       </div>
+
+      <!-- Reviews Section -->
+      <div class="reviews-section">
+        <h2><i class="fas fa-comments"></i> Reseñas</h2>
+
+        <!-- Review Form -->
+        <div class="review-form-container" *ngIf="authService.isLoggedIn()">
+          <h3>Deja tu reseña</h3>
+
+          <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
+            <!-- Star Rating Selector -->
+            <div class="rating-selector">
+              <label>Calificación:</label>
+              <div class="stars-input">
+                <i *ngFor="let star of [1,2,3,4,5]" class="fas fa-star" [class.selected]="star <= selectedRating"
+                  [class.hover]="star <= hoverRating" (click)="setRating(star)" (mouseenter)="setHoverRating(star)"
+                  (mouseleave)="setHoverRating(0)"></i>
+              </div>
+              <span class="rating-value" *ngIf="selectedRating > 0">
+                {{ selectedRating }} de 5 estrellas
+              </span>
+            </div>
+
+            <!-- Comment Textarea -->
+            <div class="form-group">
+              <label for="comment">Comentario:</label>
+              <textarea id="comment" formControlName="comment" rows="4"
+                placeholder="Comparte tu experiencia con este taller..."
+                [class.invalid]="reviewForm.get('comment')?.invalid && reviewForm.get('comment')?.touched"></textarea>
+              <small class="error-text"
+                *ngIf="reviewForm.get('comment')?.invalid && reviewForm.get('comment')?.touched">
+                El comentario debe tener al menos 10 caracteres
+              </small>
+            </div>
+
+            <!-- Success/Error Messages -->
+            <div class="alert alert-success" *ngIf="reviewSuccess">
+              <i class="fas fa-check-circle"></i>
+              {{ reviewSuccess }}
+            </div>
+
+            <div class="alert alert-danger" *ngIf="reviewError">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ reviewError }}
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary" [disabled]="isSubmittingReview || selectedRating === 0">
+              <i class="fas fa-paper-plane"></i>
+              {{ isSubmittingReview ? 'Enviando...' : 'Enviar Reseña' }}
+            </button>
+          </form>
+        </div>
+
+        <!-- Login Message for non-authenticated users -->
+        <div class="login-message" *ngIf="!authService.isLoggedIn()">
+          <i class="fas fa-info-circle"></i>
+          <p>Debes <a routerLink="/login">iniciar sesión</a> para dejar una reseña</p>
+        </div>
+
+        <!-- Reviews List -->
+        <div class="reviews-list">
+          <div *ngIf="isLoadingReviews" class="loading-reviews">
+            <div class="spinner-small"></div>
+            <p>Cargando reseñas...</p>
+          </div>
+
+          <div *ngIf="!isLoadingReviews && reviews.length === 0" class="no-reviews">
+            <i class="fas fa-comment-slash"></i>
+            <p>Aún no hay reseñas para este taller</p>
+            <small>¡Sé el primero en dejar una reseña!</small>
+          </div>
+
+          <div *ngIf="!isLoadingReviews && reviews.length > 0" class="reviews-grid">
+            <div *ngFor="let review of reviews" class="review-card">
+              <div class="review-header">
+                <div class="review-user-info">
+                  <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="user-details">
+                    <h4>{{ review.userName }}</h4>
+                    <span class="user-role-badge" [class.cliente]="review.userRole === 'cliente'"
+                      [class.proveedor]="review.userRole === 'proveedor'">
+                      {{ review.userRole === 'cliente' ? 'Cliente' : 'Proveedor' }}
+                    </span>
+                  </div>
+                </div>
+                <div class="review-actions" *ngIf="canDeleteReview(review)">
+                  <button class="btn-delete" (click)="deleteReview(review.id)" title="Eliminar reseña">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="review-rating">
+                <div class="stars">
+                  <i *ngFor="let star of getStarArray(review.rating)" class="fas fa-star" [class.filled]="star"></i>
+                </div>
+                <span class="review-date">{{ review.createdAt | date:'dd/MM/yyyy' }}</span>
+              </div>
+
+              <p class="review-comment">{{ review.comment }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

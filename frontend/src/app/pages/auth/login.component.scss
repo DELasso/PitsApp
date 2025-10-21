@@ -9,9 +9,9 @@
 
 .auth-background {
   background: linear-gradient(135deg,
-      var(--ferrari-black) 0%,
-      var(--ferrari-dark-grey) 50%,
-      var(--ferrari-red-dark) 100%);
+      var(--pitsapp-black) 0%,
+      var(--pitsapp-dark-grey) 50%,
+      var(--pitsapp-red-dark) 100%);
   background-attachment: fixed;
   width: 100%;
   min-height: 100vh;
@@ -54,7 +54,7 @@
     .logo-icon {
       width: 80px;
       height: 80px;
-      background: linear-gradient(135deg, var(--ferrari-red), var(--ferrari-gold));
+      background: linear-gradient(135deg, var(--pitsapp-red), var(--pitsapp-gold));
       border-radius: 20px;
       display: flex;
       align-items: center;
@@ -77,14 +77,14 @@
       font-size: 2.2rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, var(--ferrari-black), var(--ferrari-red));
+      background: linear-gradient(135deg, var(--pitsapp-black), var(--pitsapp-red));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
     p {
-      color: var(--ferrari-dark-grey);
+      color: var(--pitsapp-dark-grey);
       font-size: 1.1rem;
       margin: 0;
       opacity: 0.8;
@@ -108,7 +108,7 @@
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: var(--ferrari-black);
+    color: var(--pitsapp-black);
     font-size: 0.95rem;
     letter-spacing: 0.3px;
   }
@@ -129,26 +129,26 @@
     .form-input {
       width: 100%;
       padding: 1rem 1rem 1rem 3rem;
-      border: 2px solid var(--ferrari-light-grey);
+      border: 2px solid var(--pitsapp-light-grey);
       border-radius: 12px;
       font-size: 1rem;
-      background: var(--ferrari-white);
+      background: var(--pitsapp-white);
       transition: all 0.3s ease;
 
       &:focus {
         outline: none;
-        border-color: var(--ferrari-red);
+        border-color: var(--pitsapp-red);
         box-shadow: 0 0 0 4px rgba(220, 20, 60, 0.1);
         transform: translateY(-1px);
       }
 
       &.error {
-        border-color: var(--ferrari-red);
+        border-color: var(--pitsapp-red);
         background: rgba(220, 20, 60, 0.02);
       }
 
       &::placeholder {
-        color: var(--ferrari-silver);
+        color: var(--pitsapp-silver);
         opacity: 0.7;
       }
     }
@@ -171,7 +171,7 @@
 
   .error-message {
     margin-top: 0.5rem;
-    color: var(--ferrari-red);
+    color: var(--pitsapp-red);
     font-size: 0.9rem;
     font-weight: 500;
   }
@@ -185,8 +185,8 @@
       display: none;
 
       &:checked+.checkbox-custom {
-        background: var(--ferrari-red);
-        border-color: var(--ferrari-red);
+        background: var(--pitsapp-red);
+        border-color: var(--pitsapp-red);
 
         i {
           opacity: 1;
@@ -198,7 +198,7 @@
     .checkbox-custom {
       width: 20px;
       height: 20px;
-      border: 2px solid var(--ferrari-silver);
+      border: 2px solid var(--pitsapp-silver);
       border-radius: 4px;
       margin-right: 0.75rem;
       position: relative;
@@ -218,12 +218,12 @@
 
     .checkbox-text {
       font-size: 0.95rem;
-      color: var(--ferrari-dark-grey);
+      color: var(--pitsapp-dark-grey);
     }
   }
 
   .forgot-link {
-    color: var(--ferrari-red);
+    color: var(--pitsapp-red);
     text-decoration: none;
     font-size: 0.95rem;
     font-weight: 500;
@@ -281,12 +281,12 @@
     }
 
     &.btn-primary {
-      background: linear-gradient(135deg, var(--ferrari-red) 0%, var(--ferrari-red-dark) 100%);
+      background: linear-gradient(135deg, var(--pitsapp-red) 0%, var(--pitsapp-red-dark) 100%);
       color: white;
       box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
 
       &:hover:not(:disabled) {
-        background: linear-gradient(135deg, var(--ferrari-red-dark) 0%, #b71c1c 100%);
+        background: linear-gradient(135deg, var(--pitsapp-red-dark) 0%, #b71c1c 100%);
         box-shadow: 0 6px 16px rgba(220, 20, 60, 0.4);
         transform: translateY(-2px);
       }
@@ -310,12 +310,12 @@
       left: 0;
       right: 0;
       height: 1px;
-      background: var(--ferrari-light-grey);
+      background: var(--pitsapp-light-grey);
     }
 
     span {
       padding: 0 1rem;
-      color: var(--ferrari-dark-grey);
+      color: var(--pitsapp-dark-grey);
       font-size: 0.9rem;
       position: relative;
     }
@@ -333,13 +333,13 @@
       justify-content: center;
       gap: 0.5rem;
       padding: 0.9rem;
-      background: var(--ferrari-white);
-      border: 2px solid var(--ferrari-light-grey);
-      color: var(--ferrari-dark-grey);
+      background: var(--pitsapp-white);
+      border: 2px solid var(--pitsapp-light-grey);
+      color: var(--pitsapp-dark-grey);
       font-weight: 600;
 
       &:hover {
-        border-color: var(--ferrari-red);
+        border-color: var(--pitsapp-red);
         transform: translateY(-2px);
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       }
@@ -354,12 +354,12 @@
     text-align: center;
 
     p {
-      color: var(--ferrari-dark-grey);
+      color: var(--pitsapp-dark-grey);
       margin: 0;
     }
 
     .register-link {
-      color: var(--ferrari-red);
+      color: var(--pitsapp-red);
       text-decoration: none;
       font-weight: 600;
 

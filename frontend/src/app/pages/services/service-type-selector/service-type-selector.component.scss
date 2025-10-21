@@ -1,7 +1,7 @@
 .service-type-selector {
   min-height: 100vh;
   padding: 4rem 0;
-  background: linear-gradient(135deg, var(--ferrari-light-grey) 0%, var(--ferrari-white) 100%);
+  background: linear-gradient(135deg, var(--pitsapp-light-grey) 0%, var(--pitsapp-white) 100%);
 
   .header {
     text-align: center;
@@ -10,7 +10,7 @@
 
     h1 {
       font-size: clamp(2.5rem, 5vw, 3.5rem);
-      color: var(--ferrari-red);
+      color: var(--pitsapp-red);
       margin-bottom: 1rem;
       font-weight: 700;
       letter-spacing: -0.02em;
@@ -18,7 +18,7 @@
 
     .subtitle {
       font-size: 1.2rem;
-      color: var(--ferrari-dark-grey);
+      color: var(--pitsapp-dark-grey);
       max-width: 600px;
       margin: 0 auto;
     }
@@ -60,21 +60,21 @@
       }
 
       &.btn-primary {
-        background: linear-gradient(135deg, var(--ferrari-red), var(--ferrari-red-dark));
+        background: linear-gradient(135deg, var(--pitsapp-red), var(--pitsapp-red-dark));
         color: white;
 
         &:hover {
-          background: linear-gradient(135deg, var(--ferrari-red-dark), var(--ferrari-red));
+          background: linear-gradient(135deg, var(--pitsapp-red-dark), var(--pitsapp-red));
           box-shadow: 0 8px 25px rgba(220, 20, 60, 0.3);
         }
       }
 
       &.btn-provider {
-        background: linear-gradient(135deg, var(--ferrari-gold), #FFA500);
-        color: var(--ferrari-black);
+        background: linear-gradient(135deg, var(--pitsapp-gold), #FFA500);
+        color: var(--pitsapp-black);
 
         &:hover {
-          background: linear-gradient(135deg, #FFA500, var(--ferrari-gold));
+          background: linear-gradient(135deg, #FFA500, var(--pitsapp-gold));
           box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
         }
       }
@@ -91,7 +91,7 @@
 
   .service-card {
     position: relative;
-    background: var(--ferrari-white);
+    background: var(--pitsapp-white);
     border-radius: 16px;
     padding: 2.5rem 2rem;
     text-align: center;
@@ -135,7 +135,7 @@
       z-index: 1;
       font-size: 3rem;
       margin-bottom: 1.5rem;
-      color: var(--ferrari-red);
+      color: var(--pitsapp-red);
       transition: all 0.3s ease;
 
       fa-icon {
@@ -147,7 +147,7 @@
       position: relative;
       z-index: 1;
       font-size: 1.4rem;
-      color: var(--ferrari-black);
+      color: var(--pitsapp-black);
       margin-bottom: 0.75rem;
       font-weight: 600;
     }
@@ -156,7 +156,7 @@
       position: relative;
       z-index: 1;
       font-size: 1rem;
-      color: var(--ferrari-dark-grey);
+      color: var(--pitsapp-dark-grey);
       line-height: 1.6;
       margin: 0;
     }
@@ -169,8 +169,8 @@
   }
 
   .info-card {
-    background: linear-gradient(135deg, var(--ferrari-red) 0%, var(--ferrari-red-dark) 100%);
-    color: var(--ferrari-white);
+    background: linear-gradient(135deg, var(--pitsapp-red) 0%, var(--pitsapp-red-dark) 100%);
+    color: var(--pitsapp-white);
     border-radius: 20px;
     padding: 3rem;
     box-shadow: 0 10px 30px rgba(220, 20, 60, 0.3);
@@ -178,7 +178,7 @@
     h3 {
       font-size: 1.8rem;
       margin-bottom: 1.5rem;
-      color: var(--ferrari-white);
+      color: var(--pitsapp-white);
     }
 
     ol {
@@ -199,8 +199,8 @@
           position: absolute;
           left: 0;
           top: 0;
-          background: var(--ferrari-gold);
-          color: var(--ferrari-black);
+          background: var(--pitsapp-gold);
+          color: var(--pitsapp-black);
           width: 2rem;
           height: 2rem;
           border-radius: 50%;

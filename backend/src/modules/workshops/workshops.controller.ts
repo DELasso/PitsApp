@@ -14,14 +14,19 @@ import {
   ForbiddenException
 } from '@nestjs/common';
 import { WorkshopsService } from './workshops.service';
+import { WorkshopReviewsService } from './workshop-reviews.service';
 import { CreateWorkshopDto } from './dto/create-workshop.dto';
 import { UpdateWorkshopDto } from './dto/update-workshop.dto';
+import { CreateWorkshopReviewDto } from './dto/create-workshop-review.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserRole, BusinessType } from '../users/entities/user.entity';
 
 @Controller('workshops')
 export class WorkshopsController {
-  constructor(private readonly workshopsService: WorkshopsService) {}
+  constructor(
+    private readonly workshopsService: WorkshopsService,
+    private readonly workshopReviewsService: WorkshopReviewsService
+  ) {}
 
   @Post()
   @UseGuards(JwtAuthGuard)
@@ -151,6 +156,75 @@ export class WorkshopsController {
     return {
       success: true,
       message: 'Taller eliminado exitosamente'
+    };
+  }
+
+  // ============ REVIEWS ENDPOINTS ============
+
+  @Post(':id/reviews')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.CREATED)
+  async createReview(
+    @Param('id') workshopId: string,
+    @Body() createReviewDto: CreateWorkshopReviewDto,
+    @Request() req
+  ) {
+    const user = req.user;
+    
+    // Asegurarse de que el workshopId en el DTO coincida con el parámetro de ruta
+    createReviewDto.workshopId = workshopId;
+
+    const review = await this.workshopReviewsService.create(
+      createReviewDto,
+      user.sub,
+      user.fullName || user.email,
+      user.role
+    );
+
+    // Actualizar el rating del taller
+    const { averageRating, reviewCount } = await this.workshopReviewsService.getAverageRating(workshopId);
+    await this.workshopsService.updateRating(workshopId, averageRating, reviewCount);
+
+    return {
+      success: true,
+      message: 'Reseña creada exitosamente',
+      data: review
+    };
+  }
+
+  @Get(':id/reviews')
+  async getReviews(@Param('id') workshopId: string) {
+    const reviews = await this.workshopReviewsService.findByWorkshopId(workshopId);
+    const { averageRating, reviewCount } = await this.workshopReviewsService.getAverageRating(workshopId);
+
+    return {
+      success: true,
+      message: 'Reseñas obtenidas exitosamente',
+      data: {
+        reviews,
+        averageRating,
+        reviewCount
+      }
+    };
+  }
+
+  @Delete('reviews/:reviewId')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async deleteReview(
+    @Param('reviewId') reviewId: string,
+    @Request() req
+  ) {
+    const user = req.user;
+    const deletedReview = await this.workshopReviewsService.delete(reviewId, user.sub);
+
+    // Actualizar el rating del taller
+    const { averageRating, reviewCount } = await this.workshopReviewsService.getAverageRating(deletedReview.workshopId);
+    await this.workshopsService.updateRating(deletedReview.workshopId, averageRating, reviewCount);
+
+    return {
+      success: true,
+      message: 'Reseña eliminada exitosamente'
     };
   }
 }

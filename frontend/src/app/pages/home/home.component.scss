@@ -3,8 +3,8 @@
 }
 
 .hero {
-  background: linear-gradient(135deg, var(--ferrari-black) 0%, var(--ferrari-red-dark) 50%, var(--ferrari-red) 100%);
-  color: var(--ferrari-white);
+  background: linear-gradient(135deg, var(--pitsapp-black) 0%, var(--pitsapp-red-dark) 50%, var(--pitsapp-red) 100%);
+  color: var(--pitsapp-white);
   padding: 6rem 0;
   position: relative;
   overflow: hidden;
@@ -26,7 +26,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--ferrari-red), var(--ferrari-gold), var(--ferrari-red));
+    background: linear-gradient(90deg, var(--pitsapp-red), var(--pitsapp-gold), var(--pitsapp-red));
     animation: shimmer 3s infinite;
     background-size: 200% 100%;
   }
@@ -48,7 +48,7 @@
       font-size: clamp(2.5rem, 5vw, 4.5rem);
       font-weight: 700;
       margin-bottom: 1.5rem;
-      background: linear-gradient(135deg, var(--ferrari-white), var(--ferrari-gold));
+      background: linear-gradient(135deg, var(--pitsapp-white), var(--pitsapp-gold));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -60,7 +60,7 @@
       font-weight: 500;
       margin-bottom: 1.5rem;
       opacity: 0.95;
-      color: var(--ferrari-gold);
+      color: var(--pitsapp-gold);
     }
     
     p {
@@ -68,7 +68,7 @@
       margin-bottom: 3rem;
       opacity: 0.9;
       line-height: 1.6;
-      color: var(--ferrari-light-grey);
+      color: var(--pitsapp-light-grey);
     }
     
     .hero-actions {
@@ -84,19 +84,19 @@
         overflow: hidden;
         
         &.btn-primary {
-          background: linear-gradient(135deg, var(--ferrari-gold), var(--ferrari-gold-dark));
-          color: var(--ferrari-black);
+          background: linear-gradient(135deg, var(--pitsapp-gold), var(--pitsapp-gold-dark));
+          color: var(--pitsapp-black);
           box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4);
         }
         
         &.btn-secondary {
           background: transparent;
-          border: 2px solid var(--ferrari-gold);
-          color: var(--ferrari-gold);
+          border: 2px solid var(--pitsapp-gold);
+          color: var(--pitsapp-gold);
           
           &:hover {
-            background: var(--ferrari-gold);
-            color: var(--ferrari-black);
+            background: var(--pitsapp-gold);
+            color: var(--pitsapp-black);
           }
         }
       }

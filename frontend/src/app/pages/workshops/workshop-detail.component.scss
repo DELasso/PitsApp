@@ -1,26 +1,25 @@
 .workshop-detail-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--ferrari-light-grey) 0%, var(--ferrari-white) 100%);
+  background: linear-gradient(135deg, var(--pitsapp-light-grey) 0%, var(--pitsapp-white) 100%);
   padding: 20px;
   font-family: 'Telex', sans-serif;
 }
 
-/* Loading and Error States */
 .loading-container, .error-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 50vh;
-  color: var(--ferrari-black);
+  color: var(--pitsapp-black);
   text-align: center;
 }
 
 .spinner {
   width: 50px;
   height: 50px;
-  border: 4px solid var(--ferrari-light-grey);
-  border-left: 4px solid var(--ferrari-red);
+  border: 4px solid var(--pitsapp-light-grey);
+  border-left: 4px solid var(--pitsapp-red);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
@@ -32,16 +31,16 @@
 }
 
 .error-message {
-  background: var(--ferrari-white);
+  background: var(--pitsapp-white);
   padding: 40px;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  border: 2px solid var(--ferrari-red-light);
+  border: 2px solid var(--pitsapp-red-light);
 }
 
 .error-message i {
   font-size: 3rem;
-  color: var(--ferrari-red);
+  color: var(--pitsapp-red);
   margin-bottom: 20px;
 }
 
@@ -49,7 +48,7 @@
 .workshop-detail-content {
   max-width: 1400px;
   margin: 0 auto;
-  background: var(--ferrari-white);
+  background: var(--pitsapp-white);
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -57,16 +56,16 @@
 
 /* Header */
 .workshop-header {
-  background: linear-gradient(135deg, var(--ferrari-black) 0%, var(--ferrari-dark-grey) 100%);
+  background: linear-gradient(135deg, var(--pitsapp-black) 0%, var(--pitsapp-dark-grey) 100%);
   padding: 30px;
-  color: var(--ferrari-white);
+  color: var(--pitsapp-white);
   position: relative;
 }
 
 .back-button {
-  background: var(--ferrari-red);
+  background: var(--pitsapp-red);
   border: none;
-  color: var(--ferrari-white);
+  color: var(--pitsapp-white);
   padding: 12px 20px;
   border-radius: 8px;
   cursor: pointer;
@@ -77,7 +76,7 @@
 }
 
 .back-button:hover {
-  background: var(--ferrari-red-dark);
+  background: var(--pitsapp-red-dark);
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(220, 20, 60, 0.4);
 }
@@ -91,7 +90,7 @@
   font-weight: 700;
   margin: 0 0 15px 0;
   font-family: 'Special Gothic Expanded One', sans-serif;
-  color: var(--ferrari-white);
+  color: var(--pitsapp-white);
 }
 
 .workshop-rating {
@@ -107,29 +106,29 @@
 }
 
 .stars i {
-  color: var(--ferrari-silver);
+  color: var(--pitsapp-silver);
   font-size: 1.2rem;
 }
 
 .stars i.filled {
-  color: var(--ferrari-gold);
+  color: var(--pitsapp-gold);
 }
 
 .rating-text {
   font-size: 1rem;
-  color: var(--ferrari-light-grey);
+  color: var(--pitsapp-light-grey);
 }
 
 .workshop-location {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--ferrari-light-grey);
+  color: var(--pitsapp-light-grey);
   font-size: 1rem;
 }
 
 .workshop-location i {
-  color: var(--ferrari-red-light);
+  color: var(--pitsapp-red-light);
 }
 
 /* Main Content */
@@ -154,7 +153,7 @@
 .detail-section h2 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--ferrari-black);
+  color: var(--pitsapp-black);
   margin-bottom: 15px;
   display: flex;
   align-items: center;
@@ -162,13 +161,13 @@
 }
 
 .detail-section h2 i {
-  color: var(--ferrari-red);
+  color: var(--pitsapp-red);
 }
 
 .description {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: var(--ferrari-dark-grey);
+  color: var(--pitsapp-dark-grey);
 }
 
 /* Services Grid */
@@ -183,8 +182,8 @@
   align-items: center;
   gap: 8px;
   padding: 12px 16px;
-  background: linear-gradient(135deg, var(--ferrari-red) 0%, var(--ferrari-red-dark) 100%);
-  color: var(--ferrari-white);
+  background: linear-gradient(135deg, var(--pitsapp-red) 0%, var(--pitsapp-red-dark) 100%);
+  color: var(--pitsapp-white);
   border-radius: 8px;
   font-size: 0.9rem;
   font-weight: 500;
@@ -208,9 +207,9 @@
 
 .specialty-tag {
   padding: 8px 16px;
-  background: var(--ferrari-light-grey);
-  border: 2px solid var(--ferrari-red);
-  color: var(--ferrari-red);
+  background: var(--pitsapp-light-grey);
+  border: 2px solid var(--pitsapp-red);
+  color: var(--pitsapp-red);
   border-radius: 20px;
   font-size: 0.9rem;
   font-weight: 500;
@@ -218,11 +217,11 @@
 
 .working-hours {
   font-size: 1.1rem;
-  color: var(--ferrari-dark-grey);
-  background: var(--ferrari-light-grey);
+  color: var(--pitsapp-dark-grey);
+  background: var(--pitsapp-light-grey);
   padding: 15px 20px;
   border-radius: 8px;
-  border-left: 4px solid var(--ferrari-red);
+  border-left: 4px solid var(--pitsapp-red);
 }
 
 /* Contact Card */
@@ -233,7 +232,7 @@
 }
 
 .contact-card {
-  background: var(--ferrari-light-grey);
+  background: var(--pitsapp-light-grey);
   padding: 30px;
   border-radius: 15px;
   border: 1px solid #e9ecef;
@@ -242,7 +241,7 @@
 .contact-card h3 {
   font-size: 1.3rem;
   font-weight: 600;
-  color: var(--ferrari-black);
+  color: var(--pitsapp-black);
   margin-bottom: 25px;
   display: flex;
   align-items: center;
@@ -250,7 +249,7 @@
 }
 
 .contact-card h3 i {
-  color: var(--ferrari-red);
+  color: var(--pitsapp-red);
 }
 
 .contact-item {
@@ -269,7 +268,7 @@
 }
 
 .contact-item i {
-  color: var(--ferrari-red);
+  color: var(--pitsapp-red);
   font-size: 1.2rem;
   margin-top: 5px;
   min-width: 20px;
@@ -277,13 +276,13 @@
 
 .contact-details strong {
   display: block;
-  color: var(--ferrari-black);
+  color: var(--pitsapp-black);
   font-weight: 600;
   margin-bottom: 5px;
 }
 
 .contact-details p {
-  color: var(--ferrari-dark-grey);
+  color: var(--pitsapp-dark-grey);
   margin: 0;
   line-height: 1.4;
 }
@@ -311,8 +310,8 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--ferrari-red) 0%, var(--ferrari-red-dark) 100%);
-  color: var(--ferrari-white);
+  background: linear-gradient(135deg, var(--pitsapp-red) 0%, var(--pitsapp-red-dark) 100%);
+  color: var(--pitsapp-white);
 }
 
 .btn-primary:hover {
@@ -321,8 +320,8 @@
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, var(--ferrari-dark-grey) 0%, var(--ferrari-black) 100%);
-  color: var(--ferrari-white);
+  background: linear-gradient(135deg, var(--pitsapp-dark-grey) 0%, var(--pitsapp-black) 100%);
+  color: var(--pitsapp-white);
 }
 
 .btn-secondary:hover {
@@ -332,19 +331,19 @@
 
 .btn-outline {
   background: transparent;
-  color: var(--ferrari-red);
-  border: 2px solid var(--ferrari-red);
+  color: var(--pitsapp-red);
+  border: 2px solid var(--pitsapp-red);
 }
 
 .btn-outline:hover {
-  background: var(--ferrari-red);
-  color: var(--ferrari-white);
+  background: var(--pitsapp-red);
+  color: var(--pitsapp-white);
   transform: translateY(-2px);
 }
 
 .btn-success {
-  background: linear-gradient(135deg, var(--ferrari-gold-dark) 0%, var(--ferrari-gold) 100%);
-  color: var(--ferrari-black);
+  background: linear-gradient(135deg, var(--pitsapp-gold-dark) 0%, var(--pitsapp-gold) 100%);
+  color: var(--pitsapp-black);
   font-weight: 700;
 }
 
@@ -365,6 +364,345 @@ google-map {
 }
 
 
+.reviews-section {
+  margin-top: 40px;
+  padding: 30px;
+  background: var(--pitsapp-white);
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+  h2 {
+    font-family: 'Special Gothic', sans-serif;
+    font-size: 1.8rem;
+    color: var(--pitsapp-black);
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    i {
+      color: var(--pitsapp-red);
+    }
+  }
+
+  h3 {
+    font-family: 'Special Gothic', sans-serif;
+    font-size: 1.4rem;
+    color: var(--pitsapp-black);
+    margin-bottom: 20px;
+  }
+}
+
+.review-form-container {
+  background: var(--pitsapp-light-grey);
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+
+  .rating-selector {
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--pitsapp-black);
+    }
+
+    .stars-input {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+
+      i {
+        font-size: 2rem;
+        color: #ddd;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &.selected,
+        &.hover {
+          color: #ffc107;
+          transform: scale(1.1);
+        }
+
+        &:hover {
+          transform: scale(1.2);
+        }
+      }
+    }
+
+    .rating-value {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--pitsapp-grey);
+    }
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--pitsapp-black);
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-family: 'Telex', sans-serif;
+      font-size: 1rem;
+      resize: vertical;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: var(--pitsapp-red);
+      }
+
+      &.invalid {
+        border-color: #dc3545;
+      }
+    }
+
+    .error-text {
+      display: block;
+      color: #dc3545;
+      font-size: 0.85rem;
+      margin-top: 5px;
+    }
+  }
+
+  .alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &.alert-success {
+      background-color: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+    }
+
+    &.alert-danger {
+      background-color: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+    }
+
+    i {
+      font-size: 1.2rem;
+    }
+  }
+
+  button[type="submit"] {
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.login-message {
+  background: #fff0f0;
+  border: 1px solid #ff0707;;
+  padding: 20px 10px 1px;
+  border-radius: 12px;
+  text-align: center;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  i {
+    font-size: 1.5rem;
+    color: var(--pitsapp-red);
+    margin-bottom: 1.5rem;
+  }
+
+  a {
+    color: var(--pitsapp-red);
+    font-weight: 600;
+    text-decoration: none;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.reviews-list {
+  margin-top: 30px;
+
+  .loading-reviews {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 40px;
+    color: var(--pitsapp-grey);
+
+    .spinner-small {
+      width: 30px;
+      height: 30px;
+      border: 3px solid var(--pitsapp-light-grey);
+      border-left: 3px solid var(--pitsapp-red);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  .no-reviews {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--pitsapp-grey);
+
+    i {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      opacity: 0.5;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+
+    small {
+      color: var(--pitsapp-grey);
+    }
+  }
+}
+
+.reviews-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.review-card {
+  background: var(--pitsapp-white);
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+
+    .review-user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .user-avatar {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, var(--pitsapp-red) 0%, var(--pitsapp-red-light) 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.2rem;
+      }
+
+      .user-details {
+        h4 {
+          margin: 0 0 5px 0;
+          font-size: 1.1rem;
+          color: var(--pitsapp-black);
+        }
+
+        .user-role-badge {
+          font-size: 0.75rem;
+          padding: 3px 10px;
+          border-radius: 12px;
+          font-weight: 600;
+          text-transform: uppercase;
+
+          &.cliente {
+            background-color: #e3f2fd;
+            color: #1976d2;
+          }
+
+          &.proveedor {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+          }
+        }
+      }
+    }
+
+    .review-actions {
+      .btn-delete {
+        background: transparent;
+        border: none;
+        color: #dc3545;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+
+        &:hover {
+          background-color: #ffe5e5;
+          transform: scale(1.1);
+        }
+
+        i {
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+
+  .review-rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+
+    .stars {
+      display: flex;
+      gap: 4px;
+
+      i {
+        font-size: 1rem;
+        color: #ddd;
+
+        &.filled {
+          color: #ffc107;
+        }
+      }
+    }
+
+    .review-date {
+      font-size: 0.85rem;
+      color: var(--pitsapp-grey);
+    }
+  }
+
+  .review-comment {
+    color: var(--pitsapp-black);
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 1024px) {
   .workshop-info-grid {
@@ -381,6 +719,10 @@ google-map {
   }
   
   .workshop-main {
+    padding: 20px;
+  }
+
+  .reviews-section {
     padding: 20px;
   }
 }
@@ -401,6 +743,14 @@ google-map {
   .contact-card {
     padding: 20px;
   }
+
+  .review-form-container {
+    padding: 20px;
+  }
+
+  .review-card {
+    padding: 15px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -417,5 +767,18 @@ google-map {
   .action-buttons .btn {
     padding: 12px 16px;
     font-size: 0.9rem;
+  }
+
+  .reviews-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .rating-selector .stars-input i {
+    font-size: 1.5rem;
+  }
+
+  .review-header {
+    flex-direction: column;
+    gap: 10px;
   }
 }
