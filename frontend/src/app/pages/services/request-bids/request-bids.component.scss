@@ -1,15 +1,15 @@
 .request-bids {
   min-height: 100vh;
   padding: 2rem 0 4rem;
-  background: linear-gradient(135deg, var(--ferrari-light-grey) 0%, var(--ferrari-white) 100%);
+  background: linear-gradient(135deg, var(--pitsapp-light-grey) 0%, var(--pitsapp-white) 100%);
 
   .page-header {
     margin-bottom: 2rem;
 
     .back-button {
       background: transparent;
-      border: 2px solid var(--ferrari-red);
-      color: var(--ferrari-red);
+      border: 2px solid var(--pitsapp-red);
+      color: var(--pitsapp-red);
       padding: 0.75rem 1.5rem;
       border-radius: 8px;
       font-size: 1rem;
@@ -21,8 +21,8 @@
       gap: 0.5rem;
 
       &:hover {
-        background: var(--ferrari-red);
-        color: var(--ferrari-white);
+        background: var(--pitsapp-red);
+        color: var(--pitsapp-white);
         transform: translateX(-5px);
       }
     }
@@ -31,7 +31,7 @@
   .loading {
     text-align: center;
     padding: 4rem;
-    color: var(--ferrari-red);
+    color: var(--pitsapp-red);
 
     fa-icon {
       font-size: 3rem;
@@ -40,7 +40,7 @@
 
     p {
       font-size: 1.2rem;
-      color: var(--ferrari-dark-grey);
+      color: var(--pitsapp-dark-grey);
     }
   }
 
@@ -51,14 +51,14 @@
 
     &.alert-error {
       background: #ffebee;
-      color: var(--ferrari-red-dark);
-      border-left: 4px solid var(--ferrari-red);
+      color: var(--pitsapp-red-dark);
+      border-left: 4px solid var(--pitsapp-red);
     }
   }
 
   .request-summary {
-    background: linear-gradient(135deg, var(--ferrari-red) 0%, var(--ferrari-red-dark) 100%);
-    color: var(--ferrari-white);
+    background: linear-gradient(135deg, var(--pitsapp-red) 0%, var(--pitsapp-red-dark) 100%);
+    color: var(--pitsapp-white);
     border-radius: 20px;
     padding: 2.5rem;
     margin-bottom: 2rem;
@@ -75,7 +75,7 @@
       h1 {
         font-size: 2rem;
         margin: 0;
-        color: var(--ferrari-white);
+        color: var(--pitsapp-white);
       }
 
       .bids-count {
@@ -87,7 +87,7 @@
 
         strong {
           font-size: 1.5rem;
-          color: var(--ferrari-gold);
+          color: var(--pitsapp-gold);
         }
       }
     }
@@ -116,19 +116,19 @@
   .empty-state {
     text-align: center;
     padding: 4rem 2rem;
-    background: var(--ferrari-white);
+    background: var(--pitsapp-white);
     border-radius: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 
     h2 {
       font-size: 2rem;
-      color: var(--ferrari-black);
+      color: var(--pitsapp-black);
       margin-bottom: 1rem;
     }
 
     p {
       font-size: 1.2rem;
-      color: var(--ferrari-dark-grey);
+      color: var(--pitsapp-dark-grey);
     }
   }
 
@@ -138,12 +138,12 @@
 
       h2 {
         font-size: 1.8rem;
-        color: var(--ferrari-black);
+        color: var(--pitsapp-black);
         margin-bottom: 0.5rem;
       }
 
       .tip {
-        color: var(--ferrari-dark-grey);
+        color: var(--pitsapp-dark-grey);
         font-size: 1rem;
         margin: 0;
       }
@@ -157,7 +157,7 @@
 
     .bid-card {
       position: relative;
-      background: var(--ferrari-white);
+      background: var(--pitsapp-white);
       border-radius: 20px;
       padding: 2rem;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -170,17 +170,17 @@
       }
 
       &.bid-lowest {
-        border-color: var(--ferrari-gold);
+        border-color: var(--pitsapp-gold);
         box-shadow: 0 4px 20px rgba(255, 0, 0, 0.3);
       }
 
       &.bid-highest-rated {
-        border-color: var(--ferrari-red-light);
+        border-color: var(--pitsapp-red-light);
       }
 
       &.bid-accepted {
         border-color: #4caf50;
-        background: linear-gradient(135deg, #e8f5e9 0%, var(--ferrari-white) 100%);
+        background: linear-gradient(135deg, #e8f5e9 0%, var(--pitsapp-white) 100%);
       }
 
       &.bid-rejected {
@@ -193,8 +193,8 @@
         top: -12px;
         left: 50%;
         transform: translateX(-50%);
-        background: linear-gradient(135deg, var(--ferrari-gold) 0%, var(--ferrari-gold-dark) 100%);
-        color: var(--ferrari-black);
+        background: linear-gradient(135deg, var(--pitsapp-gold) 0%, var(--pitsapp-gold-dark) 100%);
+        color: var(--pitsapp-black);
         padding: 0.5rem 1.5rem;
         border-radius: 20px;
         font-size: 0.85rem;
@@ -203,8 +203,8 @@
         z-index: 10;
 
         &.rating-badge {
-          background: linear-gradient(135deg, var(--ferrari-red) 0%, var(--ferrari-red-dark) 100%);
-          color: var(--ferrari-white);
+          background: linear-gradient(135deg, var(--pitsapp-red) 0%, var(--pitsapp-red-dark) 100%);
+          color: var(--pitsapp-white);
         }
       }
 
@@ -214,12 +214,12 @@
         align-items: flex-start;
         margin-bottom: 1.5rem;
         padding-bottom: 1.5rem;
-        border-bottom: 2px solid var(--ferrari-light-grey);
+        border-bottom: 2px solid var(--pitsapp-light-grey);
 
         .provider-info {
           h3 {
             font-size: 1.5rem;
-            color: var(--ferrari-black);
+            color: var(--pitsapp-black);
             margin: 0 0 0.5rem;
           }
 
@@ -233,14 +233,14 @@
               font-size: 1rem;
 
               &.filled {
-                color: var(--ferrari-gold);
+                color: var(--pitsapp-gold);
               }
             }
 
             .rating-value {
               margin-left: 0.5rem;
               font-weight: 600;
-              color: var(--ferrari-dark-grey);
+              color: var(--pitsapp-dark-grey);
             }
           }
         }
@@ -274,7 +274,7 @@
       }
 
       .bid-price {
-        background: linear-gradient(135deg, var(--ferrari-light-grey) 0%, var(--ferrari-white) 100%);
+        background: linear-gradient(135deg, var(--pitsapp-light-grey) 0%, var(--pitsapp-white) 100%);
         padding: 1.5rem;
         border-radius: 12px;
         text-align: center;
@@ -282,14 +282,14 @@
 
         .price-label {
           font-size: 0.9rem;
-          color: var(--ferrari-dark-grey);
+          color: var(--pitsapp-dark-grey);
           margin-bottom: 0.5rem;
         }
 
         .price-amount {
           font-size: 2.5rem;
           font-weight: 700;
-          color: var(--ferrari-red);
+          color: var(--pitsapp-red);
           margin-bottom: 0.5rem;
         }
 
@@ -312,7 +312,7 @@
           gap: 1rem;
 
           fa-icon {
-            color: var(--ferrari-red);
+            color: var(--pitsapp-red);
             font-size: 1.2rem;
             margin-top: 0.2rem;
           }
@@ -322,13 +322,13 @@
 
             strong {
               display: block;
-              color: var(--ferrari-black);
+              color: var(--pitsapp-black);
               margin-bottom: 0.25rem;
               font-size: 0.95rem;
             }
 
             span {
-              color: var(--ferrari-dark-grey);
+              color: var(--pitsapp-dark-grey);
               font-size: 1rem;
 
               &.included {
@@ -346,12 +346,12 @@
 
         h4 {
           font-size: 1.1rem;
-          color: var(--ferrari-black);
+          color: var(--pitsapp-black);
           margin-bottom: 0.5rem;
         }
 
         p {
-          color: var(--ferrari-dark-grey);
+          color: var(--pitsapp-dark-grey);
           line-height: 1.6;
           margin: 0;
         }
@@ -362,7 +362,7 @@
 
         h4 {
           font-size: 1.1rem;
-          color: var(--ferrari-black);
+          color: var(--pitsapp-black);
           margin-bottom: 1rem;
         }
 
@@ -371,23 +371,23 @@
           border-collapse: collapse;
 
           th {
-            background: var(--ferrari-light-grey);
+            background: var(--pitsapp-light-grey);
             padding: 0.75rem;
             text-align: left;
             font-size: 0.9rem;
-            color: var(--ferrari-black);
+            color: var(--pitsapp-black);
             font-weight: 600;
           }
 
           td {
             padding: 0.75rem;
             border-bottom: 1px solid #eee;
-            color: var(--ferrari-dark-grey);
+            color: var(--pitsapp-dark-grey);
           }
 
           tfoot td {
             font-weight: 600;
-            color: var(--ferrari-black);
+            color: var(--pitsapp-black);
             border-bottom: none;
             padding-top: 1rem;
           }
@@ -399,7 +399,7 @@
 
         h4 {
           font-size: 1.1rem;
-          color: var(--ferrari-black);
+          color: var(--pitsapp-black);
           margin-bottom: 0.5rem;
         }
 
@@ -426,18 +426,18 @@
         margin-bottom: 1.5rem;
 
         fa-icon {
-          color: var(--ferrari-gold-dark);
+          color: var(--pitsapp-gold-dark);
           font-size: 1.5rem;
         }
 
         strong {
           display: block;
-          color: var(--ferrari-black);
+          color: var(--pitsapp-black);
           margin-bottom: 0.25rem;
         }
 
         span {
-          color: var(--ferrari-dark-grey);
+          color: var(--pitsapp-dark-grey);
         }
       }
 
@@ -445,8 +445,8 @@
         .btn-accept {
           width: 100%;
           padding: 1rem 2rem;
-          background: linear-gradient(135deg, var(--ferrari-red) 0%, var(--ferrari-red-dark) 100%);
-          color: var(--ferrari-white);
+          background: linear-gradient(135deg, var(--pitsapp-red) 0%, var(--pitsapp-red-dark) 100%);
+          color: var(--pitsapp-white);
           border: none;
           border-radius: 12px;
           font-size: 1.1rem;
@@ -482,7 +482,7 @@
         text-align: center;
 
         small {
-          color: var(--ferrari-dark-grey);
+          color: var(--pitsapp-dark-grey);
           font-size: 0.85rem;
         }
       }

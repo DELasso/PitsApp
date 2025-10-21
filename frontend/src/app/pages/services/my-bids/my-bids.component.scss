@@ -19,7 +19,7 @@
     margin-bottom: 2rem;
 
     h1 {
-      color: var(--ferrari-red);
+      color: var(--pitsapp-red);
       font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
@@ -124,12 +124,12 @@
 
       &.total {
         .stat-icon {
-          background: linear-gradient(135deg, var(--ferrari-red) 0%, #b91236 100%);
+          background: linear-gradient(135deg, var(--pitsapp-red) 0%, #b91236 100%);
           color: white;
         }
 
         .stat-content {
-          color: var(--ferrari-red);
+          color: var(--pitsapp-red);
         }
       }
 
@@ -189,7 +189,7 @@
   color: #bbb;
 
   fa-icon {
-    color: var(--ferrari-red);
+    color: var(--pitsapp-red);
     margin-bottom: 1.5rem;
   }
 
@@ -206,7 +206,7 @@
 
   button {
     padding: 0.75rem 1.5rem;
-    background: var(--ferrari-red);
+    background: var(--pitsapp-red);
     color: white;
     border: none;
     border-radius: 8px;
@@ -223,7 +223,7 @@
   }
 
   .btn-browse {
-    background: linear-gradient(135deg, var(--ferrari-red) 0%, #b91236 100%);
+    background: linear-gradient(135deg, var(--pitsapp-red) 0%, #b91236 100%);
     min-width: 200px;
   }
 }
@@ -244,11 +244,11 @@
   &:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(220, 20, 60, 0.3);
-    border-color: var(--ferrari-red);
+    border-color: var(--pitsapp-red);
   }
 
   .card-header {
-    background: linear-gradient(135deg, var(--ferrari-red) 0%, #b91236 100%);
+    background: linear-gradient(135deg, var(--pitsapp-red) 0%, #b91236 100%);
     padding: 1rem 1.5rem;
     display: flex;
     justify-content: space-between;
@@ -313,12 +313,12 @@
       border: 1px solid rgba(220, 20, 60, 0.3);
 
       fa-icon {
-        color: var(--ferrari-gold);
+        color: var(--pitsapp-gold);
         font-size: 1.5rem;
       }
 
       .amount {
-        color: var(--ferrari-gold);
+        color: var(--pitsapp-gold);
         font-size: 2rem;
         font-weight: 700;
       }
@@ -328,10 +328,10 @@
       padding: 1rem;
       background: rgba(0, 0, 0, 0.2);
       border-radius: 8px;
-      border-left: 3px solid var(--ferrari-red);
+      border-left: 3px solid var(--pitsapp-red);
 
       h4 {
-        color: var(--ferrari-gold);
+        color: var(--pitsapp-gold);
         font-size: 1rem;
         margin-bottom: 0.75rem;
       }
@@ -364,7 +364,7 @@
           }
 
           .item-price {
-            color: var(--ferrari-gold);
+            color: var(--pitsapp-gold);
             font-weight: 600;
           }
         }
@@ -387,10 +387,10 @@
         font-size: 0.9rem;
 
         fa-icon {
-          color: var(--ferrari-red);
+          color: var(--pitsapp-red);
 
           &.warranty-icon {
-            color: var(--ferrari-gold);
+            color: var(--pitsapp-gold);
           }
         }
 
@@ -408,7 +408,7 @@
       border: 1px solid rgba(255, 215, 0, 0.3);
 
       h5 {
-        color: var(--ferrari-gold);
+        color: var(--pitsapp-gold);
         font-size: 0.95rem;
         margin-bottom: 0.5rem;
       }
@@ -504,8 +504,8 @@
 
       &:hover:not(:disabled) {
         background: rgba(255, 255, 255, 0.15);
-        border-color: var(--ferrari-gold);
-        color: var(--ferrari-gold);
+        border-color: var(--pitsapp-gold);
+        color: var(--pitsapp-gold);
       }
     }
 

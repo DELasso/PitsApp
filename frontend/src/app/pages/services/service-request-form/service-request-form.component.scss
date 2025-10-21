@@ -1,7 +1,7 @@
 .service-request-form {
   min-height: 100vh;
   padding: 2rem 0 4rem;
-  background: linear-gradient(135deg, var(--ferrari-light-grey) 0%, var(--ferrari-white) 100%);
+  background: linear-gradient(135deg, var(--pitsapp-light-grey) 0%, var(--pitsapp-white) 100%);
 
   .form-header {
     text-align: center;
@@ -13,8 +13,8 @@
       left: 0;
       top: 0;
       background: transparent;
-      border: 2px solid var(--ferrari-red);
-      color: var(--ferrari-red);
+      border: 2px solid var(--pitsapp-red);
+      color: var(--pitsapp-red);
       padding: 0.75rem 1.5rem;
       border-radius: 8px;
       font-size: 1rem;
@@ -26,8 +26,8 @@
       gap: 0.5rem;
 
       &:hover {
-        background: var(--ferrari-red);
-        color: var(--ferrari-white);
+        background: var(--pitsapp-red);
+        color: var(--pitsapp-white);
         transform: translateX(-5px);
       }
 
@@ -38,14 +38,14 @@
 
     h1 {
       font-size: clamp(2rem, 4vw, 3rem);
-      color: var(--ferrari-red);
+      color: var(--pitsapp-red);
       margin: 0 0 1rem;
       font-weight: 700;
     }
 
     .subtitle {
       font-size: 1.1rem;
-      color: var(--ferrari-dark-grey);
+      color: var(--pitsapp-dark-grey);
       max-width: 700px;
       margin: 0 auto;
     }
@@ -61,8 +61,8 @@
 
     &.alert-error {
       background: #ffebee;
-      color: var(--ferrari-red-dark);
-      border-left: 4px solid var(--ferrari-red);
+      color: var(--pitsapp-red-dark);
+      border-left: 4px solid var(--pitsapp-red);
     }
 
     &.alert-success {
@@ -78,7 +78,7 @@
   }
 
   .form-section {
-    background: var(--ferrari-white);
+    background: var(--pitsapp-white);
     border-radius: 20px;
     padding: 2.5rem;
     margin-bottom: 2rem;
@@ -93,12 +93,12 @@
       gap: 1rem;
       margin-bottom: 1.5rem;
       padding-bottom: 1rem;
-      border-bottom: 3px solid var(--ferrari-red);
+      border-bottom: 3px solid var(--pitsapp-red);
     }
 
     h2 {
       font-size: 1.6rem;
-      color: var(--ferrari-black);
+      color: var(--pitsapp-black);
       margin: 0;
       display: flex;
       align-items: center;
@@ -123,7 +123,7 @@
     label {
       font-size: 0.95rem;
       font-weight: 600;
-      color: var(--ferrari-black);
+      color: var(--pitsapp-black);
       margin-bottom: 0.5rem;
       display: block;
 
@@ -138,14 +138,14 @@
       font-size: 1rem;
       border: 2px solid #e0e0e0;
       border-radius: 10px;
-      background: var(--ferrari-white);
-      color: var(--ferrari-black);
+      background: var(--pitsapp-white);
+      color: var(--pitsapp-black);
       transition: all 0.3s ease;
       font-family: inherit;
 
       &:focus {
         outline: none;
-        border-color: var(--ferrari-red);
+        border-color: var(--pitsapp-red);
         box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
       }
 
@@ -191,7 +191,7 @@
           width: 1.25rem;
           height: 1.25rem;
           cursor: pointer;
-          accent-color: var(--ferrari-red);
+          accent-color: var(--pitsapp-red);
         }
       }
     }
@@ -224,8 +224,8 @@
       }
 
       &.btn-primary {
-        background: linear-gradient(135deg, var(--ferrari-red) 0%, var(--ferrari-red-dark) 100%);
-        color: var(--ferrari-white);
+        background: linear-gradient(135deg, var(--pitsapp-red) 0%, var(--pitsapp-red-dark) 100%);
+        color: var(--pitsapp-white);
         box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
 
         &:hover:not(:disabled) {
@@ -239,13 +239,13 @@
       }
 
       &.btn-secondary {
-        background: var(--ferrari-white);
-        color: var(--ferrari-dark-grey);
+        background: var(--pitsapp-white);
+        color: var(--pitsapp-dark-grey);
        
 
         &:hover:not(:disabled) {
-          background: var(--ferrari-dark-grey);
-          color: var(--ferrari-white);
+          background: var(--pitsapp-dark-grey);
+          color: var(--pitsapp-white);
         }
       }
 

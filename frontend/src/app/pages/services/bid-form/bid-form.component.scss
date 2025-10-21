@@ -2,7 +2,7 @@
 
 .bid-form-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--ferrari-light-grey) 0%, var(--ferrari-white) 100%);
+  background: linear-gradient(135deg, var(--pitsapp-light-grey) 0%, var(--pitsapp-white) 100%);
   padding: 4rem 2rem;
 
   @media (max-width: 768px) {
@@ -17,9 +17,9 @@
 
   .btn-back {
     padding: 0.75rem 1.5rem;
-    background: var(--ferrari-white);
-    color: var(--ferrari-red);
-    border: 2px solid var(--ferrari-red);
+    background: var(--pitsapp-white);
+    color: var(--pitsapp-red);
+    border: 2px solid var(--pitsapp-red);
     border-radius: 8px;
     font-size: 1rem;
     font-weight: 600;
@@ -32,7 +32,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
     &:hover {
-      background: var(--ferrari-red);
+      background: var(--pitsapp-red);
       color: white;
       transform: translateX(-3px);
       box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
@@ -43,7 +43,7 @@
     text-align: center;
 
     h1 {
-      color: var(--ferrari-red);
+      color: var(--pitsapp-red);
       font-size: clamp(2rem, 5vw, 3rem);
       font-weight: 700;
       margin-bottom: 1rem;
@@ -66,7 +66,7 @@
     }
 
     .subtitle {
-      color: var(--ferrari-dark-grey);
+      color: var(--pitsapp-dark-grey);
       font-size: 1.2rem;
       margin: 0;
       max-width: 700px;
@@ -88,25 +88,25 @@
   min-height: 400px;
   text-align: center;
   padding: 3rem;
-  background: var(--ferrari-white);
+  background: var(--pitsapp-white);
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 
   fa-icon {
-    color: var(--ferrari-red);
+    color: var(--pitsapp-red);
     margin-bottom: 1.5rem;
   }
 
   p {
     font-size: 1.1rem;
     margin: 0;
-    color: var(--ferrari-dark-grey);
+    color: var(--pitsapp-dark-grey);
   }
 
   .btn-retry {
     margin-top: 1.5rem;
     padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, var(--ferrari-red), var(--ferrari-red-dark));
+    background: linear-gradient(135deg, var(--pitsapp-red), var(--pitsapp-red-dark));
     color: white;
     border: none;
     border-radius: 8px;
@@ -133,7 +133,7 @@
 }
 
 .request-summary-card {
-  background: var(--ferrari-white);
+  background: var(--pitsapp-white);
   border: 2px solid rgba(220, 20, 60, 0.1);
   border-radius: 16px;
   padding: 2rem;
@@ -142,7 +142,7 @@
   animation: fadeInUp 0.8s ease-out;
 
   h2 {
-    color: var(--ferrari-red);
+    color: var(--pitsapp-red);
     font-size: 1.5rem;
     margin-bottom: 1.5rem;
     display: flex;
@@ -161,7 +161,7 @@
       grid-template-columns: 200px 1fr;
       gap: 1rem;
       padding: 0.75rem;
-      background: var(--ferrari-light-grey);
+      background: var(--pitsapp-light-grey);
       border-radius: 8px;
 
       @media (max-width: 768px) {
@@ -170,16 +170,16 @@
       }
 
       .label {
-        color: var(--ferrari-dark-grey);
+        color: var(--pitsapp-dark-grey);
         font-weight: 600;
       }
 
       .value {
-        color: var(--ferrari-black);
+        color: var(--pitsapp-black);
         font-weight: 500;
 
         &.budget {
-          color: var(--ferrari-red);
+          color: var(--pitsapp-red);
           font-weight: 700;
           font-size: 1.1rem;
         }
@@ -194,7 +194,7 @@
   gap: 2rem;
 
   .form-section {
-    background: var(--ferrari-white);
+    background: var(--pitsapp-white);
     border: 2px solid rgba(220, 20, 60, 0.1);
     border-radius: 16px;
     padding: 2rem;
@@ -213,7 +213,7 @@
       gap: 1rem;
 
       h3 {
-        color: var(--ferrari-red);
+        color: var(--pitsapp-red);
         font-size: 1.3rem;
         margin: 0;
         display: flex;
@@ -222,13 +222,13 @@
         font-weight: 700;
 
         fa-icon {
-          color: var(--ferrari-red);
+          color: var(--pitsapp-red);
         }
       }
 
       .btn-add-item {
         padding: 0.5rem 1rem;
-        background: linear-gradient(135deg, var(--ferrari-red), var(--ferrari-red-dark));
+        background: linear-gradient(135deg, var(--pitsapp-red), var(--pitsapp-red-dark));
         color: white;
         border: none;
         border-radius: 8px;
@@ -253,7 +253,7 @@
     }
 
     h3 {
-      color: var(--ferrari-black);
+      color: var(--pitsapp-black);
       font-size: 1.3rem;
       margin-bottom: 1.5rem;
       display: flex;
@@ -261,7 +261,7 @@
       gap: 0.75rem;
 
       fa-icon {
-        color: var(--ferrari-red);
+        color: var(--pitsapp-red);
       }
     }
   }
@@ -274,7 +274,7 @@
   }
 
   .item-card {
-    background: var(--ferrari-light-grey);
+    background: var(--pitsapp-light-grey);
     border: 2px solid rgba(220, 20, 60, 0.1);
     border-radius: 12px;
     padding: 1.5rem;
@@ -289,7 +289,7 @@
       border-bottom: 1px solid rgba(220, 20, 60, 0.2);
 
       .item-number {
-        color: var(--ferrari-red);
+        color: var(--pitsapp-red);
         font-weight: 700;
         font-size: 0.95rem;
       }
@@ -354,7 +354,7 @@
     }
 
     label {
-      color: var(--ferrari-black);
+      color: var(--pitsapp-black);
       font-weight: 600;
       font-size: 0.95rem;
     }
@@ -363,35 +363,35 @@
     select,
     textarea {
       padding: 0.75rem 1rem;
-      border: 2px solid var(--ferrari-light-grey);
+      border: 2px solid var(--pitsapp-light-grey);
       border-radius: 8px;
-      background: var(--ferrari-white);
-      color: var(--ferrari-black);
+      background: var(--pitsapp-white);
+      color: var(--pitsapp-black);
       font-size: 1rem;
       transition: all 0.3s ease;
       font-family: inherit;
 
       &::placeholder {
-        color: var(--ferrari-grey);
+        color: var(--pitsapp-grey);
         opacity: 0.7;
       }
 
       &:placeholder-shown {
-        color: var(--ferrari-grey);
+        color: var(--pitsapp-grey);
       }
 
       &:not(:placeholder-shown) {
-        color: var(--ferrari-black);
+        color: var(--pitsapp-black);
       }
 
       &:focus {
         outline: none;
-        color: var(--ferrari-black);
-        border-color: var(--ferrari-red);
+        color: var(--pitsapp-black);
+        border-color: var(--pitsapp-red);
         box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
         
         &::placeholder {
-          color: var(--ferrari-grey);
+          color: var(--pitsapp-grey);
           opacity: 0.5;
         }
       }
@@ -399,8 +399,8 @@
       &:disabled {
         opacity: 0.6;
         cursor: not-allowed;
-        background: var(--ferrari-light-grey);
-        color: var(--ferrari-grey);
+        background: var(--pitsapp-light-grey);
+        color: var(--pitsapp-grey);
       }
 
       &.invalid {
@@ -410,26 +410,26 @@
 
     .subtotal-field {
       background: rgba(220, 20, 60, 0.05);
-      border-color: var(--ferrari-red);
-      color: var(--ferrari-red);
+      border-color: var(--pitsapp-red);
+      color: var(--pitsapp-red);
       font-weight: 700;
     }
 
     select {
       cursor: pointer;
-      color: var(--ferrari-black);
+      color: var(--pitsapp-black);
 
       option:first-child {
-        color: var(--ferrari-grey);
+        color: var(--pitsapp-grey);
       }
 
       option {
-        background: var(--ferrari-white);
-        color: var(--ferrari-black);
+        background: var(--pitsapp-white);
+        color: var(--pitsapp-black);
       }
 
       &:invalid {
-        color: var(--ferrari-grey);
+        color: var(--pitsapp-grey);
       }
     }
 
@@ -445,7 +445,7 @@
     }
 
     .char-count {
-      color: var(--ferrari-grey);
+      color: var(--pitsapp-grey);
       font-size: 0.85rem;
       text-align: right;
     }
@@ -457,7 +457,7 @@
     align-items: center;
     gap: 1rem;
     padding: 1.5rem;
-    background: linear-gradient(135deg, var(--ferrari-red) 0%, #b91236 100%);
+    background: linear-gradient(135deg, var(--pitsapp-red) 0%, #b91236 100%);
     border-radius: 8px;
     margin-top: 1rem;
 
@@ -468,7 +468,7 @@
     }
 
     .amount {
-      color: var(--ferrari-gold);
+      color: var(--pitsapp-gold);
       font-size: 2rem;
       font-weight: 700;
     }
@@ -519,12 +519,12 @@
     }
 
     .btn-cancel {
-      background: var(--ferrari-white);
-      color: var(--ferrari-red);
-      border: 2px solid var(--ferrari-red);
+      background: var(--pitsapp-white);
+      color: var(--pitsapp-red);
+      border: 2px solid var(--pitsapp-red);
 
       &:hover:not(:disabled) {
-        background: var(--ferrari-red);
+        background: var(--pitsapp-red);
         color: white;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
@@ -532,7 +532,7 @@
     }
 
     .btn-submit {
-      background: linear-gradient(135deg, var(--ferrari-red), var(--ferrari-red-dark));
+      background: linear-gradient(135deg, var(--pitsapp-red), var(--pitsapp-red-dark));
       color: white;
       min-width: 180px;
       box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);

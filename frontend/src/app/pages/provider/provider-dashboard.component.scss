@@ -5,15 +5,15 @@
 }
 
 .dashboard-header {
-    background: linear-gradient(135deg, var(--ferrari-black) 0%, var(--ferrari-red-dark) 50%, var(--ferrari-red) 100%);
-    color: var(--ferrari-white);
+    background: linear-gradient(135deg, var(--pitsapp-black) 0%, var(--pitsapp-red-dark) 50%, var(--pitsapp-red) 100%);
+    color: var(--pitsapp-white);
     padding: 2rem;
     border-radius: 12px;
     margin-bottom: 2rem;
     text-align: center;
 
     h1 {
-        background: linear-gradient(135deg, var(--ferrari-white), var(--ferrari-gold));
+        background: linear-gradient(135deg, var(--pitsapp-white), var(--pitsapp-gold));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -24,7 +24,7 @@
 
     p {
         font-family: 'Special Gothic Expanded One', serif;
-        color: var(--ferrari-gold);
+        color: var(--pitsapp-gold);
         margin: 0.25rem 0;
         opacity: 0.9;
     }
@@ -78,8 +78,8 @@
 
     .action-card,
     .info-card {
-        background: linear-gradient(135deg, var(--ferrari-black) 0%, var(--ferrari-red-dark) 50%, var(--ferrari-red) 100%);
-        color: var(--ferrari-white);
+        background: linear-gradient(135deg, var(--pitsapp-black) 0%, var(--pitsapp-red-dark) 50%, var(--pitsapp-red) 100%);
+        color: var(--pitsapp-white);
         border-radius: 12px;
         padding: 2rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -106,7 +106,7 @@
             font-size: 1.5rem;
             font-weight: 600;
             text-align: center;
-            background: linear-gradient(135deg, var(--ferrari-white), var(--ferrari-gold));
+            background: linear-gradient(135deg, var(--pitsapp-white), var(--pitsapp-gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -115,7 +115,7 @@
         p {
             margin: 0 0 2rem 0;
             font-family: 'Special Gothic Expanded One', serif;
-            color: var(--ferrari-gold);
+            color: var(--pitsapp-gold);
             text-align: center;
             line-height: 1.6;
         }
@@ -139,8 +139,8 @@
                 gap: 0.5rem;
 
                 &.btn-primary {
-                    background: linear-gradient(135deg, var(--ferrari-gold), var(--ferrari-gold-dark));
-                    color: var(--ferrari-black);
+                    background: linear-gradient(135deg, var(--pitsapp-gold), var(--pitsapp-gold-dark));
+                    color: var(--pitsapp-black);
                     box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4);
 
                     &:hover {
@@ -151,12 +151,12 @@
 
                 &.btn-success {
                     background: transparent;
-                    border: 2px solid var(--ferrari-gold);
-                    color: var(--ferrari-gold);
+                    border: 2px solid var(--pitsapp-gold);
+                    color: var(--pitsapp-gold);
 
                     &:hover {
-                        background: var(--ferrari-gold);
-                        color: var(--ferrari-black);
+                        background: var(--pitsapp-gold);
+                        color: var(--pitsapp-black);
                     }
                 }
 
@@ -176,19 +176,19 @@
     }
 
     .info-card {
-        background: linear-gradient(135deg, var(--ferrari-black) 0%, var(--ferrari-dark-grey) 100%);
+        background: linear-gradient(135deg, var(--pitsapp-black) 0%, var(--pitsapp-dark-grey) 100%);
 
 
         .card-icon i {
-            color: var(--ferrari-gold);
+            color: var(--pitsapp-gold);
         }
 
         h3 {
-            color: var(--ferrari-gold);
+            color: var(--pitsapp-gold);
         }
 
         p {
-            color: var(--ferrari-gold);
+            color: var(--pitsapp-gold);
         }
     }
 }
@@ -199,8 +199,8 @@
     gap: 1.5rem;
 
     .stat-card {
-        background: linear-gradient(135deg, var(--ferrari-black) 0%, var(--ferrari-red-dark) 50%, var(--ferrari-red) 100%);
-        color: var(--ferrari-white);
+        background: linear-gradient(135deg, var(--pitsapp-black) 0%, var(--pitsapp-red-dark) 50%, var(--pitsapp-red) 100%);
+        color: var(--pitsapp-white);
         border-radius: 12px;
         padding: 1.5rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -222,13 +222,13 @@
             .stat-number {
                 font-size: 2rem;
                 font-weight: 700;
-                color: var(--ferrari-white);
+                color: var(--pitsapp-white);
                 line-height: 1;
             }
 
             .stat-label {
                 font-size: 0.875rem;
-                color: var(--ferrari-white);
+                color: var(--pitsapp-white);
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
             }
