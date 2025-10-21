@@ -76,4 +76,23 @@ export class WorkshopsService {
   async search(query: string): Promise<Workshop[]> {
     return this.workshopsFileService.search(query);
   }
+
+  async updateRating(id: string, averageRating: number, reviewCount: number): Promise<Workshop> {
+    const workshop = await this.workshopsFileService.findById(id);
+    
+    if (!workshop) {
+      throw new NotFoundException(`Taller con ID ${id} no encontrado`);
+    }
+
+    const updatedWorkshop = await this.workshopsFileService.update(id, {
+      rating: averageRating,
+      reviewCount: reviewCount
+    });
+
+    if (!updatedWorkshop) {
+      throw new NotFoundException(`Taller con ID ${id} no encontrado`);
+    }
+
+    return updatedWorkshop;
+  }
 }
