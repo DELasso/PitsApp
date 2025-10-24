@@ -167,8 +167,8 @@
       <div class="reviews-section">
         <h2><i class="fas fa-comments"></i> Reseñas</h2>
 
-        <!-- Review Form -->
-        <div class="review-form-container" *ngIf="authService.isLoggedIn()">
+        <!-- Review Form - Solo si está logeado y NO ha dejado reseña -->
+        <div class="review-form-container" *ngIf="authService.isLoggedIn() && !hasUserReviewed()">
           <h3>Deja tu reseña</h3>
 
           <form [formGroup]="reviewForm" (ngSubmit)="submitReview()">
@@ -216,10 +216,17 @@
           </form>
         </div>
 
+        <!-- Mensaje: Ya dejaste una reseña -->
+        <div class="already-reviewed-message" *ngIf="authService.isLoggedIn() && hasUserReviewed()">
+          <i class="fas fa-check-circle"></i>
+          <p>Ya has dejado una reseña para este taller</p>
+          <small>Solo puedes dejar una reseña por taller</small>
+        </div>
+
         <!-- Login Message for non-authenticated users -->
         <div class="login-message" *ngIf="!authService.isLoggedIn()">
           <i class="fas fa-info-circle"></i>
-          <p>Debes <a routerLink="/login">iniciar sesión</a> para dejar una reseña</p>
+          <p>Debes <a routerLink="/auth/login">iniciar sesión</a> para dejar una reseña</p>
         </div>
 
         <!-- Reviews List -->

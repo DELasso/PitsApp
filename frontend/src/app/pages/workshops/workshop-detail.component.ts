@@ -108,6 +108,13 @@ export class WorkshopDetailComponent implements OnInit, OnDestroy {
       });
   }
 
+  hasUserReviewed(): boolean {
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) return false;
+    
+    return this.reviews.some(review => review.userId === currentUser.id);
+  }
+
   setRating(rating: number): void {
     this.selectedRating = rating;
   }
