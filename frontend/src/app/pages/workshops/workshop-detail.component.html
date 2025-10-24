@@ -89,94 +89,7 @@
             <h2><i class="fas fa-clock"></i> Horarios de Atención</h2>
             <p class="working-hours">{{ workshop.workingHours }}</p>
           </div>
-        </div>
-
-        
-          <!-- Map -->
-           <div *ngIf="isLoading" class="loading">Cargando taller...</div>
-        <div *ngIf="error" class="error">{{ error }}</div>
-
-        <div *ngIf="workshop" class="workshop-detail">
-          <h2>{{ workshop.name }}</h2>
-          <!-- Mapa de ubicación -->
-          <div class="map-container">
-            <google-map
-              height="200px"
-              width="100%"
-              [center]="{ lat: workshop.latitude, lng: workshop.longitude }"
-              [zoom]="15">
-              <map-marker
-                [position]="{ lat: workshop.latitude, lng: workshop.longitude }"
-                [title]="workshop.name">
-              </map-marker>
-            </google-map>
-        </div>
-
-        <!-- Right Column - Contact & Location -->
-        <div class="workshop-contact">
-          <!-- Contact Info -->
-          <div class="contact-card">
-            <h3><i class="fas fa-address-book"></i> Información de Contacto</h3>
-
-            <div class="contact-item">
-              <i class="fas fa-map-marker-alt"></i>
-              <div class="contact-details">
-                <strong>Dirección:</strong>
-                <p>{{ workshop.address }}</p>
-                <p>{{ workshop.neighborhood }}, {{ workshop.city }}</p>
-              </div>
-            </div>
-
-            <div class="contact-item" *ngIf="workshop.phone">
-              <i class="fas fa-phone"></i>
-              <div class="contact-details">
-                <strong>Teléfono:</strong>
-                <p>{{ workshop.phone }}</p>
-              </div>
-            </div>
-
-            <div class="contact-item" *ngIf="workshop.email">
-              <i class="fas fa-envelope"></i>
-              <div class="contact-details">
-                <strong>Email:</strong>
-                <p>{{ workshop.email }}</p>
-              </div>
-            </div>
-
-            <div class="contact-item" *ngIf="workshop.website">
-              <i class="fas fa-globe"></i>
-              <div class="contact-details">
-                <strong>Sitio Web:</strong>
-                <p>{{ workshop.website }}</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="action-buttons">
-            <button class="btn btn-primary" (click)="onCallClick(workshop.phone)" *ngIf="workshop.phone">
-              <i class="fas fa-phone"></i>
-              Llamar Ahora
-            </button>
-
-            <button class="btn btn-secondary" (click)="onEmailClick(workshop.email)" *ngIf="workshop.email">
-              <i class="fas fa-envelope"></i>
-              Enviar Email
-            </button>
-
-            <button class="btn btn-outline" (click)="onWebsiteClick(workshop.website)" *ngIf="workshop.website">
-              <i class="fas fa-globe"></i>
-              Visitar Sitio Web
-            </button>
-
-            <button class="btn btn-success" (click)="onDirectionsClick()">
-              <i class="fas fa-directions"></i>
-              Cómo Llegar
-            </button>
-          </div>
-      </div>
-
-      <!-- Reviews Section -->
+          <!-- Reviews Section -->
       <div class="reviews-section">
         <h2><i class="fas fa-comments"></i> Reseñas</h2>
 
@@ -282,7 +195,92 @@
           </div>
         </div>
       </div>
+        </div>
 
+        
+          <!-- Map -->
+           <div *ngIf="isLoading" class="loading">Cargando taller...</div>
+        <div *ngIf="error" class="error">{{ error }}</div>
+
+        <div *ngIf="workshop" class="workshop-detail">
+          <h2>{{ workshop.name }}</h2>
+          <!-- Mapa de ubicación -->
+          <div class="map-container">
+            <google-map
+              height="200px"
+              width="100%"
+              [center]="{ lat: workshop.latitude, lng: workshop.longitude }"
+              [zoom]="15">
+              <map-marker
+                [position]="{ lat: workshop.latitude, lng: workshop.longitude }"
+                [title]="workshop.name">
+              </map-marker>
+            </google-map>
+        </div>
+
+        <!-- Right Column - Contact & Location -->
+        <div class="workshop-contact">
+          <!-- Contact Info -->
+          <div class="contact-card">
+            <h3><i class="fas fa-address-book"></i> Información de Contacto</h3>
+
+            <div class="contact-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <div class="contact-details">
+                <strong>Dirección:</strong>
+                <p>{{ workshop.address }}</p>
+                <p>{{ workshop.neighborhood }}, {{ workshop.city }}</p>
+              </div>
+            </div>
+
+            <div class="contact-item" *ngIf="workshop.phone">
+              <i class="fas fa-phone"></i>
+              <div class="contact-details">
+                <strong>Teléfono:</strong>
+                <p>{{ workshop.phone }}</p>
+              </div>
+            </div>
+
+            <div class="contact-item" *ngIf="workshop.email">
+              <i class="fas fa-envelope"></i>
+              <div class="contact-details">
+                <strong>Email:</strong>
+                <p>{{ workshop.email }}</p>
+              </div>
+            </div>
+
+            <div class="contact-item" *ngIf="workshop.website">
+              <i class="fas fa-globe"></i>
+              <div class="contact-details">
+                <strong>Sitio Web:</strong>
+                <p>{{ workshop.website }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <button class="btn btn-primary" (click)="onCallClick(workshop.phone)" *ngIf="workshop.phone">
+              <i class="fas fa-phone"></i>
+              Llamar Ahora
+            </button>
+
+            <button class="btn btn-secondary" (click)="onEmailClick(workshop.email)" *ngIf="workshop.email">
+              <i class="fas fa-envelope"></i>
+              Enviar Email
+            </button>
+
+            <button class="btn btn-outline" (click)="onWebsiteClick(workshop.website)" *ngIf="workshop.website">
+              <i class="fas fa-globe"></i>
+              Visitar Sitio Web
+            </button>
+
+            <button class="btn btn-success" (click)="onDirectionsClick()">
+              <i class="fas fa-directions"></i>
+              Cómo Llegar
+            </button>
+          </div>
+      </div>
     </div>
   </div>
 </div>

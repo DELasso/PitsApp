@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000/api',
-  googleMapsApiKey: 'AIzaSyDrl8cGf8XEhYI7KGYdtf0GENnZJ4GYci0' // Clave pública para frontend
+  googleMapsApiKey: 'AIzaSyAw6WxcPkjeZ2NnSagy4oTMrDUf7HYHu_A' // Clave pública para frontend
 };

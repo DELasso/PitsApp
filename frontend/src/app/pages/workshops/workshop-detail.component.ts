@@ -59,6 +59,7 @@ export class WorkshopDetailComponent implements OnInit, OnDestroy {
           next: (data) => {
             this.workshop = data;
             this.isLoading = false;
+            this.loadReviews(id);
           },
           error: (err) => {
             this.error = 'Error cargando taller';

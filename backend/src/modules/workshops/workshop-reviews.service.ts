@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { WorkshopReview } from './entities/workshop-review.entity';
 import { CreateWorkshopReviewDto } from './dto/create-workshop-review.dto';
 import * as fs from 'fs';
@@ -46,7 +46,7 @@ export class WorkshopReviewsService {
     );
 
     if (existingReview) {
-      throw new Error('Ya has dejado una reseña para este taller');
+      throw new HttpException('Ya has dejado una reseña para este taller',HttpStatus.BAD_REQUEST);
     }
 
     const newReview: WorkshopReview = {
