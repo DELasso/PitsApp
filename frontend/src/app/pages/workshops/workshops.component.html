@@ -73,7 +73,7 @@
         <div class="workshop-image">
           <img 
             *ngIf="workshop.images && workshop.images.length > 0; else defaultIcon"
-            [src]="'http://localhost:3000' + workshop.images[0]" 
+            [src]="getImageUrl(workshop.images[0])" 
             [alt]="workshop.name"
             class="workshop-photo"
             (error)="onImageError($event)">

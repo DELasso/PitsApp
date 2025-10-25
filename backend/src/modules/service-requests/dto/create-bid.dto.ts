@@ -12,10 +12,6 @@ class BidItemDto {
   @IsNumber()
   @Min(0)
   unitPrice: number;
-
-  @IsNumber()
-  @Min(0)
-  subtotal: number;
 }
 
 export class CreateBidDto {
@@ -36,26 +32,48 @@ export class CreateBidDto {
   @Type(() => BidItemDto)
   items?: BidItemDto[];
 
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  estimatedCompletionTime?: number;
+
+  @IsOptional()
+  @IsNumber()
+  @Min(0)
+  warrantyPeriod?: number;
+
+  @IsOptional()
+  @IsString()
+  warrantyDetails?: string;
+
+  @IsOptional()
+  @IsString()
+  paymentTerms?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+
+  // Campos adicionales opcionales que pueden venir del frontend
+  @IsOptional()
   @IsBoolean()
-  includesPartsAndLabor: boolean;
+  includesPartsAndLabor?: boolean;
 
   @IsOptional()
   @IsString()
   warranty?: string;
 
+  @IsOptional()
   @IsString()
-  estimatedTime: string;
+  estimatedTime?: string;
 
   @IsOptional()
   @IsString()
   availabilityDate?: string;
 
-  @IsString()
-  proposalDescription: string;
-
   @IsOptional()
   @IsString()
-  paymentTerms?: string;
+  proposalDescription?: string;
 
   @IsOptional()
   @IsBoolean()

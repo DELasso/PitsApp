@@ -80,10 +80,11 @@ export class AuthService {
   async validateUser(payload: any): Promise<any> {
     const user = await this.usersService.findByIdSafe(payload.sub);
     if (user && user.isActive) {
-      // Agregar userId para que los controladores puedan accederlo fácilmente
+      // Agregar userId y sub para que los controladores puedan accederlo fácilmente
       return {
         ...user,
-        userId: user.id
+        userId: user.id,
+        sub: user.id // Mantener sub del JWT payload
       };
     }
     return null;

@@ -15,38 +15,25 @@ export interface BidItem {
 
 export interface Bid {
   id: string;
-  serviceRequestId: string;  // ID de la solicitud de servicio
+  serviceRequestId: string;  // ID de la solicitud de servicio (request_id en DB)
   providerId: string;        // ID del proveedor/taller
   providerName: string;      // Nombre del taller
-  providerRating?: number;   // Calificación del taller
-  workshopId?: string;       // ID del taller específico (si aplica)
   
   // Oferta económica
-  totalAmount: number;
-  items?: BidItem[];         // Desglose opcional de la oferta
-  includesPartsAndLabor: boolean;
-  warranty?: string;         // Ej: "3 meses o 5000 km"
+  totalAmount: number;       // total_price en DB
+  items?: BidItem[];         // Desglose de la oferta
+  warranty?: string;         // warranty_info en DB - Ej: "3 meses o 5000 km"
   
   // Timing
-  estimatedTime: string;     // Ej: "2 horas", "mismo día", "24 horas"
-  availabilityDate?: string; // Cuándo puede realizarlo
+  estimatedTime: string;     // estimated_time en DB - Ej: "2 horas", "mismo día"
   
   // Detalles adicionales
-  proposalDescription: string;
-  paymentTerms?: string;     // Ej: "50% adelanto, 50% al finalizar"
-  includesHomeService?: boolean;
-  includesTowing?: boolean;
-  additionalServices?: string[];
+  notes?: string;            // notes en DB - Notas adicionales del proveedor
   
   // Estado
   status: BidStatus;
   
-  // Mensajes
-  providerMessage?: string;  // Mensaje del proveedor al cliente
-  clientResponse?: string;   // Respuesta del cliente
-  
   // Metadata
   createdAt: string;
   updatedAt: string;
-  expiresAt?: string;        // Fecha límite de la oferta
 }

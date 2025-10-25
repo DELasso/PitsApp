@@ -88,13 +88,8 @@ export class PartsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.error = null;
     
-    // Si es proveedor, mostrar solo sus repuestos. Si es cliente, mostrar todos
-    const isProvider = this.currentUser?.role === UserRole.PROVEEDOR;
-    const serviceCall = isProvider ? 
-      this.partsService.getMyParts() : 
-      this.partsService.getParts();
-    
-    serviceCall
+    // Siempre mostrar todos los repuestos disponibles
+    this.partsService.getParts()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (parts) => {
@@ -102,9 +97,6 @@ export class PartsComponent implements OnInit, OnDestroy {
           this.filteredParts = [...parts];
           this.updateCategoryCounts();
           this.loading = false;
-          
-          const userType = isProvider ? 'proveedor' : 'cliente';
-          const count = parts.length;
         },
         error: (error) => {
           this.error = 'Error al cargar los repuestos';

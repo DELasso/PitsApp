@@ -25,5 +25,9 @@
   "license": "MIT",
   "devDependencies": {
     "concurrently": "^7.6.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.76.1",
+    "dotenv": "^17.2.3"
   }
 }

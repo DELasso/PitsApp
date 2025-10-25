@@ -1,82 +1,75 @@
 import { Injectable } from '@nestjs/common';
 import { WorkshopReview } from './entities/workshop-review.entity';
 import { CreateWorkshopReviewDto } from './dto/create-workshop-review.dto';
-import * as fs from 'fs';
-import * as path from 'path';
-import { v4 as uuidv4 } from 'uuid';
+import { SupabaseService } from '../../common/supabase/supabase.service';
 
 @Injectable()
 export class WorkshopReviewsService {
-  private readonly reviewsFilePath = path.join(
-    process.cwd(),
-    'data',
-    'workshop-reviews.json',
-  );
+  constructor(private readonly supabaseService: SupabaseService) {}
 
-  private readReviews(): WorkshopReview[] {
-    try {
-      const data = fs.readFileSync(this.reviewsFilePath, 'utf-8');
-      return JSON.parse(data);
-    } catch (error) {
-      return [];
-    }
-  }
-
-  private writeReviews(reviews: WorkshopReview[]): void {
-    fs.writeFileSync(
-      this.reviewsFilePath,
-      JSON.stringify(reviews, null, 2),
-      'utf-8',
-    );
-  }
-
-  create(
+  async create(
     createReviewDto: CreateWorkshopReviewDto,
     userId: string,
     userName: string,
     userRole: 'cliente' | 'proveedor',
-  ): WorkshopReview {
-    const reviews = this.readReviews();
+  ): Promise<WorkshopReview> {
+    const supabase = this.supabaseService.getClient();
 
     // Verificar si el usuario ya dejó una reseña para este taller
-    const existingReview = reviews.find(
-      (review) =>
-        review.workshopId === createReviewDto.workshopId &&
-        review.userId === userId,
-    );
+    const { data: existingReview } = await supabase
+      .from('workshop_reviews')
+      .select('id')
+      .eq('workshop_id', createReviewDto.workshopId)
+      .eq('user_id', userId)
+      .single();
 
     if (existingReview) {
       throw new Error('Ya has dejado una reseña para este taller');
     }
 
-    const newReview: WorkshopReview = {
-      id: uuidv4(),
-      workshopId: createReviewDto.workshopId,
-      userId,
-      userName,
-      userRole,
+    const reviewData = {
+      workshop_id: createReviewDto.workshopId,
+      user_id: userId,
+      user_name: userName,
+      user_role: userRole,
       rating: createReviewDto.rating,
       comment: createReviewDto.comment,
-      createdAt: new Date(),
-      updatedAt: new Date(),
     };
 
-    reviews.push(newReview);
-    this.writeReviews(reviews);
+    const { data, error } = await supabase
+      .from('workshop_reviews')
+      .insert(reviewData)
+      .select()
+      .single();
 
-    return newReview;
+    if (error) {
+      throw new Error(`Error creating review: ${error.message}`);
+    }
+
+    return this.mapToReview(data);
   }
 
-  findByWorkshopId(workshopId: string): WorkshopReview[] {
-    const reviews = this.readReviews();
-    return reviews.filter((review) => review.workshopId === workshopId);
+  async findByWorkshopId(workshopId: string): Promise<WorkshopReview[]> {
+    const supabase = this.supabaseService.getClient();
+
+    const { data, error } = await supabase
+      .from('workshop_reviews')
+      .select('*')
+      .eq('workshop_id', workshopId)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      throw new Error(`Error fetching reviews: ${error.message}`);
+    }
+
+    return data.map(r => this.mapToReview(r));
   }
 
-  getAverageRating(workshopId: string): {
+  async getAverageRating(workshopId: string): Promise<{
     averageRating: number;
     reviewCount: number;
-  } {
-    const reviews = this.findByWorkshopId(workshopId);
+  }> {
+    const reviews = await this.findByWorkshopId(workshopId);
     
     if (reviews.length === 0) {
       return { averageRating: 0, reviewCount: 0 };
@@ -91,20 +84,46 @@ export class WorkshopReviewsService {
     };
   }
 
-  delete(reviewId: string, userId: string): WorkshopReview {
-    const reviews = this.readReviews();
-    const reviewIndex = reviews.findIndex(
-      (review) => review.id === reviewId && review.userId === userId,
-    );
+  async delete(reviewId: string, userId: string): Promise<WorkshopReview> {
+    const supabase = this.supabaseService.getClient();
 
-    if (reviewIndex === -1) {
+    // Primero verificar que la reseña existe y pertenece al usuario
+    const { data: review } = await supabase
+      .from('workshop_reviews')
+      .select('*')
+      .eq('id', reviewId)
+      .eq('user_id', userId)
+      .single();
+
+    if (!review) {
       throw new Error('Reseña no encontrada o no tienes permiso para eliminarla');
     }
 
-    const deletedReview = reviews[reviewIndex];
-    reviews.splice(reviewIndex, 1);
-    this.writeReviews(reviews);
+    const { error } = await supabase
+      .from('workshop_reviews')
+      .delete()
+      .eq('id', reviewId)
+      .eq('user_id', userId);
 
-    return deletedReview;
+    if (error) {
+      throw new Error(`Error deleting review: ${error.message}`);
+    }
+
+    return this.mapToReview(review);
+  }
+
+  // Mapear datos de Supabase (snake_case) a entidad WorkshopReview (camelCase)
+  private mapToReview(data: any): WorkshopReview {
+    return {
+      id: data.id,
+      workshopId: data.workshop_id,
+      userId: data.user_id,
+      userName: data.user_name,
+      userRole: data.user_role,
+      rating: data.rating,
+      comment: data.comment,
+      createdAt: new Date(data.created_at),
+      updatedAt: new Date(data.updated_at),
+    };
   }
 }

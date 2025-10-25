@@ -8,6 +8,7 @@ import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { User, UserRole } from '../../models/auth.model';
+import { FileUploadService } from '../../services/file-upload.service';
 
 @Component({
   selector: 'app-workshops',  
@@ -37,7 +38,8 @@ export class WorkshopsComponent implements OnInit, OnDestroy {
   constructor(
     private workshopsService: WorkshopsService, 
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private fileUploadService: FileUploadService
   ) {}
 
   ngOnInit() {
@@ -67,20 +69,12 @@ export class WorkshopsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.error = null;
     
-    // Si es proveedor, mostrar solo sus talleres. Si es cliente, mostrar todos
-    const isProvider = this.currentUser?.role === UserRole.PROVEEDOR;
-    const serviceCall = isProvider ? 
-      this.workshopsService.getMyWorkshops() : 
-      this.workshopsService.getWorkshops();
-    
-    serviceCall.subscribe({
+    // Siempre mostrar todos los talleres disponibles
+    this.workshopsService.getWorkshops().subscribe({
       next: (workshops) => {
         this.workshops = workshops;
         this.filteredWorkshops = [...workshops];
         this.loading = false;
-        
-        const userType = isProvider ? 'proveedor' : 'cliente';
-        const count = workshops.length;
       },
       error: (error) => {
         this.error = 'Error al cargar los talleres. Por favor, intenta de nuevo.';
@@ -166,5 +160,9 @@ export class WorkshopsComponent implements OnInit, OnDestroy {
     if (parent) {
       parent.innerHTML = '<span class="workshop-icon"><i class="fa-solid fa-wrench"></i></span>';
     }
+  }
+
+  getImageUrl(imagePath: string): string {
+    return this.fileUploadService.getImageUrl(imagePath);
   }
 }
