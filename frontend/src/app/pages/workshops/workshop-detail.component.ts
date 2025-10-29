@@ -10,11 +10,12 @@ import { WorkshopsService } from '../../services/workshops.service';
 import { WorkshopReviewService } from '../../services/workshop-review.service';
 import { FileUploadService } from '../../services/file-upload.service';
 import { AuthService } from '../../services/auth.service';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 @Component({
   selector: 'app-workshop-detail',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule],
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, GoogleMapsModule],
   templateUrl: './workshop-detail.component.html',
   styleUrls: ['./workshop-detail.component.scss']
 })
@@ -31,6 +32,21 @@ export class WorkshopDetailComponent implements OnInit, OnDestroy {
   selectedRating = 0;
   hoverRating = 0;
   private destroy$ = new Subject<void>();
+
+  // Configuración del mapa
+  mapCenter: google.maps.LatLngLiteral = { lat: 6.2442, lng: -75.5812 };
+  mapZoom = 15;
+  mapOptions: google.maps.MapOptions = {
+    mapTypeId: 'roadmap',
+    disableDefaultUI: false,
+    zoomControl: true,
+    scrollwheel: true
+  };
+  markerPosition: google.maps.LatLngLiteral = { lat: 6.2442, lng: -75.5812 };
+  markerOptions: google.maps.MarkerOptions = {
+    draggable: false,
+    animation: google.maps.Animation.DROP
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -76,6 +92,13 @@ export class WorkshopDetailComponent implements OnInit, OnDestroy {
         next: (workshop: Workshop) => {
           this.workshop = workshop;
           this.isLoading = false;
+          
+          // Actualizar posición del mapa si tiene coordenadas válidas
+          if (workshop.latitude && workshop.longitude && 
+              workshop.latitude !== 0 && workshop.longitude !== 0) {
+            this.mapCenter = { lat: workshop.latitude, lng: workshop.longitude };
+            this.markerPosition = { lat: workshop.latitude, lng: workshop.longitude };
+          }
         },
         error: (error: any) => {
           console.error('Error al cargar el taller:', error);

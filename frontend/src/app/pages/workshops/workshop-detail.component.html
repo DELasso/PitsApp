@@ -154,11 +154,32 @@
             </button>
           </div>
 
-          <!-- Map placeholder -->
-          <div class="map-placeholder">
-            <i class="fas fa-map"></i>
-            <p>Mapa de ubicación</p>
-            <small>{{ workshop.address }}, {{ workshop.city }}</small>
+          <!-- Google Maps -->
+          <div class="map-container">
+            <h3><i class="fas fa-map"></i> Ubicación</h3>
+            
+            <div *ngIf="workshop.latitude && workshop.longitude && workshop.latitude !== 0 && workshop.longitude !== 0">
+              <google-map
+                [center]="mapCenter"
+                [zoom]="mapZoom"
+                [options]="mapOptions"
+                width="100%"
+                height="400px">
+                <map-marker
+                  [position]="markerPosition"
+                  [options]="markerOptions"
+                  [title]="workshop.name">
+                </map-marker>
+              </google-map>
+              <p class="map-address">{{ workshop.address }}, {{ workshop.city }}</p>
+            </div>
+            
+            <div *ngIf="!workshop.latitude || !workshop.longitude || workshop.latitude === 0 || workshop.longitude === 0" class="no-map-message">
+              <i class="fas fa-map-marked-alt"></i>
+              <p><strong>Ubicación no disponible</strong></p>
+              <p class="small-text">Este taller aún no ha configurado sus coordenadas de ubicación.</p>
+              <p class="map-address">{{ workshop.address }}, {{ workshop.neighborhood }}, {{ workshop.city }}</p>
+            </div>
           </div>
         </div>
       </div>
