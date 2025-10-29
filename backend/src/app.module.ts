@@ -8,6 +8,7 @@ import { UsersModule } from './modules/users/users.module';
 import { SharedModule } from './shared/shared.module';
 import { ServiceRequestsModule } from './modules/service-requests/service-requests.module';
 import { SupabaseModule } from './common/supabase/supabase.module';
+import { AiChatModule } from './modules/ai-chat/ai-chat.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { SupabaseModule } from './common/supabase/supabase.module';
     UsersModule,
     SharedModule,
     ServiceRequestsModule,
+    AiChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -27,6 +27,8 @@
     "concurrently": "^7.6.0"
   },
   "dependencies": {
+    "@langchain/core": "^1.0.2",
+    "@langchain/openai": "^1.0.0",
     "@supabase/supabase-js": "^2.76.1",
     "dotenv": "^17.2.3"
   }
