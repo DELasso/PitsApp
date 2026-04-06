@@ -21,13 +21,13 @@ export class HomeComponent {
       title: 'Repuestos',
       description: 'Repuestos originales y genéricos para tu vehículo',
       icon: 'fa-solid fa-gears',
-      route: '/repuestos'
+      route: '/'
     },
     {
       title: 'Servicios',
       description: 'Servicios especializados para carros y motos',
       icon: 'fa-solid fa-screwdriver-wrench',
-      route: '/servicios'
+      route: '/'
     }
   ];
 }
