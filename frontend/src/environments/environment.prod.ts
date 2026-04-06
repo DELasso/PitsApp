@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api.pitsapp.com/api'
+  apiUrl: 'https://pitsapp-production.up.railway.app/api'
 };
