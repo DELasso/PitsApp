@@ -6,14 +6,41 @@ import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  
-  // Configurar CORS según el entorno
-  const allowedOrigins = process.env.NODE_ENV === 'production' 
-    ? [process.env.FRONTEND_URL || 'https://your-domain.com']
-    : ['http://localhost:4200'];
+
+  const normalizeOrigin = (origin: string) => origin.replace(/\/$/, '');
+  const configuredOrigins = [
+    process.env.FRONTEND_URL,
+    ...(process.env.FRONTEND_URLS || '').split(',').map(item => item.trim()),
+  ]
+    .filter((origin): origin is string => Boolean(origin))
+    .map(normalizeOrigin);
+
+  const isAllowedOrigin = (origin?: string): boolean => {
+    if (!origin) {
+      return true;
+    }
+
+    const normalizedOrigin = normalizeOrigin(origin);
+    const isConfigured = configuredOrigins.includes(normalizedOrigin);
+    const isVercelDomain = normalizedOrigin.endsWith('.vercel.app');
+    const isLocalDev = normalizedOrigin === 'http://localhost:4200';
+
+    if (process.env.NODE_ENV === 'production') {
+      return isConfigured || isVercelDomain;
+    }
+
+    return isConfigured || isVercelDomain || isLocalDev;
+  };
 
   app.enableCors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (isAllowedOrigin(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
     credentials: true,
     exposedHeaders: ['Content-Type', 'Content-Length'],
   });
@@ -33,9 +60,8 @@ async function bootstrap() {
   
   app.useStaticAssets(uploadsPath, {
     prefix: '/uploads/',
-    setHeaders: (res, path) => {
+    setHeaders: (res, _path) => {
       res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-      res.setHeader('Access-Control-Allow-Origin', allowedOrigins[0]);
     }
   });
 
