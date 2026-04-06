@@ -40,7 +40,7 @@ async function bootstrap() {
   }));
 
   const port = process.env.PORT || 3000;
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
   
   if (process.env.NODE_ENV !== 'production') {
     console.log(`PitsApp Backend ejecutándose en http://localhost:${port}`);
