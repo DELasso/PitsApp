@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException, InternalServerErrorException, Logger } from '@nestjs/common';
 import { CreateWorkshopDto } from './dto/create-workshop.dto';
 import { UpdateWorkshopDto } from './dto/update-workshop.dto';
 import { Workshop } from './entities/workshop.entity';
@@ -6,6 +6,8 @@ import { SupabaseService } from '../../common/supabase/supabase.service';
 
 @Injectable()
 export class WorkshopsService {
+  private readonly logger = new Logger(WorkshopsService.name);
+
   constructor(private readonly supabaseService: SupabaseService) {}
 
   async create(createWorkshopDto: CreateWorkshopDto, ownerId: string): Promise<Workshop> {
@@ -55,7 +57,10 @@ export class WorkshopsService {
       .order('created_at', { ascending: false });
 
     if (error) {
-      throw new Error(`Error fetching workshops: ${error.message}`);
+      this.logger.error(`Error fetching workshops: ${error.message}`, JSON.stringify(error));
+      throw new InternalServerErrorException(
+        `Error fetching workshops (${error.code || 'unknown'}): ${error.message}`,
+      );
     }
 
     return data.map(w => this.mapToWorkshop(w));
