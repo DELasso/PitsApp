@@ -212,6 +212,27 @@ export class WorkshopsService {
   // Mapear datos de Supabase (snake_case) a entidad Workshop (camelCase)
   private mapToWorkshop(data: any): Workshop {
     const backendUrl = process.env.BACKEND_URL || 'http://localhost:3000';
+    const toArray = (value: unknown): string[] => {
+      if (Array.isArray(value)) {
+        return value.map(item => String(item));
+      }
+
+      if (typeof value === 'string' && value.trim()) {
+        const trimmed = value.trim();
+
+        // Intentar parsear JSON serializado, fallback a valor único
+        try {
+          const parsed = JSON.parse(trimmed);
+          return Array.isArray(parsed) ? parsed.map(item => String(item)) : [trimmed];
+        } catch {
+          return [trimmed];
+        }
+      }
+
+      return [];
+    };
+
+    const images = toArray(data.images);
     
     return {
       id: data.id,
@@ -226,12 +247,12 @@ export class WorkshopsService {
       website: data.website,
       latitude: data.latitude ? parseFloat(data.latitude) : 0,
       longitude: data.longitude ? parseFloat(data.longitude) : 0,
-      services: data.services || [],
-      specialties: data.specialties || [],
+      services: toArray(data.services),
+      specialties: toArray(data.specialties),
       workingHours: data.working_hours,
       rating: parseFloat(data.rating) || 0,
       reviewCount: data.review_count || 0,
-      images: (data.images || []).map((img: string) => 
+      images: images.map((img: string) => 
         img.startsWith('http') ? img : `${backendUrl}${img}`
       ),
       isActive: data.is_active,
