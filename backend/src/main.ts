@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
@@ -19,7 +19,12 @@ async function bootstrap() {
   });
 
   // Configurar prefijo global para las APIs
-  app.setGlobalPrefix('api');
+  app.setGlobalPrefix('api', {
+    exclude: [
+      { path: '', method: RequestMethod.GET },
+      { path: 'status', method: RequestMethod.GET },
+    ],
+  });
 
   // Servir archivos estáticos (imágenes subidas)
   const uploadsPath = join(__dirname, '..', 'uploads');
