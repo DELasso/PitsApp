@@ -20,6 +20,24 @@ export class RegisterComponent {
   errorMessage = '';
   UserRole = UserRole;
   BusinessType = BusinessType;
+  currentYear = new Date().getFullYear();
+
+  readonly vehicleBrands = [
+    'Chevrolet',
+    'Renault',
+    'Mazda',
+    'Toyota',
+    'Nissan',
+    'Kia',
+    'Hyundai',
+    'Suzuki',
+    'Honda',
+    'Yamaha',
+    'Bajaj',
+    'AKT'
+  ];
+
+  private readonly colombianPlatePattern = /^(?:[A-Z]{3}\d{3}|[A-Z]{3}\d{2}[A-Z])$/;
 
   businessTypeOptions = [
     { value: BusinessType.TALLER_MECANICO, label: 'Taller Mecánico' },
@@ -57,24 +75,55 @@ export class RegisterComponent {
     this.registerForm.get('role')?.valueChanges.subscribe(role => {
       this.updateValidators(role);
     });
+
+    this.updateValidators(this.registerForm.get('role')?.value);
   }
 
   updateValidators(role: UserRole) {
     const companyName = this.registerForm.get('companyName');
     const businessType = this.registerForm.get('businessType');
+    const vehicleBrand = this.registerForm.get('vehicleBrand');
+    const vehicleModel = this.registerForm.get('vehicleModel');
+    const vehicleYear = this.registerForm.get('vehicleYear');
+    const vehiclePlate = this.registerForm.get('vehiclePlate');
+    const vehicleType = this.registerForm.get('vehicleType');
     
     if (role === UserRole.PROVEEDOR) {
       // Hacer campos de proveedor requeridos
       companyName?.setValidators([Validators.required]);
       businessType?.setValidators([Validators.required]);
+
+      vehicleBrand?.clearValidators();
+      vehicleModel?.clearValidators();
+      vehicleYear?.clearValidators();
+      vehiclePlate?.clearValidators();
+      vehicleType?.clearValidators();
     } else {
       // Quitar validadores para clientes
       companyName?.clearValidators();
       businessType?.clearValidators();
+
+      vehicleBrand?.setValidators([Validators.required]);
+      vehicleModel?.setValidators([Validators.required]);
+      vehicleYear?.setValidators([
+        Validators.required,
+        Validators.min(1944),
+        Validators.max(2030)
+      ]);
+      vehiclePlate?.setValidators([
+        Validators.required,
+        Validators.pattern(this.colombianPlatePattern)
+      ]);
+      vehicleType?.setValidators([Validators.required]);
     }
     
     companyName?.updateValueAndValidity();
     businessType?.updateValueAndValidity();
+    vehicleBrand?.updateValueAndValidity();
+    vehicleModel?.updateValueAndValidity();
+    vehicleYear?.updateValueAndValidity();
+    vehiclePlate?.updateValueAndValidity();
+    vehicleType?.updateValueAndValidity();
   }
 
   get isProvider() {
@@ -114,21 +163,13 @@ export class RegisterComponent {
         registerData.city = this.registerForm.value.city;
         registerData.description = this.registerForm.value.description;
       } else {
-        // Solo incluir vehicleInfo si al menos uno de los campos está lleno
-        const vehicleBrand = this.registerForm.value.vehicleBrand;
-        const vehicleModel = this.registerForm.value.vehicleModel;
-        const vehicleYear = this.registerForm.value.vehicleYear;
-        const vehiclePlate = this.registerForm.value.vehiclePlate;
-        
-        if (vehicleBrand || vehicleModel || vehicleYear || vehiclePlate) {
-          registerData.vehicleInfo = {
-            brand: vehicleBrand || '',
-            model: vehicleModel || '',
-            year: vehicleYear ? parseInt(vehicleYear) : 0,
-            plate: vehiclePlate || '',
-            type: this.registerForm.value.vehicleType || ''
-          };
-        }
+        registerData.vehicleInfo = {
+          brand: this.registerForm.value.vehicleBrand,
+          model: this.registerForm.value.vehicleModel,
+          year: parseInt(this.registerForm.value.vehicleYear, 10),
+          plate: String(this.registerForm.value.vehiclePlate || '').trim().toUpperCase(),
+          type: this.registerForm.value.vehicleType
+        };
       }
 
       this.authService.register(registerData).subscribe({
@@ -182,4 +223,9 @@ export class RegisterComponent {
   get companyName() { return this.registerForm.get('companyName'); }
   get businessType() { return this.registerForm.get('businessType'); }
   get description() { return this.registerForm.get('description'); }
+  get vehicleBrand() { return this.registerForm.get('vehicleBrand'); }
+  get vehicleModel() { return this.registerForm.get('vehicleModel'); }
+  get vehicleYear() { return this.registerForm.get('vehicleYear'); }
+  get vehiclePlate() { return this.registerForm.get('vehiclePlate'); }
+  get vehicleType() { return this.registerForm.get('vehicleType'); }
 }

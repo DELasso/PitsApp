@@ -1,9 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { User } from '../users/entities/user.entity';
+import { UserRole } from '../users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,20 @@ export class AuthService {
 
   async register(registerDto: RegisterDto) {
     try {
+      if (registerDto.role === UserRole.PROVEEDOR) {
+        if (!registerDto.companyName || !registerDto.businessType) {
+          throw new BadRequestException('companyName y businessType son obligatorios para proveedores');
+        }
+      }
+
+      if (registerDto.role === UserRole.CLIENTE) {
+        if (!registerDto.vehicleInfo) {
+          throw new BadRequestException('vehicleInfo es obligatorio para clientes');
+        }
+
+        registerDto.vehicleInfo.plate = String(registerDto.vehicleInfo.plate || '').trim().toUpperCase();
+      }
+
       // Convertir RegisterDto a CreateUserDto
       const createUserDto = {
         ...registerDto,

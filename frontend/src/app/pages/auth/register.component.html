@@ -201,54 +201,73 @@
 
         <!-- Campos específicos para Clientes -->
         <div *ngIf="registerForm.get('role')?.value === UserRole.CLIENTE" class="client-fields">
-          <h3 class="section-title">Información del Vehículo (Opcional)</h3>
-          <p class="section-subtitle">Guarda los datos de tu vehículo para completar formularios automáticamente</p>
+          <h3 class="section-title">Información del Vehículo</h3>
+          <p class="section-subtitle">Estos datos son obligatorios para registrar una cuenta de cliente</p>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="vehicleBrand" class="form-label">Marca</label>
+              <label for="vehicleBrand" class="form-label">Marca *</label>
               <div class="input-wrapper">
                 <span class="input-icon"><i class="fa-solid fa-car"></i></span>
-                <input type="text" id="vehicleBrand" formControlName="vehicleBrand" class="form-input"
-                  placeholder="Ej: Toyota">
+                <select id="vehicleBrand" formControlName="vehicleBrand" class="form-input"
+                  [class.error]="vehicleBrand?.invalid && vehicleBrand?.touched">
+                  <option value="">Selecciona una marca</option>
+                  <option *ngFor="let brand of vehicleBrands" [value]="brand">{{brand}}</option>
+                </select>
+              </div>
+              <div *ngIf="vehicleBrand?.invalid && vehicleBrand?.touched" class="error-message">
+                La marca es obligatoria
               </div>
             </div>
 
             <div class="form-group">
-              <label for="vehicleModel" class="form-label">Modelo</label>
+              <label for="vehicleModel" class="form-label">Modelo *</label>
               <div class="input-wrapper">
                 <span class="input-icon"><i class="fa-solid fa-car-side"></i></span>
                 <input type="text" id="vehicleModel" formControlName="vehicleModel" class="form-input"
-                  placeholder="Ej: Corolla">
+                  placeholder="Ej: Corolla" [class.error]="vehicleModel?.invalid && vehicleModel?.touched">
+              </div>
+              <div *ngIf="vehicleModel?.invalid && vehicleModel?.touched" class="error-message">
+                El modelo es obligatorio
               </div>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
-              <label for="vehicleYear" class="form-label">Año</label>
+              <label for="vehicleYear" class="form-label">Año *</label>
               <div class="input-wrapper">
                 <span class="input-icon"><i class="fa-solid fa-calendar-days"></i></span>
                 <input type="number" id="vehicleYear" formControlName="vehicleYear" class="form-input"
-                  placeholder="Ej: 2020" min="1950" max="2026">
+                  placeholder="Ej: 2020" min="1944" max="2030"
+                  [class.error]="vehicleYear?.invalid && vehicleYear?.touched">
+              </div>
+              <div *ngIf="vehicleYear?.invalid && vehicleYear?.touched" class="error-message">
+                <span *ngIf="vehicleYear?.errors?.['required']">El año es obligatorio</span>
+                <span *ngIf="vehicleYear?.errors?.['min'] || vehicleYear?.errors?.['max']">El año debe estar entre 1944 y 2030</span>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="vehiclePlate" class="form-label">Placa</label>
+              <label for="vehiclePlate" class="form-label">Placa *</label>
               <div class="input-wrapper">
                 <span class="input-icon"><i class="fa-solid fa-id-card"></i></span>
                 <input type="text" id="vehiclePlate" formControlName="vehiclePlate" class="form-input"
-                  placeholder="Ej: ABC123">
+                  placeholder="Ej: ABC123 o ABC12D" [class.error]="vehiclePlate?.invalid && vehiclePlate?.touched">
+              </div>
+              <div *ngIf="vehiclePlate?.invalid && vehiclePlate?.touched" class="error-message">
+                <span *ngIf="vehiclePlate?.errors?.['required']">La placa es obligatoria</span>
+                <span *ngIf="vehiclePlate?.errors?.['pattern']">Formato inválido. Usa placa de Colombia (carro o moto)</span>
               </div>
             </div>
           </div>
 
           <div class="form-group">
-            <label for="vehicleType" class="form-label">Tipo de Vehículo</label>
+            <label for="vehicleType" class="form-label">Tipo de Vehículo *</label>
             <div class="input-wrapper">
               <span class="input-icon"><i class="fa-solid fa-truck"></i></span>
-              <select id="vehicleType" formControlName="vehicleType" class="form-input">
+              <select id="vehicleType" formControlName="vehicleType" class="form-input"
+                [class.error]="vehicleType?.invalid && vehicleType?.touched">
                 <option value="">Selecciona el tipo</option>
                 <option value="car">Automóvil</option>
                 <option value="suv">SUV</option>
@@ -256,6 +275,9 @@
                 <option value="motorcycle">Motocicleta</option>
                 <option value="van">Van</option>
               </select>
+            </div>
+            <div *ngIf="vehicleType?.invalid && vehicleType?.touched" class="error-message">
+              El tipo de vehículo es obligatorio
             </div>
           </div>
         </div>
