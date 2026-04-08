@@ -40,7 +40,7 @@
           <input type="text" formControlName="model" placeholder="Ej: Corolla" />
           <small *ngIf="model?.invalid && model?.touched" class="error">Modelo obligatorio</small>
 
-          <label>Ano *</label>
+          <label>Año *</label>
           <input type="number" formControlName="year" min="1944" max="2030" />
           <small *ngIf="year?.invalid && year?.touched" class="error">Ano entre 1944 y 2030</small>
 
