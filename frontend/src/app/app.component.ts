@@ -71,6 +71,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.logout();
   }
 
+  getUserHomeRoute(): string {
+    if (this.currentUser?.role === UserRole.CLIENTE) {
+      return '/cliente/vehiculos';
+    }
+
+    return '/provider/dashboard';
+  }
+
   redirectToHome(event: Event): void {
     event.preventDefault();
     this.router.navigateByUrl('/');

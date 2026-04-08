@@ -37,6 +37,7 @@ export interface User {
   
   // Campos específicos para clientes
   vehicleInfo?: VehicleInfo;
+  vehicleInfos?: VehicleInfo[];
 }
 
 export interface AuthResponse {

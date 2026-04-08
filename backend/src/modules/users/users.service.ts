@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { User, UserRole } from './entities/user.entity';
+import { User, UserRole, VehicleInfo } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { SupabaseService } from '../../common/supabase/supabase.service';
 import * as bcrypt from 'bcryptjs';
@@ -37,7 +37,7 @@ export class UsersService {
       address: createUserDto.address || null,
       city: createUserDto.city || null,
       description: createUserDto.description || null,
-      vehicle_info: createUserDto.vehicleInfo ? JSON.stringify(createUserDto.vehicleInfo) : null,
+      vehicle_info: createUserDto.vehicleInfo ? JSON.stringify([createUserDto.vehicleInfo]) : null,
       is_active: true,
     };
 
@@ -119,8 +119,80 @@ export class UsersService {
     return undefined;
   }
 
+  async getUserVehicles(userId: string): Promise<VehicleInfo[]> {
+    const user = await this.findById(userId);
+    return user?.vehicleInfos || [];
+  }
+
+  async addUserVehicle(userId: string, vehicle: VehicleInfo): Promise<VehicleInfo[]> {
+    const supabase = this.supabaseService.getClient();
+    const user = await this.findById(userId);
+
+    if (!user) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    const vehicles = user.vehicleInfos || [];
+    const normalizedPlate = vehicle.plate.trim().toUpperCase();
+    const existsByPlate = vehicles.some(v => v.plate.trim().toUpperCase() === normalizedPlate);
+
+    if (existsByPlate) {
+      throw new Error('Ya existe un vehiculo registrado con esa placa');
+    }
+
+    const updatedVehicles = [
+      ...vehicles,
+      {
+        ...vehicle,
+        plate: normalizedPlate,
+      },
+    ];
+
+    const { error } = await supabase
+      .from('users')
+      .update({ vehicle_info: JSON.stringify(updatedVehicles) })
+      .eq('id', userId);
+
+    if (error) {
+      throw new Error(`Error actualizando vehiculos: ${error.message}`);
+    }
+
+    return updatedVehicles;
+  }
+
+  private normalizeVehicleInfo(rawVehicleInfo: unknown): VehicleInfo[] {
+    if (!rawVehicleInfo) {
+      return [];
+    }
+
+    let parsed = rawVehicleInfo;
+
+    if (typeof rawVehicleInfo === 'string') {
+      try {
+        parsed = JSON.parse(rawVehicleInfo);
+      } catch {
+        return [];
+      }
+    }
+
+    const rawList = Array.isArray(parsed) ? parsed : [parsed];
+
+    return rawList
+      .filter(Boolean)
+      .map((item: any) => ({
+        brand: String(item.brand || '').trim(),
+        model: String(item.model || '').trim(),
+        year: Number(item.year || 0),
+        plate: String(item.plate || '').trim().toUpperCase(),
+        type: item.type ? String(item.type) : undefined,
+      }))
+      .filter(item => item.brand && item.model && item.year > 0 && item.plate);
+  }
+
   // Mapear datos de Supabase (snake_case) a entidad User (camelCase)
   private mapToUser(data: any): User {
+    const vehicleInfos = this.normalizeVehicleInfo(data.vehicle_info);
+
     return {
       id: data.id,
       email: data.email,
@@ -134,7 +206,8 @@ export class UsersService {
       address: data.address,
       city: data.city,
       description: data.description,
-      vehicleInfo: data.vehicle_info ? JSON.parse(data.vehicle_info) : undefined,
+      vehicleInfo: vehicleInfos.length > 0 ? vehicleInfos[0] : undefined,
+      vehicleInfos,
       isActive: data.is_active,
       createdAt: new Date(data.created_at),
       updatedAt: new Date(data.updated_at),

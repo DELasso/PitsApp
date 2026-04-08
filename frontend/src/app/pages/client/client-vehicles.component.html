@@ -1,0 +1,69 @@
+<section class="vehicles-page">
+  <div class="container">
+    <h1>Mis Vehiculos</h1>
+    <p class="subtitle">Consulta tus vehiculos registrados o agrega uno nuevo.</p>
+
+    <div *ngIf="errorMessage" class="alert error">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="alert success">{{ successMessage }}</div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Vehiculos Registrados</h2>
+
+        <div *ngIf="loading" class="empty">Cargando vehiculos...</div>
+
+        <div *ngIf="!loading && vehicles.length === 0" class="empty">
+          Aun no tienes vehiculos registrados.
+        </div>
+
+        <ul *ngIf="!loading && vehicles.length > 0" class="vehicle-list">
+          <li *ngFor="let vehicle of vehicles" class="vehicle-item">
+            <div class="line"><strong>{{ vehicle.brand }}</strong> {{ vehicle.model }}</div>
+            <div class="line">{{ vehicle.year }} - {{ vehicle.plate }}</div>
+            <div class="line">Tipo: {{ vehicle.type || 'No definido' }}</div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2>Agregar Vehiculo</h2>
+
+        <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()" class="form">
+          <label>Marca *</label>
+          <select formControlName="brand">
+            <option value="">Selecciona una marca</option>
+            <option *ngFor="let option of vehicleBrands" [value]="option">{{ option }}</option>
+          </select>
+          <small *ngIf="brand?.invalid && brand?.touched" class="error">Marca obligatoria</small>
+
+          <label>Modelo *</label>
+          <input type="text" formControlName="model" placeholder="Ej: Corolla" />
+          <small *ngIf="model?.invalid && model?.touched" class="error">Modelo obligatorio</small>
+
+          <label>Ano *</label>
+          <input type="number" formControlName="year" min="1944" max="2030" />
+          <small *ngIf="year?.invalid && year?.touched" class="error">Ano entre 1944 y 2030</small>
+
+          <label>Placa *</label>
+          <input type="text" formControlName="plate" placeholder="Ej: ABC123 o ABC12D" />
+          <small *ngIf="plate?.invalid && plate?.touched" class="error">Placa de Colombia valida</small>
+
+          <label>Tipo de Vehiculo *</label>
+          <select formControlName="type">
+            <option value="">Selecciona el tipo</option>
+            <option value="car">Automovil</option>
+            <option value="suv">SUV</option>
+            <option value="truck">Camioneta</option>
+            <option value="motorcycle">Motocicleta</option>
+            <option value="van">Van</option>
+          </select>
+          <small *ngIf="type?.invalid && type?.touched" class="error">Tipo obligatorio</small>
+
+          <button type="submit" [disabled]="saving">
+            {{ saving ? 'Guardando...' : 'Agregar Vehiculo' }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

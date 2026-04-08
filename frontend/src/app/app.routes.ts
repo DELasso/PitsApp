@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ProviderGuard, BusinessTypeGuard } from './guards/provider.guard';
+import { ProviderGuard, BusinessTypeGuard, ClientGuard } from './guards/provider.guard';
 import { BusinessType } from './models/auth.model';
 
 export const routes: Routes = [
@@ -110,6 +110,11 @@ export const routes: Routes = [
     path: 'provider/dashboard',
     loadComponent: () => import('./pages/provider/provider-dashboard.component').then(m => m.ProviderDashboardComponent),
     canActivate: [ProviderGuard]
+  },
+  {
+    path: 'cliente/vehiculos',
+    loadComponent: () => import('./pages/client/client-vehicles.component').then(m => m.ClientVehiclesComponent),
+    canActivate: [ClientGuard]
   },
   {
     path: 'workshops',

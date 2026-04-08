@@ -86,3 +86,33 @@ export class BusinessTypeGuard implements CanActivate {
         }
     }
 }
+
+@Injectable({
+    providedIn: 'root'
+})
+export class ClientGuard implements CanActivate {
+
+    constructor(
+        private authService: AuthService,
+        private router: Router
+    ) { }
+
+    canActivate(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): boolean {
+        const user = this.authService.getCurrentUser();
+
+        if (!user) {
+            this.router.navigate(['/auth/login']);
+            return false;
+        }
+
+        if (user.role !== UserRole.CLIENTE) {
+            this.router.navigate(['/']);
+            return false;
+        }
+
+        return true;
+    }
+}

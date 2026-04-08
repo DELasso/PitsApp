@@ -73,6 +73,11 @@ export class AuthService {
     this.isLoggedInSubject.next(true);
   }
 
+  updateCurrentUser(user: User): void {
+    localStorage.setItem('user', JSON.stringify(user));
+    this.currentUserSubject.next(user);
+  }
+
   getToken(): string | null {
     return localStorage.getItem('token');
   }
