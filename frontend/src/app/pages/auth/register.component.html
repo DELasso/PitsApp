@@ -116,7 +116,7 @@
                 class="form-input" [class.error]="password?.invalid && password?.touched"
                 placeholder="Mínimo 8 caracteres">
               <button type="button" class="password-toggle" (click)="togglePassword()">
-                <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"></i>
               </button>
             </div>
             <div *ngIf="password?.invalid && password?.touched" class="error-message">
@@ -134,7 +134,7 @@
                 formControlName="confirmPassword" class="form-input"
                 [class.error]="confirmPassword?.invalid && confirmPassword?.touched" placeholder="Repite tu contraseña">
               <button type="button" class="password-toggle" (click)="toggleConfirmPassword()">
-                <i class="fa-solid" [ngClass]="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                <i class="fa-solid" [ngClass]="showConfirmPassword ? 'fa-eye' : 'fa-eye-slash'"></i>
               </button>
             </div>
             <div *ngIf="confirmPassword?.invalid && confirmPassword?.touched" class="error-message">
@@ -201,7 +201,7 @@
 
         <!-- Campos específicos para Clientes -->
         <div *ngIf="registerForm.get('role')?.value === UserRole.CLIENTE" class="client-fields">
-          <h3 class="section-title">Información del Vehículo</h3>
+          <h3 class="section-title">Información del Vehículo (Opcional)</h3>
           <p class="section-subtitle">Estos datos son opcionales. Si llenas uno, debes completar todos.</p>
 
           <div class="form-row">
