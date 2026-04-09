@@ -103,18 +103,16 @@ export class RegisterComponent {
       companyName?.clearValidators();
       businessType?.clearValidators();
 
-      vehicleBrand?.setValidators([Validators.required]);
-      vehicleModel?.setValidators([Validators.required]);
+      vehicleBrand?.clearValidators();
+      vehicleModel?.clearValidators();
       vehicleYear?.setValidators([
-        Validators.required,
         Validators.min(1944),
         Validators.max(2030)
       ]);
       vehiclePlate?.setValidators([
-        Validators.required,
         Validators.pattern(this.colombianPlatePattern)
       ]);
-      vehicleType?.setValidators([Validators.required]);
+      vehicleType?.clearValidators();
     }
     
     companyName?.updateValueAndValidity();
@@ -163,13 +161,28 @@ export class RegisterComponent {
         registerData.city = this.registerForm.value.city;
         registerData.description = this.registerForm.value.description;
       } else {
-        registerData.vehicleInfo = {
-          brand: this.registerForm.value.vehicleBrand,
-          model: this.registerForm.value.vehicleModel,
-          year: parseInt(this.registerForm.value.vehicleYear, 10),
-          plate: String(this.registerForm.value.vehiclePlate || '').trim().toUpperCase(),
-          type: this.registerForm.value.vehicleType
-        };
+        const vehicleBrand = String(this.registerForm.value.vehicleBrand || '').trim();
+        const vehicleModel = String(this.registerForm.value.vehicleModel || '').trim();
+        const vehicleYear = String(this.registerForm.value.vehicleYear || '').trim();
+        const vehiclePlate = String(this.registerForm.value.vehiclePlate || '').trim().toUpperCase();
+        const vehicleType = String(this.registerForm.value.vehicleType || '').trim();
+        const hasAnyVehicleField = Boolean(vehicleBrand || vehicleModel || vehicleYear || vehiclePlate || vehicleType);
+
+        if (hasAnyVehicleField) {
+          if (!vehicleBrand || !vehicleModel || !vehicleYear || !vehiclePlate || !vehicleType) {
+            this.loading = false;
+            this.errorMessage = 'Si deseas registrar un vehiculo, completa todos los campos del vehiculo';
+            return;
+          }
+
+          registerData.vehicleInfo = {
+            brand: vehicleBrand,
+            model: vehicleModel,
+            year: parseInt(vehicleYear, 10),
+            plate: vehiclePlate,
+            type: vehicleType
+          };
+        }
       }
 
       this.authService.register(registerData).subscribe({

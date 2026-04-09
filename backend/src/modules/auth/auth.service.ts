@@ -22,11 +22,9 @@ export class AuthService {
       }
 
       if (registerDto.role === UserRole.CLIENTE) {
-        if (!registerDto.vehicleInfo) {
-          throw new BadRequestException('vehicleInfo es obligatorio para clientes');
+        if (registerDto.vehicleInfo) {
+          registerDto.vehicleInfo.plate = String(registerDto.vehicleInfo.plate || '').trim().toUpperCase();
         }
-
-        registerDto.vehicleInfo.plate = String(registerDto.vehicleInfo.plate || '').trim().toUpperCase();
       }
 
       // Convertir RegisterDto a CreateUserDto

@@ -9,11 +9,12 @@ export const routes: Routes = [
   },
   {
     path: 'talleres',
-    loadComponent: () => import('./pages/workshops/workshops.component').then(m => m.WorkshopsComponent)
+    redirectTo: '',
+    pathMatch: 'full'
   },
   {
     path: 'talleres/:id',
-    loadComponent: () => import('./pages/workshops/workshop-detail.component').then(m => m.WorkshopDetailComponent)
+    redirectTo: ''
   },
   {
     path: 'repuestos',

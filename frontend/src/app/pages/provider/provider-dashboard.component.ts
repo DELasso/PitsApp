@@ -101,19 +101,19 @@ export class ProviderDashboardComponent implements OnInit, OnDestroy {
     }
 
     navigateToWorkshops() {
-        this.router.navigate(['/workshops']);
+        this.router.navigate(['/provider/dashboard']);
     }
 
     navigateToParts() {
-        this.router.navigate(['/parts']);
+        this.router.navigate(['/provider/dashboard']);
     }
 
     createWorkshop() {
-        this.router.navigate(['/workshops/create']);
+        this.router.navigate(['/provider/dashboard']);
     }
 
     createPart() {
-        this.router.navigate(['/parts/create']);
+        this.router.navigate(['/provider/dashboard']);
     }
 
     refreshStats() {

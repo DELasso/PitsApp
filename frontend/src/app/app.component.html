@@ -13,7 +13,7 @@
         </div>
         <div class="navbar-menu">
           <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
-          <a routerLink="/talleres" routerLinkActive="active">Talleres</a>
+          <a href="" (click)="redirectToHome($event)">Talleres</a>
           <a href="" (click)="redirectToHome($event)">Repuestos</a>
           <a href="" (click)="redirectToHome($event)">Servicios</a>
           <a href="" (click)="redirectToHome($event)" class="cart-link">
