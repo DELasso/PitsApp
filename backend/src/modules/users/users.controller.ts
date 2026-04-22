@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Get, Post, Request, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, ForbiddenException, Get, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UserRole } from './entities/user.entity';
@@ -39,6 +39,38 @@ export class UsersController {
     return {
       success: true,
       message: 'Vehiculo agregado exitosamente',
+      data: vehicles,
+    };
+  }
+
+  @Put('me/vehicles/:plate')
+  @UseGuards(JwtAuthGuard)
+  async updateMyVehicle(@Request() req, @Param('plate') plate: string, @Body() updateVehicleDto: AddVehicleDto) {
+    if (req.user.role !== UserRole.CLIENTE) {
+      throw new ForbiddenException('Solo los clientes pueden gestionar vehiculos');
+    }
+
+    const decodedPlate = decodeURIComponent(plate);
+    const vehicles = await this.usersService.updateUserVehicle(req.user.sub, decodedPlate, updateVehicleDto);
+    return {
+      success: true,
+      message: 'Vehiculo actualizado exitosamente',
+      data: vehicles,
+    };
+  }
+
+  @Delete('me/vehicles/:plate')
+  @UseGuards(JwtAuthGuard)
+  async deleteMyVehicle(@Request() req, @Param('plate') plate: string) {
+    if (req.user.role !== UserRole.CLIENTE) {
+      throw new ForbiddenException('Solo los clientes pueden gestionar vehiculos');
+    }
+
+    const decodedPlate = decodeURIComponent(plate);
+    const vehicles = await this.usersService.deleteUserVehicle(req.user.sub, decodedPlate);
+    return {
+      success: true,
+      message: 'Vehiculo eliminado exitosamente',
       data: vehicles,
     };
   }

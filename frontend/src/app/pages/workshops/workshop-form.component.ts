@@ -194,7 +194,7 @@ export class WorkshopFormComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/provider/dashboard']);
+    this.router.navigate(['/provider/talleres']);
   }
 
   // Getters para facilitar el acceso a los controles del formulario

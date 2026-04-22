@@ -5,11 +5,14 @@
 <div class="workshops-container">
   <div class="container">
     <div class="page-header">
-      <h1>Talleres Disponibles</h1>
-      <p>Encuentra el taller perfecto para tu vehículo en Medellín</p>
+      <h1>{{ isProviderView ? 'Mis Talleres' : 'Talleres Disponibles' }}</h1>
+      <p>{{ isProviderView ? 'Gestiona tus talleres mecánicos' : 'Encuentra el taller perfecto para tu vehículo en Medellín' }}</p>
+      <button *ngIf="isProviderView" class="btn btn-success" (click)="navigateToCreateWorkshop()">
+        <i class="fa-solid fa-plus"></i> Crear Taller
+      </button>
     </div>
 
-    <div class="search-section">
+    <div class="search-section" *ngIf="!isProviderView">
       <div class="search-bar">
         <input 
           type="text" 
@@ -54,9 +57,12 @@
     <!-- No results -->
     <div *ngIf="!loading && !error && filteredWorkshops.length === 0" class="no-results">
       <div class="no-results-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
-      <h3>No se encontraron talleres</h3>
-      <p>Intenta ajustar tus filtros de búsqueda</p>
-      <button class="btn btn-secondary" (click)="clearFilters()">Limpiar Filtros</button>
+      <h3>{{ isProviderView ? 'Aún no tienes talleres' : 'No se encontraron talleres' }}</h3>
+      <p>{{ isProviderView ? 'Comienza creando tu primer taller' : 'Intenta ajustar tus filtros de búsqueda' }}</p>
+      <button *ngIf="isProviderView" class="btn btn-success" (click)="navigateToCreateWorkshop()">
+        <i class="fa-solid fa-plus"></i> Crear Taller
+      </button>
+      <button *ngIf="!isProviderView" class="btn btn-secondary" (click)="clearFilters()">Limpiar Filtros</button>
     </div>
 
     <!-- Results count -->
@@ -69,6 +75,7 @@
       <div 
         class="workshop-card" 
         *ngFor="let workshop of filteredWorkshops"
+        [ngClass]="{ 'provider-card': isProviderView }"
         (click)="onWorkshopClick(workshop)">
         <div class="workshop-image">
           <img 
@@ -86,7 +93,7 @@
           <p class="location"><i class="fa-solid fa-map-pin"></i> {{ workshop.neighborhood }}, {{ workshop.city }}</p>
           <p class="address">{{ workshop.address }}</p>
           
-          <div class="rating">
+          <div class="rating" *ngIf="!isProviderView">
             <span class="stars">
               <i *ngFor="let star of getStars(workshop.rating)" [class]="star"></i>
             </span>
@@ -109,8 +116,18 @@
           </div>
 
           <div class="workshop-actions">
-            <button class="btn btn-primary" (click)="onWorkshopClick(workshop)">Ver Detalles</button>
-            <button class="btn btn-secondary" (click)="onContactClick(workshop, $event)">Contactar</button>
+            <ng-container *ngIf="isProviderView">
+              <button class="btn btn-primary" (click)="editWorkshop(workshop, $event)">
+                <i class="fa-solid fa-edit"></i> Editar
+              </button>
+              <button class="btn btn-danger" (click)="deleteWorkshop(workshop, $event)">
+                <i class="fa-solid fa-trash"></i> Eliminar
+              </button>
+            </ng-container>
+            <ng-container *ngIf="!isProviderView">
+              <button class="btn btn-primary" (click)="onWorkshopClick(workshop)">Ver Detalles</button>
+              <button class="btn btn-secondary" (click)="onContactClick(workshop, $event)">Contactar</button>
+            </ng-container>
           </div>
         </div>
       </div>

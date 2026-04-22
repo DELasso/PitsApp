@@ -25,4 +25,14 @@ export class UsersService {
   addMyVehicle(vehicle: VehicleInfo): Observable<ApiResponse<VehicleInfo[]>> {
     return this.http.post<ApiResponse<VehicleInfo[]>>(`${this.apiUrl}/me/vehicles`, vehicle);
   }
+
+  updateMyVehicle(oldPlate: string, vehicle: VehicleInfo): Observable<ApiResponse<VehicleInfo[]>> {
+    const encodedPlate = encodeURIComponent(oldPlate);
+    return this.http.put<ApiResponse<VehicleInfo[]>>(`${this.apiUrl}/me/vehicles/${encodedPlate}`, vehicle);
+  }
+
+  deleteMyVehicle(plate: string): Observable<ApiResponse<VehicleInfo[]>> {
+    const encodedPlate = encodeURIComponent(plate);
+    return this.http.delete<ApiResponse<VehicleInfo[]>>(`${this.apiUrl}/me/vehicles/${encodedPlate}`);
+  }
 }

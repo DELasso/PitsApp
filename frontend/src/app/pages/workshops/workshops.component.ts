@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { WorkshopsService } from '../../services/workshops.service';
 import { Workshop, WorkshopSearchParams } from '../../models/workshop.model';
-import { Router, RouterModule, NavigationEnd } from '@angular/router';
+import { Router, RouterModule, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { User, UserRole } from '../../models/auth.model';
@@ -25,6 +25,7 @@ export class WorkshopsComponent implements OnInit, OnDestroy {
   error: string | null = null;
   private routerSubscription?: Subscription;
   currentUser: User | null = null;
+  isProviderView = false;
   
   // Filtros
   searchTerm = '';
@@ -39,12 +40,18 @@ export class WorkshopsComponent implements OnInit, OnDestroy {
     private workshopsService: WorkshopsService, 
     private router: Router,
     private authService: AuthService,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
     // Obtener usuario actual
     this.currentUser = this.authService.getCurrentUser();
+    
+    // Detectar si es vista de proveedor según la ruta
+    this.route.url.subscribe(segments => {
+      this.isProviderView = segments.some(s => s.path === 'provider' || s.path === 'talleres');
+    });
     
     this.loadWorkshops();
     
@@ -52,7 +59,8 @@ export class WorkshopsComponent implements OnInit, OnDestroy {
     this.routerSubscription = this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        if (event.url === '/workshops' && event.url !== event.urlAfterRedirects) {
+        if ((event.url === '/workshops' || event.url === '/provider/talleres') && 
+            event.url !== event.urlAfterRedirects) {
           // Se regresó a la lista desde otra página, refrescar
           this.loadWorkshops();
         }
@@ -69,19 +77,35 @@ export class WorkshopsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.error = null;
     
-    // Siempre mostrar todos los talleres disponibles
-    this.workshopsService.getWorkshops().subscribe({
-      next: (workshops) => {
-        this.workshops = workshops;
-        this.filteredWorkshops = [...workshops];
-        this.loading = false;
-      },
-      error: (error) => {
-        this.error = 'Error al cargar los talleres. Por favor, intenta de nuevo.';
-        this.loading = false;
-        console.error('Error loading workshops:', error);
-      }
-    });
+    if (this.isProviderView && this.currentUser?.role === UserRole.PROVEEDOR) {
+      // Cargar solo mis talleres
+      this.workshopsService.getMyWorkshops().subscribe({
+        next: (workshops) => {
+          this.workshops = workshops;
+          this.filteredWorkshops = [...workshops];
+          this.loading = false;
+        },
+        error: (error) => {
+          this.error = 'Error al cargar tus talleres. Por favor, intenta de nuevo.';
+          this.loading = false;
+          console.error('Error loading workshops:', error);
+        }
+      });
+    } else {
+      // Cargar todos los talleres disponibles
+      this.workshopsService.getWorkshops().subscribe({
+        next: (workshops) => {
+          this.workshops = workshops;
+          this.filteredWorkshops = [...workshops];
+          this.loading = false;
+        },
+        error: (error) => {
+          this.error = 'Error al cargar los talleres. Por favor, intenta de nuevo.';
+          this.loading = false;
+          console.error('Error loading workshops:', error);
+        }
+      });
+    }
   }
 
   searchWorkshops() {
@@ -136,14 +160,43 @@ export class WorkshopsComponent implements OnInit, OnDestroy {
     return stars;
   }
 
-  formatPhoneNumber(phone: string): string {
-    // Formatear número de teléfono para mostrar mejor
-    return phone;
+  editWorkshop(workshop: Workshop, event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.router.navigate(['/provider/talleres/editar', workshop.id]);
+  }
+
+  deleteWorkshop(workshop: Workshop, event: Event) {
+    event.stopPropagation();
+    
+    if (confirm(`¿Estás seguro de que deseas eliminar el taller "${workshop.name}"?`)) {
+      this.loading = true;
+      
+      this.workshopsService.deleteWorkshop(workshop.id).subscribe({
+        next: () => {
+          this.workshops = this.workshops.filter(w => w.id !== workshop.id);
+          this.filteredWorkshops = this.filteredWorkshops.filter(w => w.id !== workshop.id);
+          this.loading = false;
+          alert('Taller eliminado correctamente');
+        },
+        error: (error) => {
+          this.loading = false;
+          alert('Error al eliminar el taller: ' + (error.error?.message || error.message));
+          console.error('Error deleting workshop:', error);
+        }
+      });
+    }
   }
 
   onWorkshopClick(workshop: Workshop) {
-    // Navegar a detalle del taller
-    this.router.navigate(['/talleres', workshop.id]);
+    if (this.isProviderView) {
+      // Los proveedores van a editar
+      this.editWorkshop(workshop);
+    } else {
+      // Los clientes ven el detalle
+      this.router.navigate(['/workshops', workshop.id]);
+    }
   }
 
   onContactClick(workshop: Workshop, event: Event) {
@@ -164,5 +217,9 @@ export class WorkshopsComponent implements OnInit, OnDestroy {
 
   getImageUrl(imagePath: string): string {
     return this.fileUploadService.getImageUrl(imagePath);
+  }
+
+  navigateToCreateWorkshop() {
+    this.router.navigate(['/provider/talleres/crear']);
   }
 }

@@ -15,7 +15,7 @@ export class HomeComponent {
       title: 'Talleres',
       description: 'Encuentra los mejores talleres mecánicos cerca de ti',
       icon: 'fa-solid fa-wrench',
-      route: '/talleres'
+      route: '/'
     },
     {
       title: 'Repuestos',

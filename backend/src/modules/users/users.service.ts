@@ -160,6 +160,86 @@ export class UsersService {
     return updatedVehicles;
   }
 
+  async updateUserVehicle(userId: string, oldPlate: string, vehicle: VehicleInfo): Promise<VehicleInfo[]> {
+    const supabase = this.supabaseService.getClient();
+    const user = await this.findById(userId);
+
+    if (!user) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    const vehicles = user.vehicleInfos || [];
+    const vehicleIndex = vehicles.findIndex(v => v.plate.trim().toUpperCase() === oldPlate.trim().toUpperCase());
+
+    if (vehicleIndex === -1) {
+      throw new Error('Vehiculo no encontrado');
+    }
+
+    const normalizedPlate = vehicle.plate.trim().toUpperCase();
+    
+    // Verificar si la nueva placa ya existe (excepto el vehículo que estamos actualizando)
+    const existsByPlate = vehicles.some(
+      (v, idx) => v.plate.trim().toUpperCase() === normalizedPlate && idx !== vehicleIndex
+    );
+
+    if (existsByPlate) {
+      throw new Error('Ya existe un vehiculo registrado con esa placa');
+    }
+
+    const updatedVehicles = [
+      ...vehicles.slice(0, vehicleIndex),
+      {
+        ...vehicle,
+        plate: normalizedPlate,
+      },
+      ...vehicles.slice(vehicleIndex + 1),
+    ];
+
+    const { error } = await supabase
+      .from('users')
+      .update({ vehicle_info: JSON.stringify(updatedVehicles) })
+      .eq('id', userId);
+
+    if (error) {
+      throw new Error(`Error actualizando vehiculo: ${error.message}`);
+    }
+
+    return updatedVehicles;
+  }
+
+  async deleteUserVehicle(userId: string, plate: string): Promise<VehicleInfo[]> {
+    const supabase = this.supabaseService.getClient();
+    const user = await this.findById(userId);
+
+    if (!user) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    const vehicles = user.vehicleInfos || [];
+    const normalizedPlate = plate.trim().toUpperCase();
+    const vehicleIndex = vehicles.findIndex(v => v.plate.trim().toUpperCase() === normalizedPlate);
+
+    if (vehicleIndex === -1) {
+      throw new Error('Vehiculo no encontrado');
+    }
+
+    const updatedVehicles = [
+      ...vehicles.slice(0, vehicleIndex),
+      ...vehicles.slice(vehicleIndex + 1),
+    ];
+
+    const { error } = await supabase
+      .from('users')
+      .update({ vehicle_info: JSON.stringify(updatedVehicles) })
+      .eq('id', userId);
+
+    if (error) {
+      throw new Error(`Error eliminando vehiculo: ${error.message}`);
+    }
+
+    return updatedVehicles;
+  }
+
   private normalizeVehicleInfo(rawVehicleInfo: unknown): VehicleInfo[] {
     if (!rawVehicleInfo) {
       return [];

@@ -244,6 +244,25 @@
   }
 }
 
+// Estilos para tarjetas de proveedor
+.workshop-card.provider-card {
+  border: 2px solid var(--primary-color);
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: -15px;
+    right: 10px;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+}
+
 // Animations
 @keyframes spin {
   from { transform: rotate(0deg); }

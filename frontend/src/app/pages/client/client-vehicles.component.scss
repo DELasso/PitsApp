@@ -43,6 +43,57 @@
   border-radius: 8px;
   padding: 0.75rem;
   margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.vehicle-info {
+  flex: 1;
+}
+
+.vehicle-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.btn {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: #fff;
+
+  &:hover {
+    background: #5a6268;
+  }
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: #fff;
+
+  &:hover {
+    background: #c82333;
+  }
+}
+
+.button-group {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+
+  button {
+    flex: 1;
+  }
 }
 
 .form {

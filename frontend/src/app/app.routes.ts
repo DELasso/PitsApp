@@ -9,15 +9,15 @@ export const routes: Routes = [
   },
   {
     path: 'talleres',
-    redirectTo: '',
+    redirectTo: 'workshops',
     pathMatch: 'full'
   },
   {
     path: 'talleres/:id',
-    redirectTo: ''
+    redirectTo: 'workshops/:id'
   },
   {
-    path: 'repuestos',
+    path: ' ',
     loadComponent: () => import('./pages/parts/parts.component').then(m => m.PartsComponent)
   },
   {
@@ -119,21 +119,26 @@ export const routes: Routes = [
   },
   {
     path: 'workshops',
+    loadComponent: () => import('./pages/workshops/workshops.component').then(m => m.WorkshopsComponent)
+  },
+  {
+    path: 'workshops/:id',
+    loadComponent: () => import('./pages/workshops/workshop-detail.component').then(m => m.WorkshopDetailComponent)
+  },
+  {
+    path: 'provider/talleres',
     loadComponent: () => import('./pages/workshops/workshops.component').then(m => m.WorkshopsComponent),
-    canActivate: [BusinessTypeGuard],
-    data: { businessType: BusinessType.TALLER_MECANICO }
+    canActivate: [ProviderGuard]
   },
   {
-    path: 'workshops/create',
+    path: 'provider/talleres/crear',
     loadComponent: () => import('./pages/workshops/workshop-form.component').then(m => m.WorkshopFormComponent),
-    canActivate: [BusinessTypeGuard],
-    data: { businessType: BusinessType.TALLER_MECANICO }
+    canActivate: [ProviderGuard]
   },
   {
-    path: 'workshops/edit/:id',
+    path: 'provider/talleres/editar/:id',
     loadComponent: () => import('./pages/workshops/workshop-form.component').then(m => m.WorkshopFormComponent),
-    canActivate: [BusinessTypeGuard],
-    data: { businessType: BusinessType.TALLER_MECANICO }
+    canActivate: [ProviderGuard]
   },
   {
     path: 'parts',

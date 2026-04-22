@@ -1,32 +1,38 @@
 <section class="vehicles-page">
   <div class="container">
-    <h1>Mis Vehiculos</h1>
-    <p class="subtitle">Consulta tus vehiculos registrados o agrega uno nuevo.</p>
+    <h1>Mis Vehículos</h1>
+    <p class="subtitle">Consulta tus Vehículos registrados o agrega uno nuevo.</p>
 
     <div *ngIf="errorMessage" class="alert error">{{ errorMessage }}</div>
     <div *ngIf="successMessage" class="alert success">{{ successMessage }}</div>
 
     <div class="grid">
       <div class="card">
-        <h2>Vehiculos Registrados</h2>
+        <h2>Vehículos Registrados</h2>
 
-        <div *ngIf="loading" class="empty">Cargando vehiculos...</div>
+        <div *ngIf="loading" class="empty">Cargando Vehículos...</div>
 
         <div *ngIf="!loading && vehicles.length === 0" class="empty">
-          Aun no tienes vehiculos registrados.
+          Aun no tienes Vehículos registrados.
         </div>
 
         <ul *ngIf="!loading && vehicles.length > 0" class="vehicle-list">
           <li *ngFor="let vehicle of vehicles" class="vehicle-item">
-            <div class="line"><strong>{{ vehicle.brand }}</strong> {{ vehicle.model }}</div>
-            <div class="line">{{ vehicle.year }} - {{ vehicle.plate }}</div>
-            <div class="line">Tipo: {{ vehicle.type || 'No definido' }}</div>
+            <div class="vehicle-info">
+              <div class="line"><strong>{{ vehicle.brand }}</strong> {{ vehicle.model }}</div>
+              <div class="line">{{ vehicle.year }} - {{ vehicle.plate }}</div>
+              <div class="line">Tipo: {{ vehicle.type || 'No definido' }}</div>
+            </div>
+            <div class="vehicle-actions">
+              <button type="button" class="btn btn-secondary" (click)="editVehicle(vehicle)">Editar</button>
+              <button type="button" class="btn btn-danger" (click)="deleteVehicle(vehicle.plate)">Eliminar</button>
+            </div>
           </li>
         </ul>
       </div>
 
       <div class="card">
-        <h2>Agregar Vehiculo</h2>
+        <h2>{{ isEditing ? 'Editar Vehículo' : 'Agregar Vehículo' }}</h2>
 
         <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()" class="form">
           <label>Marca *</label>
@@ -48,7 +54,7 @@
           <input type="text" formControlName="plate" placeholder="Ej: ABC123 o ABC12D" />
           <small *ngIf="plate?.invalid && plate?.touched" class="error">Placa de Colombia valida</small>
 
-          <label>Tipo de Vehiculo *</label>
+          <label>Tipo de Vehículo *</label>
           <select formControlName="type">
             <option value="">Selecciona el tipo</option>
             <option value="car">Automovil</option>
@@ -59,9 +65,14 @@
           </select>
           <small *ngIf="type?.invalid && type?.touched" class="error">Tipo obligatorio</small>
 
-          <button type="submit" [disabled]="saving">
-            {{ saving ? 'Guardando...' : 'Agregar Vehiculo' }}
-          </button>
+          <div class="button-group">
+            <button type="submit" [disabled]="saving">
+              {{ saving ? 'Guardando...' : isEditing ? 'Actualizar Vehículo' : 'Agregar Vehículo' }}
+            </button>
+            <button type="button" *ngIf="isEditing" (click)="cancelEdit()" class="btn btn-secondary">
+              Cancelar
+            </button>
+          </div>
         </form>
       </div>
     </div>

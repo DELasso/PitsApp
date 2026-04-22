@@ -13,9 +13,9 @@
         </div>
         <div class="navbar-menu">
           <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
-          <a href="" (click)="redirectToHome($event)">Talleres</a>
+          <a href="" routerLink="/talleres" routerLinkActive="active">Talleres</a>
           <a href="" (click)="redirectToHome($event)">Repuestos</a>
-          <a href="" (click)="redirectToHome($event)">Servicios</a>
+          <a href="" routerLink="/servicios" routerLinkActive="active">Servicios</a>
           <a href="" (click)="redirectToHome($event)" class="cart-link">
             <fa-icon [icon]="faShoppingCart"></fa-icon>
             Carrito

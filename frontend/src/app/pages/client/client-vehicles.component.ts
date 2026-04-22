@@ -19,6 +19,8 @@ export class ClientVehiclesComponent implements OnInit {
   errorMessage = '';
   successMessage = '';
   vehicleForm: FormGroup;
+  isEditing = false;
+  editingVehicle: string | null = null;
 
   readonly vehicleBrands = [
     'Chevrolet',
@@ -63,7 +65,7 @@ export class ClientVehiclesComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        this.errorMessage = error.error?.message || 'No fue posible cargar los vehiculos';
+        this.errorMessage = error.error?.message || 'No fue posible cargar los Vehículos';
         this.loading = false;
       }
     });
@@ -87,7 +89,11 @@ export class ClientVehiclesComponent implements OnInit {
       type: this.vehicleForm.value.type,
     };
 
-    this.usersService.addMyVehicle(payload).subscribe({
+    const request$ = this.isEditing && this.editingVehicle
+      ? this.usersService.updateMyVehicle(this.editingVehicle, payload)
+      : this.usersService.addMyVehicle(payload);
+
+    request$.subscribe({
       next: (response) => {
         this.vehicles = response.data || [];
 
@@ -100,15 +106,72 @@ export class ClientVehiclesComponent implements OnInit {
           });
         }
 
+        const wasEditing = this.isEditing;
         this.vehicleForm.reset();
-        this.successMessage = 'Vehiculo agregado correctamente';
+        this.isEditing = false;
+        this.editingVehicle = null;
+        this.successMessage = wasEditing 
+          ? 'Vehículo actualizado correctamente' 
+          : 'Vehículo agregado correctamente';
         this.saving = false;
       },
       error: (error) => {
-        this.errorMessage = error.error?.message || 'No fue posible agregar el vehiculo';
+        this.errorMessage = error.error?.message || 'No fue posible guardar el Vehículo';
         this.saving = false;
       }
     });
+  }
+
+  editVehicle(vehicle: VehicleInfo): void {
+    this.isEditing = true;
+    this.editingVehicle = vehicle.plate;
+    this.vehicleForm.patchValue({
+      brand: vehicle.brand,
+      model: vehicle.model,
+      year: vehicle.year,
+      plate: vehicle.plate,
+      type: vehicle.type || '',
+    });
+    // Scroll al formulario
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  cancelEdit(): void {
+    this.isEditing = false;
+    this.editingVehicle = null;
+    this.vehicleForm.reset();
+    this.errorMessage = '';
+    this.successMessage = '';
+  }
+
+  deleteVehicle(plate: string): void {
+    if (confirm(`¿Estás seguro de que deseas eliminar el vehículo con placa ${plate}?`)) {
+      this.saving = true;
+      this.errorMessage = '';
+      this.successMessage = '';
+
+      this.usersService.deleteMyVehicle(plate).subscribe({
+        next: (response) => {
+          this.vehicles = response.data || [];
+
+          const currentUser = this.authService.getCurrentUser();
+          if (currentUser) {
+            this.authService.updateCurrentUser({
+              ...currentUser,
+              vehicleInfo: this.vehicles[0] || undefined,
+              vehicleInfos: this.vehicles,
+            });
+          }
+
+          this.successMessage = 'Vehículo eliminado correctamente';
+          this.saving = false;
+        },
+        error: (error) => {
+          this.errorMessage = error.error?.message || 'No fue posible eliminar el Vehículo';
+          this.saving = false;
+        }
+      });
+    }
   }
 
   get brand() { return this.vehicleForm.get('brand'); }
