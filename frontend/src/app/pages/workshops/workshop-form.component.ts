@@ -60,19 +60,60 @@ export class WorkshopFormComponent implements OnInit {
 
   initForm() {
     this.workshopForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.required, Validators.minLength(20)]],
-      address: ['', Validators.required],
-      city: ['', Validators.required],
-      neighborhood: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern(/^\+?[\d\s\-\(\)]+$/)]],
+      name: ['', [
+        Validators.required, 
+        Validators.minLength(3),
+        Validators.maxLength(100)
+      ]],
+      description: ['', [
+        Validators.required, 
+        Validators.minLength(20),
+        Validators.maxLength(500)
+      ]],
+      address: ['', [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(150)
+      ]],
+      city: ['', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50)
+      ]],
+      neighborhood: ['', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50)
+      ]],
+      phone: ['', [
+        Validators.required,
+        Validators.pattern(/^[\d\s\-\(\)\+]+$/),
+        this.phoneValidator.bind(this)
+      ]],
       email: ['', [Validators.required, Validators.email]],
       services: [[], [Validators.required, this.servicesValidator]],
-      website: [''],
+      website: ['', Validators.pattern(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/)],
       workingHours: [''],
       specialtiesText: [''],
       images: [[]]
     });
+  }
+
+  phoneValidator(control: any) {
+    const phone = control.value;
+    if (!phone) return null;
+    
+    // Eliminar espacios, guiones, paréntesis
+    const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
+    
+    // Verificar que tenga exactamente 10 dígitos (con o sin +57)
+    if (cleanPhone.startsWith('+57')) {
+      return cleanPhone.slice(3).length === 10 ? null : { phoneInvalid: true };
+    } else if (cleanPhone.startsWith('57')) {
+      return cleanPhone.slice(2).length === 10 ? null : { phoneInvalid: true };
+    } else {
+      return cleanPhone.length === 10 && /^\d+$/.test(cleanPhone) ? null : { phoneInvalid: true };
+    }
   }
 
   servicesValidator(control: any) {
@@ -191,6 +232,94 @@ export class WorkshopFormComponent implements OnInit {
       const control = this.workshopForm.get(key);
       control?.markAsTouched();
     });
+  }
+
+  getErrorMessage(fieldName: string): string {
+    const control = this.workshopForm.get(fieldName);
+    if (!control || !control.errors) return '';
+
+    const errors = control.errors;
+
+    // Mensajes específicos por tipo de error
+    switch (fieldName) {
+      case 'name':
+        if (errors['required']) return 'El nombre del taller es obligatorio';
+        if (errors['minlength']) return `El nombre debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+        if (errors['maxlength']) return `El nombre no puede exceder ${errors['maxlength'].requiredLength} caracteres`;
+        break;
+      case 'description':
+        if (errors['required']) return 'La descripción es obligatoria';
+        if (errors['minlength']) return `La descripción debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+        if (errors['maxlength']) return `La descripción no puede exceder ${errors['maxlength'].requiredLength} caracteres`;
+        break;
+      case 'address':
+        if (errors['required']) return 'La dirección es obligatoria';
+        if (errors['minlength']) return `La dirección debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+        if (errors['maxlength']) return `La dirección no puede exceder ${errors['maxlength'].requiredLength} caracteres`;
+        break;
+      case 'city':
+        if (errors['required']) return 'La ciudad es obligatoria';
+        if (errors['minlength']) return `La ciudad debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+        if (errors['maxlength']) return `La ciudad no puede exceder ${errors['maxlength'].requiredLength} caracteres`;
+        break;
+      case 'neighborhood':
+        if (errors['required']) return 'El barrio es obligatorio';
+        if (errors['minlength']) return `El barrio debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+        if (errors['maxlength']) return `El barrio no puede exceder ${errors['maxlength'].requiredLength} caracteres`;
+        break;
+      case 'phone':
+        if (errors['required']) return 'El teléfono es obligatorio';
+        if (errors['pattern']) return 'El teléfono solo puede contener números y caracteres especiales (+, -, ())';
+        if (errors['phoneInvalid']) return 'El teléfono debe tener exactamente 10 dígitos';
+        break;
+      case 'email':
+        if (errors['required']) return 'El email es obligatorio';
+        if (errors['email']) return 'El email no es válido';
+        break;
+      case 'services':
+        if (errors['required']) return 'Debes seleccionar al menos un servicio';
+        break;
+      case 'website':
+        if (errors['pattern']) return 'La URL del sitio web no es válida (ej: https://pits-app.vercel.app)';
+        break;
+      case 'workingHours':
+        if (errors['maxlength']) return `El horario no puede exceder ${errors['maxlength'].requiredLength} caracteres`;
+        break;
+    }
+
+    return 'Este campo tiene un error';
+  }
+
+  hasError(fieldName: string): boolean {
+    const control = this.workshopForm.get(fieldName);
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
+  isFieldRequired(fieldName: string): boolean {
+    const control = this.workshopForm.get(fieldName);
+    if (!control || !control.validator) return false;
+    
+    const validator = control.validator({} as any);
+    return !!(validator && validator['required']);
+  }
+
+  getFieldCharacterCount(fieldName: string): { current: number; max: number | null } {
+    const control = this.workshopForm.get(fieldName);
+    const value = control?.value || '';
+    
+    const maxLengths: { [key: string]: number } = {
+      name: 100,
+      description: 500,
+      address: 150,
+      city: 50,
+      neighborhood: 50,
+      workingHours: 300
+    };
+
+    return {
+      current: value.length,
+      max: maxLengths[fieldName] || null
+    };
   }
 
   goBack() {

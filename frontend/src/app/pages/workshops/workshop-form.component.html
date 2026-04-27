@@ -18,63 +18,88 @@
           
           <div class="form-row">
             <div class="form-group">
-              <label for="name" class="form-label">Nombre del Taller *</label>
+              <label for="name" class="form-label">
+                Nombre del Taller 
+                <span class="required-indicator">*</span>
+              </label>
               <input 
                 type="text" 
                 id="name" 
                 formControlName="name" 
                 class="form-input"
-                [class.error]="name?.invalid && name?.touched"
-                placeholder="Ej: Taller Mecánico Rodriguez">
-              <div *ngIf="name?.invalid && name?.touched" class="error-message">
-                <span *ngIf="name?.errors?.['required']">El nombre es requerido</span>
-                <span *ngIf="name?.errors?.['minlength']">Mínimo 3 caracteres</span>
+                [class.error]="hasError('name')"
+                placeholder="Ej: Taller Mecánico Rodriguez"
+                maxlength="100">
+              <div class="field-info">
+                <small class="character-count">
+                  {{ getFieldCharacterCount('name').current }}/{{ getFieldCharacterCount('name').max }} caracteres
+                </small>
+              </div>
+              <div *ngIf="hasError('name')" class="error-message">
+                {{ getErrorMessage('name') }}
               </div>
             </div>
 
             <div class="form-group">
-              <label for="phone" class="form-label">Teléfono *</label>
+              <label for="phone" class="form-label">
+                Teléfono 
+                <span class="required-indicator">*</span>
+              </label>
               <input 
                 type="tel" 
                 id="phone" 
                 formControlName="phone" 
                 class="form-input"
-                [class.error]="phone?.invalid && phone?.touched"
-                placeholder="Ej: +57 300 123 4567">
-              <div *ngIf="phone?.invalid && phone?.touched" class="error-message">
-                <span *ngIf="phone?.errors?.['required']">El teléfono es requerido</span>
-                <span *ngIf="phone?.errors?.['pattern']">Formato de teléfono inválido</span>
+                [class.error]="hasError('phone')"
+                placeholder="Ej: 300 123 4567 o +57 300 123 4567">
+              <div class="field-info">
+                <small class="form-help">Ingrese únicamente 10 dígitos</small>
+              </div>
+              <div *ngIf="hasError('phone')" class="error-message">
+
+                {{ getErrorMessage('phone') }}
               </div>
             </div>
           </div>
 
           <div class="form-group">
-            <label for="email" class="form-label">Email *</label>
+            <label for="email" class="form-label">
+              Email 
+              <span class="required-indicator">*</span>
+            </label>
             <input 
               type="email" 
               id="email" 
               formControlName="email" 
               class="form-input"
-              [class.error]="email?.invalid && email?.touched"
+              [class.error]="hasError('email')"
               placeholder="contacto@taller.com">
-            <div *ngIf="email?.invalid && email?.touched" class="error-message">
-              <span *ngIf="email?.errors?.['required']">El email es requerido</span>
-              <span *ngIf="email?.errors?.['email']">Formato de email inválido</span>
+            <div *ngIf="hasError('email')" class="error-message">
+              {{ getErrorMessage('email') }}
             </div>
           </div>
 
           <div class="form-group">
-            <label for="description" class="form-label">Descripción *</label>
+            <label for="description" class="form-label">
+              Descripción 
+              <span class="required-indicator">*</span>
+            </label>
             <textarea 
               id="description" 
               formControlName="description" 
               class="form-textarea"
-              [class.error]="description?.invalid && description?.touched"
+              [class.error]="hasError('description')"
               rows="4"
-              placeholder="Describe tu taller, especialidades y servicios destacados..."></textarea>
-            <div *ngIf="description?.invalid && description?.touched" class="error-message">
-              <span *ngIf="description?.errors?.['required']">La descripción es requerida</span>
-              <span *ngIf="description?.errors?.['minlength']">Mínimo 20 caracteres</span>
+              placeholder="Describe tu taller, especialidades y servicios destacados..."
+              maxlength="500"></textarea>
+            <div class="field-info">
+              <small class="character-count">
+                {{ getFieldCharacterCount('description').current }}/{{ getFieldCharacterCount('description').max }} caracteres
+              </small>
+              <small class="form-help">(Mínimo 20 caracteres, máximo 500)</small>
+            </div>
+            <div *ngIf="hasError('description')" class="error-message">
+              {{ getErrorMessage('description') }}
             </div>
           </div>
         </div>
@@ -84,12 +109,15 @@
           
           <div class="form-row">
             <div class="form-group">
-              <label for="city" class="form-label">Ciudad *</label>
+              <label for="city" class="form-label">
+                Ciudad 
+                <span class="required-indicator">*</span>
+              </label>
               <select 
                 id="city" 
                 formControlName="city" 
                 class="form-select"
-                [class.error]="city?.invalid && city?.touched">
+                [class.error]="hasError('city')">
                 <option value="">Selecciona una ciudad</option>
                 <option value="Bogotá">Bogotá</option>
                 <option value="Medellín">Medellín</option>
@@ -100,37 +128,57 @@
                 <option value="Pereira">Pereira</option>
                 <option value="Manizales">Manizales</option>
               </select>
-              <div *ngIf="city?.invalid && city?.touched" class="error-message">
-                <span *ngIf="city?.errors?.['required']">La ciudad es requerida</span>
+              <div *ngIf="hasError('city')" class="error-message">
+
+                {{ getErrorMessage('city') }}
               </div>
             </div>
 
             <div class="form-group">
-              <label for="neighborhood" class="form-label">Barrio *</label>
+              <label for="neighborhood" class="form-label">
+                Barrio 
+                <span class="required-indicator">*</span>
+              </label>
               <input 
                 type="text" 
                 id="neighborhood" 
                 formControlName="neighborhood" 
                 class="form-input"
-                [class.error]="neighborhood?.invalid && neighborhood?.touched"
-                placeholder="Ej: Chapinero, Poblado, etc.">
-              <div *ngIf="neighborhood?.invalid && neighborhood?.touched" class="error-message">
-                <span *ngIf="neighborhood?.errors?.['required']">El barrio es requerido</span>
+                [class.error]="hasError('neighborhood')"
+                placeholder="Ej: Chapinero, Poblado, etc."
+                maxlength="50">
+              <div class="field-info">
+                <small class="character-count">
+                  {{ getFieldCharacterCount('neighborhood').current }}/{{ getFieldCharacterCount('neighborhood').max }} caracteres
+                </small>
+              </div>
+              <div *ngIf="hasError('neighborhood')" class="error-message">
+
+                {{ getErrorMessage('neighborhood') }}
               </div>
             </div>
           </div>
 
           <div class="form-group">
-            <label for="address" class="form-label">Dirección *</label>
+            <label for="address" class="form-label">
+              Dirección 
+              <span class="required-indicator">*</span>
+            </label>
             <input 
               type="text" 
               id="address" 
               formControlName="address" 
               class="form-input"
-              [class.error]="address?.invalid && address?.touched"
-              placeholder="Ej: Calle 123 # 45-67">
-            <div *ngIf="address?.invalid && address?.touched" class="error-message">
-              <span *ngIf="address?.errors?.['required']">La dirección es requerida</span>
+              [class.error]="hasError('address')"
+              placeholder="Ej: Calle 123 # 45-67"
+              maxlength="150">
+            <div class="field-info">
+              <small class="character-count">
+                {{ getFieldCharacterCount('address').current }}/{{ getFieldCharacterCount('address').max }} caracteres
+              </small>
+            </div>
+            <div *ngIf="hasError('address')" class="error-message">
+              {{ getErrorMessage('address') }}
             </div>
           </div>
         </div>
@@ -139,7 +187,10 @@
           <h3>Servicios y Especialidades</h3>
           
           <div class="form-group">
-            <label class="form-label">Servicios Ofrecidos *</label>
+            <label class="form-label">
+              Servicios Ofrecidos 
+              <span class="required-indicator">*</span>
+            </label>
             <div class="checkbox-grid">
               <div *ngFor="let service of availableServices" class="checkbox-item">
                 <input 
@@ -151,12 +202,15 @@
               </div>
             </div>
             <div *ngIf="workshopForm.get('services')?.invalid && workshopForm.get('services')?.touched" class="error-message">
-              <span>Selecciona al menos un servicio</span>
+              {{ getErrorMessage('services') }}
             </div>
           </div>
 
           <div class="form-group">
-            <label for="specialties" class="form-label">Especialidades (opcional)</label>
+            <label for="specialties" class="form-label">
+              Especialidades 
+              <span class="optional-indicator">(opcional)</span>
+            </label>
             <input 
               type="text" 
               id="specialties" 
@@ -167,23 +221,39 @@
           </div>
 
           <div class="form-group">
-            <label for="workingHours" class="form-label">Horarios de Atención (opcional)</label>
+            <label for="workingHours" class="form-label">
+              Horarios de Atención 
+              <span class="optional-indicator">(opcional)</span>
+            </label>
             <input 
               type="text" 
               id="workingHours" 
               formControlName="workingHours" 
               class="form-input"
-              placeholder="Ej: Lun-Vie 8:00-18:00, Sáb 8:00-14:00">
+              placeholder="Ej: Lun-Vie 8:00-18:00, Sáb 8:00-14:00"
+              maxlength="300">
+            <div class="field-info">
+              <small class="character-count">
+                {{ getFieldCharacterCount('workingHours').current }}/{{ getFieldCharacterCount('workingHours').max }} caracteres
+              </small>
+            </div>
           </div>
 
           <div class="form-group">
-            <label for="website" class="form-label">Sitio Web (opcional)</label>
+            <label for="website" class="form-label">
+              Sitio Web 
+              <span class="optional-indicator">(opcional)</span>
+            </label>
             <input 
               type="url" 
               id="website" 
               formControlName="website" 
               class="form-input"
+              [class.error]="hasError('website')"
               placeholder="https://www.miweb.com">
+            <div *ngIf="hasError('website')" class="error-message">
+              {{ getErrorMessage('website') }}
+            </div>
           </div>
         </div>
 

@@ -132,6 +132,65 @@
       }
     }
 
+    .required-indicator {
+      color: var(--pitsapp-red);
+      font-weight: 700;
+      margin-left: 0.25rem;
+    }
+
+    .optional-indicator {
+      color: var(--pitsapp-dark-grey);
+      font-weight: 400;
+      font-size: 0.85rem;
+      margin-left: 0.25rem;
+    }
+
+    .field-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.5rem;
+      gap: 1rem;
+      font-size: 0.75rem;
+
+      .character-count {
+        display: block;
+        color: var(--pitsapp-dark-grey);
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+
+      .form-help {
+        display: block;
+        color: var(--pitsapp-dark-grey);
+        margin: 0;
+      }
+    }
+
+    .error-message {
+      margin-top: 0.5rem;
+      color: var(--pitsapp-red);
+      font-size: 0.875rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      background: rgba(220, 20, 60, 0.05);
+      padding: 0.5rem;
+      border-radius: 6px;
+      border-left: 3px solid var(--pitsapp-red);
+      animation: slideInDown 0.3s ease;
+
+      i {
+        font-size: 0.875rem;
+        flex-shrink: 0;
+        margin-top: 0.125rem;
+      }
+
+      span {
+        display: block;
+      }
+    }
+
     .form-control {
       width: 100%;
       padding: 0.875rem 1rem;
@@ -151,6 +210,12 @@
 
       &::placeholder {
         color: #bdbdbd;
+      }
+
+      &.error {
+        border-color: var(--pitsapp-red);
+        background-color: rgba(220, 20, 60, 0.05);
+        box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
       }
 
       &.ng-touched.ng-invalid {

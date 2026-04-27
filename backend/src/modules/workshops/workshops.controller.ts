@@ -3,7 +3,8 @@ import {
   Get, 
   Post, 
   Body, 
-  Patch, 
+  Patch,
+  Put,
   Param, 
   Delete, 
   Query,
@@ -122,6 +123,28 @@ export class WorkshopsController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   async update(
+    @Param('id') id: string, 
+    @Body() updateWorkshopDto: UpdateWorkshopDto,
+    @Request() req
+  ) {
+    const user = req.user;
+
+    if (user.role !== UserRole.PROVEEDOR) {
+      throw new ForbiddenException('Solo los proveedores pueden actualizar talleres');
+    }
+
+    const workshop = await this.workshopsService.update(id, updateWorkshopDto, user.sub);
+    
+    return {
+      success: true,
+      message: 'Taller actualizado exitosamente',
+      data: workshop
+    };
+  }
+
+  @Put(':id')
+  @UseGuards(JwtAuthGuard)
+  async updateWithPut(
     @Param('id') id: string, 
     @Body() updateWorkshopDto: UpdateWorkshopDto,
     @Request() req

@@ -85,7 +85,11 @@ export class ServiceRequestFormComponent implements OnInit {
       vehiclePlate: [''],
 
       // Detalles generales
-      description: ['', [Validators.required, Validators.minLength(10)]],
+      description: ['', [
+        Validators.required, 
+        Validators.minLength(10),
+        Validators.maxLength(500)
+      ]],
       urgencyLevel: ['medium', Validators.required],
       budgetMin: [''],
       budgetMax: [''],
@@ -119,8 +123,15 @@ export class ServiceRequestFormComponent implements OnInit {
   }
 
   addHomeServiceFields(): void {
-    this.serviceForm.addControl('address', this.fb.control('', Validators.required));
-    this.serviceForm.addControl('city', this.fb.control('Medellín', Validators.required));
+    this.serviceForm.addControl('address', this.fb.control('', [
+      Validators.required,
+      Validators.minLength(5),
+      Validators.maxLength(150)
+    ]));
+    this.serviceForm.addControl('city', this.fb.control('Medellín', [
+      Validators.required,
+      Validators.minLength(2)
+    ]));
     this.serviceForm.addControl('neighborhood', this.fb.control(''));
     this.serviceForm.addControl('unitType', this.fb.control('house'));
     this.serviceForm.addControl('unitNumber', this.fb.control(''));
@@ -130,10 +141,24 @@ export class ServiceRequestFormComponent implements OnInit {
   }
 
   addTowTruckFields(): void {
-    this.serviceForm.addControl('pickupAddress', this.fb.control('', Validators.required));
-    this.serviceForm.addControl('pickupCity', this.fb.control('Medellín', Validators.required));
-    this.serviceForm.addControl('deliveryAddress', this.fb.control('', Validators.required));
-    this.serviceForm.addControl('deliveryCity', this.fb.control('Medellín', Validators.required));
+    this.serviceForm.addControl('pickupAddress', this.fb.control('', [
+      Validators.required,
+      Validators.minLength(5),
+      Validators.maxLength(150)
+    ]));
+    this.serviceForm.addControl('pickupCity', this.fb.control('Medellín', [
+      Validators.required,
+      Validators.minLength(2)
+    ]));
+    this.serviceForm.addControl('deliveryAddress', this.fb.control('', [
+      Validators.required,
+      Validators.minLength(5),
+      Validators.maxLength(150)
+    ]));
+    this.serviceForm.addControl('deliveryCity', this.fb.control('Medellín', [
+      Validators.required,
+      Validators.minLength(2)
+    ]));
     this.serviceForm.addControl('estimatedDistance', this.fb.control(''));
     this.serviceForm.addControl('vehicleCondition', this.fb.control('not_running', Validators.required));
     this.serviceForm.addControl('needsFlatbed', this.fb.control(false));
@@ -150,7 +175,11 @@ export class ServiceRequestFormComponent implements OnInit {
   }
 
   addDiagnosisFields(): void {
-    this.serviceForm.addControl('symptoms', this.fb.control('', [Validators.required, Validators.minLength(20)]));
+    this.serviceForm.addControl('symptoms', this.fb.control('', [
+      Validators.required, 
+      Validators.minLength(20),
+      Validators.maxLength(500)
+    ]));
     this.serviceForm.addControl('whenStarted', this.fb.control(''));
     this.serviceForm.addControl('warningLights', this.fb.control([]));
     this.serviceForm.addControl('recentRepairs', this.fb.control(''));
@@ -158,7 +187,11 @@ export class ServiceRequestFormComponent implements OnInit {
   }
 
   addRepairFields(): void {
-    this.serviceForm.addControl('problemDescription', this.fb.control('', [Validators.required, Validators.minLength(20)]));
+    this.serviceForm.addControl('problemDescription', this.fb.control('', [
+      Validators.required, 
+      Validators.minLength(20),
+      Validators.maxLength(500)
+    ]));
     this.serviceForm.addControl('affectedParts', this.fb.control([]));
     this.serviceForm.addControl('previousDiagnosis', this.fb.control(''));
     this.serviceForm.addControl('hasWarranty', this.fb.control(false));
@@ -278,6 +311,103 @@ export class ServiceRequestFormComponent implements OnInit {
       const control = formGroup.get(key);
       control?.markAsTouched();
     });
+  }
+
+  getErrorMessage(fieldName: string): string {
+    const control = this.serviceForm.get(fieldName);
+    if (!control || !control.errors) return '';
+
+    const errors = control.errors;
+
+    // Mensajes específicos por tipo de error
+    switch (fieldName) {
+      case 'vehicleType':
+        if (errors['required']) return 'El tipo de vehículo es obligatorio';
+        break;
+      case 'address':
+        if (errors['required']) return 'La dirección es obligatoria';
+        if (errors['minlength']) return `La dirección debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+        if (errors['maxlength']) return `La dirección no puede exceder ${errors['maxlength'].requiredLength} caracteres`;
+        break;
+      case 'city':
+        if (errors['required']) return 'La ciudad es obligatoria';
+        if (errors['minlength']) return `La ciudad debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+        break;
+      case 'pickupAddress':
+        if (errors['required']) return 'La dirección de recogida es obligatoria';
+        if (errors['minlength']) return `Debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+        break;
+      case 'deliveryAddress':
+        if (errors['required']) return 'La dirección de entrega es obligatoria';
+        if (errors['minlength']) return `Debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+        break;
+      case 'pickupCity':
+        if (errors['required']) return 'La ciudad de recogida es obligatoria';
+        break;
+      case 'deliveryCity':
+        if (errors['required']) return 'La ciudad de entrega es obligatoria';
+        break;
+      case 'vehicleCondition':
+        if (errors['required']) return 'La condición del vehículo es obligatoria';
+        break;
+      case 'currentMileage':
+        if (errors['required']) return 'El kilometraje actual es obligatorio';
+        if (errors['min']) return 'El kilometraje debe ser mayor o igual a 0';
+        if (errors['max']) return 'El kilometraje no puede exceder 1,000,000 km';
+        break;
+      case 'symptoms':
+        if (errors['required']) return 'La descripción de síntomas es obligatoria';
+        if (errors['minlength']) return `Los síntomas deben tener al menos ${errors['minlength'].requiredLength} caracteres`;
+        if (errors['maxlength']) return `No pueden exceder ${errors['maxlength'].requiredLength} caracteres`;
+        break;
+      case 'problemDescription':
+        if (errors['required']) return 'La descripción del problema es obligatoria';
+        if (errors['minlength']) return `Debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+        if (errors['maxlength']) return `No puede exceder ${errors['maxlength'].requiredLength} caracteres`;
+        break;
+      case 'description':
+        if (errors['required']) return 'La descripción del servicio es obligatoria';
+        if (errors['minlength']) return `Debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+        break;
+    }
+
+    return 'Este campo tiene un error';
+  }
+
+  hasError(fieldName: string): boolean {
+    const control = this.serviceForm.get(fieldName);
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
+  isFieldRequired(fieldName: string): boolean {
+    const control = this.serviceForm.get(fieldName);
+    if (!control || !control.validator) return false;
+    
+    const validator = control.validator({} as any);
+    return !!(validator && validator['required']);
+  }
+
+  getFieldCharacterCount(fieldName: string): { current: number; max: number | null } {
+    const control = this.serviceForm.get(fieldName);
+    const value = control?.value || '';
+    
+    const maxLengths: { [key: string]: number } = {
+      address: 150,
+      pickupAddress: 150,
+      deliveryAddress: 150,
+      symptoms: 500,
+      problemDescription: 500,
+      description: 500,
+      additionalDirections: 300,
+      towAdditionalInfo: 500,
+      recentRepairs: 300,
+      previousDiagnosis: 300
+    };
+
+    return {
+      current: value.length,
+      max: maxLengths[fieldName] || null
+    };
   }
 
   goBack(): void {

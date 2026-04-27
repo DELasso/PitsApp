@@ -28,8 +28,15 @@
         </div>
         <div class="form-grid">
           <div class="form-group">
-            <label for="vehicleType">Tipo de Vehículo *</label>
-            <select id="vehicleType" formControlName="vehicleType" class="form-control">
+            <label for="vehicleType">
+              Tipo de Vehículo 
+              <span class="required-indicator">*</span>
+            </label>
+            <select 
+              id="vehicleType" 
+              formControlName="vehicleType" 
+              class="form-control"
+              [class.error]="hasError('vehicleType')">
               <option value="">Selecciona</option>
               <option value="car">Automóvil</option>
               <option value="motorcycle">Motocicleta</option>
@@ -37,30 +44,55 @@
               <option value="truck">Camioneta</option>
               <option value="van">Van</option>
             </select>
+            <div *ngIf="hasError('vehicleType')" class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ getErrorMessage('vehicleType') }}
+            </div>
           </div>
 
           <div class="form-group">
             <label for="vehicleBrand">Marca</label>
-            <input type="text" id="vehicleBrand" formControlName="vehicleBrand" class="form-control"
-              placeholder="Ej: Toyota">
+            <input 
+              type="text" 
+              id="vehicleBrand" 
+              formControlName="vehicleBrand" 
+              class="form-control"
+              placeholder="Ej: Toyota"
+              maxlength="50">
           </div>
 
           <div class="form-group">
             <label for="vehicleModel">Modelo</label>
-            <input type="text" id="vehicleModel" formControlName="vehicleModel" class="form-control"
-              placeholder="Ej: Corolla">
+            <input 
+              type="text" 
+              id="vehicleModel" 
+              formControlName="vehicleModel" 
+              class="form-control"
+              placeholder="Ej: Corolla"
+              maxlength="50">
           </div>
 
           <div class="form-group">
             <label for="vehicleYear">Año</label>
-            <input type="number" id="vehicleYear" formControlName="vehicleYear" class="form-control"
-              placeholder="Ej: 2020" min="1950" max="2026">
+            <input 
+              type="number" 
+              id="vehicleYear" 
+              formControlName="vehicleYear" 
+              class="form-control"
+              placeholder="Ej: 2020" 
+              min="1950" 
+              max="2026">
           </div>
 
           <div class="form-group">
             <label for="vehiclePlate">Placa</label>
-            <input type="text" id="vehiclePlate" formControlName="vehiclePlate" class="form-control"
-              placeholder="Ej: ABC123">
+            <input 
+              type="text" 
+              id="vehiclePlate" 
+              formControlName="vehiclePlate" 
+              class="form-control"
+              placeholder="Ej: ABC123"
+              maxlength="20">
           </div>
         </div>
       </div>
@@ -72,20 +104,56 @@
         <h2>Ubicación del Servicio</h2>
         <div class="form-grid">
           <div class="form-group full-width">
-            <label for="address">Dirección *</label>
-            <input type="text" id="address" formControlName="address" class="form-control"
-              placeholder="Calle 50 # 70-80">
+            <label for="address">
+              Dirección 
+              <span class="required-indicator">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="address" 
+              formControlName="address" 
+              class="form-control"
+              [class.error]="hasError('address')"
+              placeholder="Calle 50 # 70-80"
+              maxlength="150">
+            <div class="field-info">
+              <small class="character-count">
+                {{ getFieldCharacterCount('address').current }}/{{ getFieldCharacterCount('address').max }} caracteres
+              </small>
+            </div>
+            <div *ngIf="hasError('address')" class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ getErrorMessage('address') }}
+            </div>
           </div>
 
           <div class="form-group">
-            <label for="city">Ciudad *</label>
-            <input type="text" id="city" formControlName="city" class="form-control" placeholder="Medellín">
+            <label for="city">
+              Ciudad 
+              <span class="required-indicator">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="city" 
+              formControlName="city" 
+              class="form-control"
+              [class.error]="hasError('city')"
+              placeholder="Medellín">
+            <div *ngIf="hasError('city')" class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ getErrorMessage('city') }}
+            </div>
           </div>
 
           <div class="form-group">
             <label for="neighborhood">Barrio</label>
-            <input type="text" id="neighborhood" formControlName="neighborhood" class="form-control"
-              placeholder="Laureles">
+            <input 
+              type="text" 
+              id="neighborhood" 
+              formControlName="neighborhood" 
+              class="form-control"
+              placeholder="Laureles"
+              maxlength="50">
           </div>
 
           <div class="form-group">
@@ -99,18 +167,40 @@
 
           <div class="form-group">
             <label for="unitNumber">Número de Unidad</label>
-            <input type="text" id="unitNumber" formControlName="unitNumber" class="form-control" placeholder="Apto 501">
+            <input 
+              type="text" 
+              id="unitNumber" 
+              formControlName="unitNumber" 
+              class="form-control" 
+              placeholder="Apto 501"
+              maxlength="20">
           </div>
 
           <div class="form-group">
             <label for="floor">Piso</label>
-            <input type="text" id="floor" formControlName="floor" class="form-control" placeholder="Piso 5">
+            <input 
+              type="text" 
+              id="floor" 
+              formControlName="floor" 
+              class="form-control" 
+              placeholder="Piso 5"
+              maxlength="20">
           </div>
 
           <div class="form-group full-width">
             <label for="additionalDirections">Indicaciones Adicionales</label>
-            <textarea id="additionalDirections" formControlName="additionalDirections" class="form-control" rows="2"
-              placeholder="Torre A, portón verde"></textarea>
+            <textarea 
+              id="additionalDirections" 
+              formControlName="additionalDirections" 
+              class="form-control" 
+              rows="2"
+              placeholder="Torre A, portón verde"
+              maxlength="300"></textarea>
+            <div class="field-info">
+              <small class="character-count">
+                {{ getFieldCharacterCount('additionalDirections').current }}/{{ getFieldCharacterCount('additionalDirections').max }} caracteres
+              </small>
+            </div>
           </div>
 
           <div class="form-group checkbox-group">
@@ -127,41 +217,118 @@
         <h2>Detalles del Remolque</h2>
         <div class="form-grid">
           <div class="form-group full-width">
-            <label for="pickupAddress">Dirección de Recogida *</label>
-            <input type="text" id="pickupAddress" formControlName="pickupAddress" class="form-control"
-              placeholder="Autopista Sur Km 15">
+            <label for="pickupAddress">
+              Dirección de Recogida 
+              <span class="required-indicator">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="pickupAddress" 
+              formControlName="pickupAddress" 
+              class="form-control"
+              [class.error]="hasError('pickupAddress')"
+              placeholder="Autopista Sur Km 15"
+              maxlength="150">
+            <div class="field-info">
+              <small class="character-count">
+                {{ getFieldCharacterCount('pickupAddress').current }}/{{ getFieldCharacterCount('pickupAddress').max }} caracteres
+              </small>
+            </div>
+            <div *ngIf="hasError('pickupAddress')" class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ getErrorMessage('pickupAddress') }}
+            </div>
           </div>
 
           <div class="form-group">
-            <label for="pickupCity">Ciudad de Recogida *</label>
-            <input type="text" id="pickupCity" formControlName="pickupCity" class="form-control" placeholder="Medellín">
+            <label for="pickupCity">
+              Ciudad de Recogida 
+              <span class="required-indicator">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="pickupCity" 
+              formControlName="pickupCity" 
+              class="form-control"
+              [class.error]="hasError('pickupCity')"
+              placeholder="Medellín">
+            <div *ngIf="hasError('pickupCity')" class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ getErrorMessage('pickupCity') }}
+            </div>
           </div>
 
           <div class="form-group full-width">
-            <label for="deliveryAddress">Dirección de Entrega *</label>
-            <input type="text" id="deliveryAddress" formControlName="deliveryAddress" class="form-control"
-              placeholder="Calle 10 # 20-30">
+            <label for="deliveryAddress">
+              Dirección de Entrega 
+              <span class="required-indicator">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="deliveryAddress" 
+              formControlName="deliveryAddress" 
+              class="form-control"
+              [class.error]="hasError('deliveryAddress')"
+              placeholder="Calle 10 # 20-30"
+              maxlength="150">
+            <div class="field-info">
+              <small class="character-count">
+                {{ getFieldCharacterCount('deliveryAddress').current }}/{{ getFieldCharacterCount('deliveryAddress').max }} caracteres
+              </small>
+            </div>
+            <div *ngIf="hasError('deliveryAddress')" class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ getErrorMessage('deliveryAddress') }}
+            </div>
           </div>
 
           <div class="form-group">
-            <label for="deliveryCity">Ciudad de Entrega *</label>
-            <input type="text" id="deliveryCity" formControlName="deliveryCity" class="form-control"
+            <label for="deliveryCity">
+              Ciudad de Entrega 
+              <span class="required-indicator">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="deliveryCity" 
+              formControlName="deliveryCity" 
+              class="form-control"
+              [class.error]="hasError('deliveryCity')"
               placeholder="Envigado">
+            <div *ngIf="hasError('deliveryCity')" class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ getErrorMessage('deliveryCity') }}
+            </div>
           </div>
 
           <div class="form-group">
             <label for="estimatedDistance">Distancia Estimada (km)</label>
-            <input type="number" id="estimatedDistance" formControlName="estimatedDistance" class="form-control"
-              placeholder="12" min="0">
+            <input 
+              type="number" 
+              id="estimatedDistance" 
+              formControlName="estimatedDistance" 
+              class="form-control"
+              placeholder="12" 
+              min="0">
           </div>
 
           <div class="form-group">
-            <label for="vehicleCondition">Condición del Vehículo *</label>
-            <select id="vehicleCondition" formControlName="vehicleCondition" class="form-control">
+            <label for="vehicleCondition">
+              Condición del Vehículo 
+              <span class="required-indicator">*</span>
+            </label>
+            <select 
+              id="vehicleCondition" 
+              formControlName="vehicleCondition" 
+              class="form-control"
+              [class.error]="hasError('vehicleCondition')">
               <option value="running">Funciona</option>
               <option value="not_running">No funciona</option>
               <option value="accident">Accidentado</option>
             </select>
+            <div *ngIf="hasError('vehicleCondition')" class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ getErrorMessage('vehicleCondition') }}
+            </div>
           </div>
 
           <div class="form-group checkbox-group">
@@ -173,8 +340,18 @@
 
           <div class="form-group full-width">
             <label for="towAdditionalInfo">Información Adicional</label>
-            <textarea id="towAdditionalInfo" formControlName="towAdditionalInfo" class="form-control" rows="3"
-              placeholder="Descripción de daños, problemas especiales, etc."></textarea>
+            <textarea 
+              id="towAdditionalInfo" 
+              formControlName="towAdditionalInfo" 
+              class="form-control" 
+              rows="3"
+              placeholder="Descripción de daños, problemas especiales, etc."
+              maxlength="500"></textarea>
+            <div class="field-info">
+              <small class="character-count">
+                {{ getFieldCharacterCount('towAdditionalInfo').current }}/500 caracteres
+              </small>
+            </div>
           </div>
         </div>
       </div>
@@ -184,21 +361,44 @@
         <h2>Detalles del Cambio de Aceite</h2>
         <div class="form-grid">
           <div class="form-group">
-            <label for="currentMileage">Kilometraje Actual *</label>
-            <input type="number" id="currentMileage" formControlName="currentMileage" class="form-control"
-              placeholder="45000" min="0">
+            <label for="currentMileage">
+              Kilometraje Actual 
+              <span class="required-indicator">*</span>
+            </label>
+            <input 
+              type="number" 
+              id="currentMileage" 
+              formControlName="currentMileage" 
+              class="form-control"
+              [class.error]="hasError('currentMileage')"
+              placeholder="45000" 
+              min="0">
+            <div *ngIf="hasError('currentMileage')" class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ getErrorMessage('currentMileage') }}
+            </div>
           </div>
 
           <div class="form-group">
             <label for="lastOilChange">Último Cambio (km)</label>
-            <input type="number" id="lastOilChange" formControlName="lastOilChange" class="form-control"
-              placeholder="40000" min="0">
+            <input 
+              type="number" 
+              id="lastOilChange" 
+              formControlName="lastOilChange" 
+              class="form-control"
+              placeholder="40000" 
+              min="0">
           </div>
 
           <div class="form-group">
             <label for="preferredOilBrand">Marca de Aceite Preferida</label>
-            <input type="text" id="preferredOilBrand" formControlName="preferredOilBrand" class="form-control"
-              placeholder="Mobil 1, Castrol, etc.">
+            <input 
+              type="text" 
+              id="preferredOilBrand" 
+              formControlName="preferredOilBrand" 
+              class="form-control"
+              placeholder="Mobil 1, Castrol, etc."
+              maxlength="50">
           </div>
 
           <div class="form-group">
@@ -224,21 +424,55 @@
         <h2>Detalles del Diagnóstico</h2>
         <div class="form-grid">
           <div class="form-group full-width">
-            <label for="symptoms">Síntomas *</label>
-            <textarea id="symptoms" formControlName="symptoms" class="form-control" rows="4"
-              placeholder="Describe detalladamente los síntomas que presenta el vehículo..."></textarea>
+            <label for="symptoms">
+              Síntomas 
+              <span class="required-indicator">*</span>
+            </label>
+            <textarea 
+              id="symptoms" 
+              formControlName="symptoms" 
+              class="form-control" 
+              rows="4"
+              [class.error]="hasError('symptoms')"
+              placeholder="Describe detalladamente los síntomas que presenta el vehículo..."
+              maxlength="500"></textarea>
+            <div class="field-info">
+              <small class="character-count">
+                {{ getFieldCharacterCount('symptoms').current }}/{{ getFieldCharacterCount('symptoms').max }} caracteres
+              </small>
+              <small class="form-help">(Mínimo 20 caracteres, máximo 500)</small>
+            </div>
+            <div *ngIf="hasError('symptoms')" class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ getErrorMessage('symptoms') }}
+            </div>
           </div>
 
           <div class="form-group">
             <label for="whenStarted">¿Cuándo comenzó?</label>
-            <input type="text" id="whenStarted" formControlName="whenStarted" class="form-control"
-              placeholder="Hace 3 días">
+            <input 
+              type="text" 
+              id="whenStarted" 
+              formControlName="whenStarted" 
+              class="form-control"
+              placeholder="Hace 3 días"
+              maxlength="100">
           </div>
 
           <div class="form-group">
             <label for="recentRepairs">Reparaciones Recientes</label>
-            <textarea id="recentRepairs" formControlName="recentRepairs" class="form-control" rows="2"
-              placeholder="Cambio de correa hace 1 mes"></textarea>
+            <textarea 
+              id="recentRepairs" 
+              formControlName="recentRepairs" 
+              class="form-control" 
+              rows="2"
+              placeholder="Cambio de correa hace 1 mes"
+              maxlength="300"></textarea>
+            <div class="field-info">
+              <small class="character-count">
+                {{ getFieldCharacterCount('recentRepairs').current }}/{{ getFieldCharacterCount('recentRepairs').max }} caracteres
+              </small>
+            </div>
           </div>
 
           <div class="form-group checkbox-group">
@@ -255,15 +489,44 @@
         <h2>Detalles de la Reparación</h2>
         <div class="form-grid">
           <div class="form-group full-width">
-            <label for="problemDescription">Descripción del Problema *</label>
-            <textarea id="problemDescription" formControlName="problemDescription" class="form-control" rows="4"
-              placeholder="Describe detalladamente qué necesita ser reparado..."></textarea>
+            <label for="problemDescription">
+              Descripción del Problema 
+              <span class="required-indicator">*</span>
+            </label>
+            <textarea 
+              id="problemDescription" 
+              formControlName="problemDescription" 
+              class="form-control" 
+              rows="4"
+              [class.error]="hasError('problemDescription')"
+              placeholder="Describe detalladamente qué necesita ser reparado..."
+              maxlength="500"></textarea>
+            <div class="field-info">
+              <small class="character-count">
+                {{ getFieldCharacterCount('problemDescription').current }}/{{ getFieldCharacterCount('problemDescription').max }} caracteres
+              </small>
+              <small class="form-help">(Mínimo 20 caracteres, máximo 500)</small>
+            </div>
+            <div *ngIf="hasError('problemDescription')" class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ getErrorMessage('problemDescription') }}
+            </div>
           </div>
 
           <div class="form-group">
             <label for="previousDiagnosis">Diagnóstico Previo</label>
-            <textarea id="previousDiagnosis" formControlName="previousDiagnosis" class="form-control" rows="2"
-              placeholder="Si ya tienes un diagnóstico, descríbelo aquí"></textarea>
+            <textarea 
+              id="previousDiagnosis" 
+              formControlName="previousDiagnosis" 
+              class="form-control" 
+              rows="2"
+              placeholder="Si ya tienes un diagnóstico, descríbelo aquí"
+              maxlength="300"></textarea>
+            <div class="field-info">
+              <small class="character-count">
+                {{ getFieldCharacterCount('previousDiagnosis').current }}/{{ getFieldCharacterCount('previousDiagnosis').max }} caracteres
+              </small>
+            </div>
           </div>
 
           <div class="form-group">
@@ -289,15 +552,38 @@
         <h2>Descripción del Servicio</h2>
         <div class="form-grid">
           <div class="form-group full-width">
-            <label for="description">Descripción General *</label>
-            <textarea id="description" formControlName="description" class="form-control" rows="4"
-              placeholder="Describe lo que necesitas. Mínimo 10 caracteres."></textarea>
+            <label for="description">
+              Descripción General 
+              <span class="required-indicator">*</span>
+            </label>
+            <textarea 
+              id="description" 
+              formControlName="description" 
+              class="form-control" 
+              rows="4"
+              [class.error]="hasError('description')"
+              placeholder="Describe lo que necesitas. Mínimo 10 caracteres."
+              maxlength="500"></textarea>
+            <div class="field-info">
+              <small class="character-count">
+                {{ getFieldCharacterCount('description').current }}/{{ getFieldCharacterCount('description').max }} caracteres
+              </small>
+            </div>
+            <div *ngIf="hasError('description')" class="error-message">
+              <i class="fas fa-exclamation-circle"></i>
+              {{ getErrorMessage('description') }}
+            </div>
           </div>
 
           <div class="form-group full-width">
             <label for="additionalNotes">Notas Adicionales</label>
-            <textarea id="additionalNotes" formControlName="additionalNotes" class="form-control" rows="3"
-              placeholder="Cualquier información adicional que pueda ser útil"></textarea>
+            <textarea 
+              id="additionalNotes" 
+              formControlName="additionalNotes" 
+              class="form-control" 
+              rows="3"
+              placeholder="Cualquier información adicional que pueda ser útil"
+              maxlength="500"></textarea>
           </div>
         </div>
       </div>
