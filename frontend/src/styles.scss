@@ -31,6 +31,13 @@
   --text-disabled: var(--pitsapp-silver);
 }
 
+button:focus-visible,
+select:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid #c80000; /* Color y grosor */
+  outline-offset: 2px; /* Separación del elemento */
+}
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,900;1,900&family=Special+Gothic+Expanded+One&family=Telex&display=swap');
 

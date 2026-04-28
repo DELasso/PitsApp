@@ -128,6 +128,79 @@ export class RegisterComponent {
     return this.registerForm.get('role')?.value === UserRole.PROVEEDOR;
   }
 
+  get passwordStrength() {
+    return this.calculatePasswordStrength(this.registerForm.get('password')?.value || '');
+  }
+
+  private calculatePasswordStrength(password: string) {
+    let strength = 0;
+    const requirements: { [key: string]: boolean } = {
+      length: password.length >= 8,
+      uppercase: /[A-Z]/.test(password),
+      lowercase: /[a-z]/.test(password),
+      numbers: /[0-9]/.test(password),
+      special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+    };
+
+    // Calcular puntuación
+    if (requirements['length']) strength += 1;
+    if (requirements['uppercase']) strength += 1;
+    if (requirements['lowercase']) strength += 1;
+    if (requirements['numbers']) strength += 1;
+    if (requirements['special']) strength += 1;
+
+    // Bonificación por longitud extra
+    if (password.length >= 12) strength += 0.5;
+    if (password.length >= 16) strength += 0.5;
+
+    // Determinar nivel
+    let level = 'Muy débil';
+    let color = 'danger';
+    let percentage = 0;
+
+    if (password.length === 0) {
+      level = '';
+      color = '';
+      percentage = 0;
+    } else if (strength < 2) {
+      level = 'Muy débil';
+      color = 'danger';
+      percentage = 20;
+    } else if (strength < 3) {
+      level = 'Débil';
+      color = 'warning';
+      percentage = 40;
+    } else if (strength < 4) {
+      level = 'Regular';
+      color = 'info';
+      percentage = 60;
+    } else if (strength < 5) {
+      level = 'Buena';
+      color = 'success';
+      percentage = 80;
+    } else {
+      level = 'Muy Fuerte';
+      color = 'success';
+      percentage = 100;
+    }
+
+    // Construir recomendaciones
+    const suggestions: string[] = [];
+    if (!requirements['length']) suggestions.push('Mínimo 8 caracteres');
+    if (!requirements['uppercase']) suggestions.push('Agrega letras mayúsculas');
+    if (!requirements['lowercase']) suggestions.push('Agrega letras minúsculas');
+    if (!requirements['numbers']) suggestions.push('Agrega números');
+    if (!requirements['special']) suggestions.push('Agrega caracteres especiales (!@#$%^&*)');
+
+    return {
+      level,
+      color,
+      percentage,
+      suggestions,
+      requirements
+    };
+  }
+
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
@@ -215,6 +288,11 @@ export class RegisterComponent {
 
   toggleConfirmPassword() {
     this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  onPasswordChange() {
+    // Trigger password strength recalculation through the getter
+    this.registerForm.get('password')?.updateValueAndValidity({ emitEvent: false });
   }
 
   private markFormGroupTouched() {

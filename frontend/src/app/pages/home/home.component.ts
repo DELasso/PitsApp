@@ -15,7 +15,7 @@ export class HomeComponent {
       title: 'Talleres',
       description: 'Encuentra los mejores talleres mecánicos cerca de ti',
       icon: 'fa-solid fa-wrench',
-      route: '/'
+      route: '/workshops'
     },
     {
       title: 'Repuestos',
@@ -27,7 +27,7 @@ export class HomeComponent {
       title: 'Servicios',
       description: 'Servicios especializados para carros y motos',
       icon: 'fa-solid fa-screwdriver-wrench',
-      route: '/'
+      route: '/servicios'
     }
   ];
 }

@@ -114,11 +114,57 @@
               <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
               <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
                 class="form-input" [class.error]="password?.invalid && password?.touched"
-                placeholder="Mínimo 8 caracteres">
+                placeholder="Mínimo 8 caracteres" (input)="onPasswordChange()">
               <button type="button" class="password-toggle" (click)="togglePassword()">
                 <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"></i>
               </button>
             </div>
+
+            <!-- Password Strength Indicator -->
+            <div *ngIf="password?.value" class="password-strength-container">
+              <div class="strength-bar-wrapper">
+                <div class="strength-bar" [ngClass]="'strength-' + passwordStrength.color"
+                  [style.width.%]="passwordStrength.percentage"></div>
+              </div>
+              <div class="strength-info">
+                <span class="strength-label" [ngClass]="'label-' + passwordStrength.color">
+                  {{ passwordStrength.level }}
+                </span>
+                <span class="strength-percentage">{{ passwordStrength.percentage }}%</span>
+              </div>
+
+              <!-- Suggestions -->
+              <div *ngIf="passwordStrength.suggestions.length > 0" class="strength-suggestions">
+                <div *ngFor="let suggestion of passwordStrength.suggestions" class="suggestion-item">
+                  <span>{{ suggestion }}</span>
+                </div>
+              </div>
+
+              <!-- Requirements -->
+              <div class="strength-requirements">
+                <div class="requirement-item" [class.met]="passwordStrength.requirements['length']">
+                  <i class="fa-solid" [ngClass]="passwordStrength.requirements['length'] ? 'fa-check' : 'fa-xmark'"></i>
+                  <span>Mínimo 8 caracteres</span>
+                </div>
+                <div class="requirement-item" [class.met]="passwordStrength.requirements['uppercase']">
+                  <i class="fa-solid" [ngClass]="passwordStrength.requirements['uppercase'] ? 'fa-check' : 'fa-xmark'"></i>
+                  <span>Mayúsculas (A-Z)</span>
+                </div>
+                <div class="requirement-item" [class.met]="passwordStrength.requirements['lowercase']">
+                  <i class="fa-solid" [ngClass]="passwordStrength.requirements['lowercase'] ? 'fa-check' : 'fa-xmark'"></i>
+                  <span>Minúsculas (a-z)</span>
+                </div>
+                <div class="requirement-item" [class.met]="passwordStrength.requirements['numbers']">
+                  <i class="fa-solid" [ngClass]="passwordStrength.requirements['numbers'] ? 'fa-check' : 'fa-xmark'"></i>
+                  <span>Números (0-9)</span>
+                </div>
+                <div class="requirement-item" [class.met]="passwordStrength.requirements['special']">
+                  <i class="fa-solid" [ngClass]="passwordStrength.requirements['special'] ? 'fa-check' : 'fa-xmark'"></i>
+                  <span>Caracteres especiales</span>
+                </div>
+              </div>
+            </div>
+
             <div *ngIf="password?.invalid && password?.touched" class="error-message">
               <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
               <span *ngIf="password?.errors?.['minlength']">Mínimo 8 caracteres</span>
