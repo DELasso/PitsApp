@@ -1,9 +1,7 @@
-// Inherit all styles from login component
 @use './login.component.scss';
 
-// Additional styles specific to register
 .auth-card {
-  max-width: 580px; // Wider for register form
+  max-width: 580px;
 }
 
 .form-row {
@@ -22,48 +20,44 @@
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   margin-top: 0.8rem;
-  
+
   .radio-option {
     cursor: pointer;
-    
+
     input[type="radio"] {
       display: none;
-      
+
       &:checked + .radio-card {
-        background: linear-gradient(135deg, var(--pitsapp-red) 0%, var(--pitsapp-red-dark) 100%);
+        background: linear-gradient(135deg, var(--pitsapp-red), var(--pitsapp-red-dark));
         color: white;
         border-color: var(--pitsapp-red);
         transform: translateY(-4px);
-        box-shadow: 
-          0 12px 35px rgba(220, 20, 60, 0.35),
-          inset 0 1px 2px rgba(255, 255, 255, 0.2);
-        
+        box-shadow: 0 12px 35px rgba(220, 20, 60, 0.35);
+
         .radio-icon {
           background: rgba(255, 255, 255, 0.25);
           box-shadow: 0 4px 12px rgba(220, 20, 60, 0.3);
           transform: scale(1.1);
         }
-        
-        h4, p {
-          color: white;
-        }
+
+        h4, p { color: white; }
       }
     }
-    
+
     .radio-card {
-      background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+      background: linear-gradient(135deg, #fafafa, #fff);
       border: 2px solid #e8e8e8;
       border-radius: 16px;
       padding: 1.5rem 1.2rem;
       text-align: center;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      
+
       &:hover {
         border-color: var(--pitsapp-red);
         transform: translateY(-2px);
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
       }
-      
+
       .radio-icon {
         width: 56px;
         height: 56px;
@@ -77,16 +71,15 @@
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         color: var(--pitsapp-red);
       }
-      
+
       .radio-content {
         h4 {
           font-size: 1.1rem;
           font-weight: 700;
           margin-bottom: 0.5rem;
           color: var(--pitsapp-black);
-          letter-spacing: 0.3px;
         }
-        
+
         p {
           font-size: 0.85rem;
           color: var(--pitsapp-dark-grey);
@@ -97,56 +90,37 @@
       }
     }
   }
-  
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
 }
 
-// Password strength indicator - Enhanced
 .password-strength-container {
   margin-top: 1rem;
-  padding: 1.2rem;
+  padding: 1rem;
   background: linear-gradient(135deg, rgba(220, 20, 60, 0.06), rgba(218, 165, 32, 0.04));
-  border-radius: 14px;
-  border: 1px solid rgba(220, 20, 60, 0.15);
+  border-radius: 12px;
+  border: 1px solid rgba(220, 20, 60, 0.12);
   animation: slideDown 0.3s ease-out;
-  backdrop-filter: blur(10px);
 
   .strength-bar-wrapper {
-    height: 7px;
-    background: linear-gradient(90deg, #f0f0f0, #e8e8e8);
-    border-radius: 6px;
+    height: 6px;
+    background: #f0f0f0;
+    border-radius: 4px;
     overflow: hidden;
-    margin-bottom: 1rem;
-    box-shadow: 
-      inset 0 2px 4px rgba(0, 0, 0, 0.08),
-      0 1px 2px rgba(0, 0, 0, 0.05);
+    margin-bottom: 0.8rem;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
 
     .strength-bar {
       height: 100%;
-      border-radius: 6px;
-      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                  background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 
-        0 2px 8px rgba(0, 0, 0, 0.1),
-        inset 0 1px 2px rgba(255, 255, 255, 0.3);
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+      border-radius: 4px;
 
-      &.strength-danger {
-        background: linear-gradient(90deg, #ff5566, #ff7788);
-      }
-
-      &.strength-warning {
-        background: linear-gradient(90deg, #ffb833, #ffc855);
-      }
-
-      &.strength-info {
-        background: linear-gradient(90deg, #4a9eff, #66b3ff);
-      }
-
-      &.strength-success {
-        background: linear-gradient(90deg, var(--pitsapp-red), var(--pitsapp-gold));
-      }
+      &.strength-danger { background: #ff4444; }
+      &.strength-warning { background: #ffaa00; }
+      &.strength-info { background: #3b82f6; }
+      &.strength-success { background: linear-gradient(90deg, var(--pitsapp-red), var(--pitsapp-gold)); }
     }
   }
 
@@ -154,111 +128,76 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     gap: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(220, 20, 60, 0.1);
 
     .strength-label {
-      font-size: 0.92rem;
-      font-weight: 700;
+      font-size: 0.9rem;
+      font-weight: 600;
       text-transform: capitalize;
-      transition: color 0.3s ease;
-      letter-spacing: 0.3px;
 
-      &.label-danger {
-        color: #ff5566;
-      }
-
-      &.label-warning {
-        color: #ffb833;
-      }
-
-      &.label-info {
-        color: #4a9eff;
-      }
-
-      &.label-success {
-        color: var(--pitsapp-red);
-      }
-
-      &.label- {
-        display: none;
-      }
+      &.label-danger { color: #ff4444; }
+      &.label-warning { color: #ffaa00; }
+      &.label-info { color: #3b82f6; }
+      &.label-success { color: var(--pitsapp-red); }
+      &.label- { display: none; }
     }
 
     .strength-percentage {
       font-size: 0.85rem;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--pitsapp-dark-grey);
-      min-width: 45px;
+      min-width: 40px;
       text-align: right;
-      background: rgba(220, 20, 60, 0.08);
-      padding: 0.3rem 0.6rem;
-      border-radius: 6px;
     }
   }
 
   .strength-suggestions {
-    margin-bottom: 1rem;
-    padding: 0.8rem;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 8px;
-    border-left: 3px solid var(--pitsapp-red);
+    margin-bottom: 0.8rem;
+    padding: 0.6rem;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 6px;
+    border-left: 2px solid var(--pitsapp-red);
 
     .suggestion-item {
       display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      font-size: 0.85rem;
+      gap: 0.5rem;
+      font-size: 0.82rem;
       color: var(--pitsapp-dark-grey);
-      margin-bottom: 0.4rem;
-      font-weight: 500;
+      margin-bottom: 0.3rem;
+      line-height: 1.3;
 
-      &:last-child {
-        margin-bottom: 0;
-      }
-
-      span {
-        line-height: 1.4;
-      }
+      &:last-child { margin-bottom: 0; }
     }
   }
 
   .strength-requirements {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.6rem;
+    gap: 0.5rem;
 
     .requirement-item {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      font-size: 0.82rem;
+      gap: 0.5rem;
+      font-size: 0.78rem;
       color: #999;
-      padding: 0.5rem 0.7rem;
-      border-radius: 8px;
-      transition: all 0.3s ease;
+      padding: 0.35rem 0.5rem;
+      border-radius: 6px;
+      transition: all 0.25s ease;
       font-weight: 500;
 
       i {
-        min-width: 16px;
+        min-width: 14px;
         text-align: center;
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         color: #ccc;
-      }
-
-      span {
-        line-height: 1.3;
       }
 
       &.met {
         color: var(--pitsapp-red);
-        background: rgba(220, 20, 60, 0.1);
-
-        i {
-          color: var(--pitsapp-red);
-        }
+        background: rgba(220, 20, 60, 0.08);
+        i { color: var(--pitsapp-red); }
       }
     }
 
@@ -268,42 +207,21 @@
   }
 }
 
-// Sección de información del vehículo/empresa
 .section-title {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--pitsapp-black);
-  margin-top: 2rem;
+  margin-top: 1.8rem;
   margin-bottom: 0.8rem;
-  padding-bottom: 1rem;
-  border-bottom: 2.5px solid var(--pitsapp-red);
-  letter-spacing: 0.4px;
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -2.5px;
-    left: 0;
-    width: 0;
-    animation: expandWidth 0.6s ease-out;
-  }
-}
-
-@keyframes expandWidth {
-  from {
-    width: 0;
-  }
-  to {
-    width: 100%;
-  }
+  padding-bottom: 0.8rem;
+  border-bottom: 2px solid var(--pitsapp-red);
 }
 
 .section-subtitle {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--pitsapp-dark-grey);
-  margin-bottom: 1.2rem;
-  line-height: 1.5;
+  margin-bottom: 1rem;
+  line-height: 1.4;
   font-weight: 500;
 }
 
@@ -312,289 +230,38 @@
   animation: fadeIn 0.4s ease-in-out;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.checkbox-group {
-  .checkbox-label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    gap: 0.7rem;
-
-    .checkbox-input {
-      display: none;
-    }
-
-    .checkbox-custom {
-      width: 24px;
-      height: 24px;
-      border: 2px solid #d0d0d0;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.25s ease;
-      font-size: 14px;
-      color: white;
-      background: #ffffff;
-      flex-shrink: 0;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-
-      i {
-        opacity: 0;
-        transition: opacity 0.2s ease;
-        color: white;
-        font-size: 13px;
-      }
-
-      &:hover {
-        border-color: var(--pitsapp-red);
-        box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.1);
-      }
-    }
-
-    .checkbox-input:checked + .checkbox-custom {
-      background: linear-gradient(135deg, var(--pitsapp-red), var(--pitsapp-red-dark));
-      border-color: var(--pitsapp-red);
-      box-shadow: 0 4px 12px rgba(220, 20, 60, 0.25);
-
-      i {
-        opacity: 1;
-        animation: scaleIn 0.25s ease;
-      }
-    }
-
-    .checkbox-text {
-      font-size: 0.92rem;
-      line-height: 1.4;
-      color: var(--pitsapp-dark-grey);
-      font-weight: 500;
-
-      .terms-link {
-        color: var(--pitsapp-red);
-        font-weight: 700;
-        text-decoration: none;
-        position: relative;
-
-        &::after {
-          content: '';
-          position: absolute;
-          bottom: -2px;
-          left: 0;
-          width: 0;
-          height: 2px;
-          background: var(--pitsapp-red);
-          transition: width 0.3s ease;
-        }
-
-        &:hover {
-          &::after {
-            width: 100%;
-          }
-        }
-      }
-    }
-  }
-}
-
-.auth-footer {
-  text-align: center;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #e8e8e8;
-
-  p {
-    color: var(--pitsapp-dark-grey);
-    font-weight: 500;
-    margin: 0;
-  }
-
-  .login-link {
-    color: var(--pitsapp-red);
-    text-decoration: none;
-    font-weight: 700;
-    margin-left: 0.3rem;
-    position: relative;
-    transition: all 0.2s ease;
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--pitsapp-red);
-      transition: width 0.3s ease;
-    }
-
-    &:hover {
-      &::after {
-        width: 100%;
-      }
-    }
-  }
-}
-
-@keyframes scaleIn {
-  from {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-// Responsive para register
-@media (max-width: 768px) {
-  .form-row {
-    gap: 1rem;
-  }
-
-  .user-type-selector {
-    grid-template-columns: 1fr;
-  }
-
-  .password-strength-container {
-    padding: 1rem;
-  }
-
-  .section-title {
-    font-size: 1.05rem;
-    margin-top: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .password-strength-container {
-    .strength-requirements {
-      grid-template-columns: 1fr;
-    }
-  }
-}
-
-.user-type-selector {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-top: 0.5rem;
-  
-  .radio-option {
-    cursor: pointer;
-    
-    input[type="radio"] {
-      display: none;
-      
-      &:checked + .radio-card {
-        background: linear-gradient(135deg, var(--pitsapp-red), var(--pitsapp-red-light));
-        color: white;
-        border-color: var(--pitsapp-red);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(220, 20, 60, 0.3);
-        
-        .radio-icon {
-          background: rgba(255, 255, 255, 0.2);
-        }
-        
-        h4, p {
-          color: white;
-        }
-      }
-    }
-    
-    .radio-card {
-      background: var(--pitsapp-white);
-      border: 2px solid var(--pitsapp-light-grey);
-      border-radius: 12px;
-      padding: 1.5rem 1.5rem;
-      text-align: center;
-      transition: all 0.3s ease;
-      
-      &:hover {
-        border-color: var(--pitsapp-red);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      }
-      
-      .radio-icon {
-        width: 50px;
-        height: 50px;
-        background: var(--pitsapp-light-grey);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        margin: 0 auto 1rem;
-        transition: all 0.3s ease;
-      }
-      
-      .radio-content {
-        h4 {
-          font-size: 1.1rem;
-          font-weight: 600;
-          margin-bottom: 0.5rem;
-          color: var(--pitsapp-black);
-        }
-        
-        p {
-          font-size: 0.9rem;
-          color: var(--pitsapp-dark-grey);
-          margin: 0;
-          opacity: 0.8;
-        }
-      }
-    }
-  }
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-}
-
 .checkbox-group {
   .checkbox-label {
     display: flex;
     align-items: center;
     cursor: pointer;
     gap: 0.5rem;
+    font-size: 0.9rem;
 
     .checkbox-input {
-      display: none; // ocultamos el checkbox nativo
+      display: none;
     }
 
     .checkbox-custom {
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--pitsapp-red);
-      border-radius: 4px;
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid var(--pitsapp-red);
+      border-radius: 3px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s ease;
-      font-size: 14px;
+      transition: all 0.25s ease;
       color: white;
       background: white;
+      flex-shrink: 0;
 
       i {
-        opacity: 0; // escondemos el ícono al inicio
+        opacity: 0;
         transition: opacity 0.2s ease;
-        color: var(--pitsapp-red);
+        font-size: 0.7rem;
       }
     }
 
-    // Cuando el checkbox está marcado → aparece el chulito
     .checkbox-input:checked + .checkbox-custom {
       background: var(--pitsapp-red);
       border-color: var(--pitsapp-red);
@@ -606,22 +273,19 @@
     }
 
     .checkbox-text {
-      font-size: 14px;
       line-height: 1.4;
+      flex: 1;
 
       .terms-link {
         color: var(--pitsapp-red);
         font-weight: 600;
         text-decoration: none;
 
-        &:hover {
-          text-decoration: underline;
-        }
+        &:hover { text-decoration: underline; }
       }
     }
   }
 }
-
 
 .auth-footer {
   .login-link {
@@ -629,270 +293,30 @@
     text-decoration: none;
     font-weight: 600;
     
-    &:hover {
-      text-decoration: underline;
-    }
+    &:hover { text-decoration: underline; }
   }
-}
-
-// Password strength indicator
-.password-strength-container {
-  margin-top: 0.75rem;
-  padding: 1rem;
-  background: linear-gradient(135deg, rgba(220, 20, 60, 0.05), rgba(218, 165, 32, 0.05));
-  border-radius: 12px;
-  border: 1px solid rgba(220, 20, 60, 0.1);
-  animation: slideDown 0.3s ease-out;
-
-  .strength-bar-wrapper {
-    height: 6px;
-    background: var(--pitsapp-light-grey);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 0.75rem;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
-
-    .strength-bar {
-      height: 100%;
-      border-radius: 4px;
-      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                  background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-
-      &.strength-danger {
-        background: linear-gradient(90deg, #ff4444, #ff6666);
-      }
-
-      &.strength-warning {
-        background: linear-gradient(90deg, #ffaa00, #ffcc33);
-      }
-
-      &.strength-info {
-        background: linear-gradient(90deg, #3b82f6, #60a5fa);
-      }
-
-      &.strength-success {
-        background: linear-gradient(90deg, var(--pitsapp-red), var(--pitsapp-gold));
-      }
-    }
-  }
-
-  .strength-info {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.75rem;
-    gap: 1rem;
-
-    .strength-label {
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-transform: capitalize;
-      transition: color 0.3s ease;
-
-      &.label-danger {
-        color: #ff4444;
-      }
-
-      &.label-warning {
-        color: #ffaa00;
-      }
-
-      &.label-info {
-        color: #3b82f6;
-      }
-
-      &.label-success {
-        color: var(--pitsapp-red);
-      }
-
-      &.label- {
-        display: none;
-      }
-    }
-
-    .strength-percentage {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--pitsapp-dark-grey);
-      min-width: 40px;
-      text-align: right;
-    }
-  }
-
-  .strength-suggestions {
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(220, 20, 60, 0.1);
-
-    .suggestion-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-      color: var(--pitsapp-dark-grey);
-      margin-bottom: 0.4rem;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-
-      i {
-        color: var(--pitsapp-red);
-        font-size: 0.8rem;
-        min-width: 14px;
-        text-align: center;
-      }
-
-      span {
-        line-height: 1.4;
-      }
-    }
-  }
-
-  .strength-requirements {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-
-    .requirement-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.8rem;
-      color: var(--pitsapp-dark-grey);
-      padding: 0.4rem 0.6rem;
-      border-radius: 6px;
-      transition: all 0.3s ease;
-
-      i {
-        min-width: 14px;
-        text-align: center;
-        font-size: 0.75rem;
-      }
-
-      &:not(.met) {
-        color: #999;
-
-        i {
-          color: #ddd;
-        }
-      }
-
-      &.met {
-        color: var(--pitsapp-red);
-        background: rgba(220, 20, 60, 0.08);
-
-        i {
-          color: var(--pitsapp-red);
-        }
-      }
-
-      span {
-        line-height: 1.3;
-      }
-    }
-
-    @media (max-width: 480px) {
-      grid-template-columns: 1fr;
-    }
-  }
-}
-
-.password-strength {
-  margin-top: 0.5rem;
-  
-  .strength-bar {
-    height: 4px;
-    background: var(--pitsapp-light-grey);
-    border-radius: 2px;
-    overflow: hidden;
-    
-    .strength-fill {
-      height: 100%;
-      transition: all 0.3s ease;
-      
-      &.weak {
-        width: 33%;
-        background: #ff4444;
-      }
-      
-      &.medium {
-        width: 66%;
-        background: #ffaa00;
-      }
-      
-      &.strong {
-        width: 100%;
-        background: var(--pitsapp-red);
-      }
-    }
-  }
-  
-  .strength-text {
-    font-size: 0.85rem;
-    margin-top: 0.25rem;
-    
-    &.weak { color: #ff4444; }
-    &.medium { color: #ffaa00; }
-    &.strong { color: var(--pitsapp-red); }
-  }
-}
-
-// Animation for form validation
-.form-group {
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: var(--pitsapp-black);
-  }
-  .error-message {
-    animation: slideDown 0.3s ease-out;
-  }
-}
-
-// Sección de información del vehículo
-.section-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--pitsapp-black);
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--pitsapp-red);
-}
-
-.section-subtitle {
-  font-size: 0.9rem;
-  color: var(--pitsapp-grey);
-  margin-bottom: 1rem;
-  line-height: 1.5;
-}
-
-.client-fields,
-.provider-fields {
-  animation: fadeIn 0.4s ease-in-out;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+@media (max-width: 768px) {
+  .password-strength-container { padding: 0.9rem; }
+  .section-title { font-size: 1rem; margin-top: 1.5rem; }
+  .form-row { gap: 1rem; }
+}
+
+@media (max-width: 480px) {
+  .user-type-selector { gap: 0.8rem; }
+  .password-strength-container {
+    padding: 0.8rem;
+    margin-top: 0.8rem;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .password-strength-container .strength-requirements {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
   }
 }
