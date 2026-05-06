@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://pitsapp.onrender.com'
+  apiUrl: 'https://pitsapp.ohttps://pitsapp-production.up.railway.appnrender.com'
 };
