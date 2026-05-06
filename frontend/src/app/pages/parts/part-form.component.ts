@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PartsService } from '../../services/parts.service';
 import { AuthService } from '../../services/auth.service';
@@ -18,6 +18,7 @@ export class PartFormComponent implements OnInit {
   partForm!: FormGroup;
   loading = false;
   errorMessage = '';
+  validationMessage = '';
   isEditMode = false;
   partId: string | null = null;
 
@@ -60,21 +61,41 @@ export class PartFormComponent implements OnInit {
 
   initForm() {
     this.partForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.required, Validators.minLength(20)]],
+      name: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(80),
+        this.trimValidator
+      ]],
+      description: ['', [
+        Validators.required,
+        Validators.minLength(20),
+        Validators.maxLength(600),
+        this.trimValidator
+      ]],
       category: ['', Validators.required],
       brand: ['', Validators.required],
-      partNumber: ['', Validators.required],
-      price: [0, [Validators.required, Validators.min(1)]],
+      partNumber: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(40),
+        Validators.pattern(/^[A-Za-z0-9\-\._\/ ]+$/),
+        this.trimValidator
+      ]],
+      price: [null, [Validators.required, Validators.min(1), Validators.max(999999999)]],
       condition: ['', Validators.required],
       vehicleType: ['', Validators.required],
-      compatibleVehicles: [[], [Validators.required, this.vehiclesValidator]],
-      compatibleVehiclesText: [''],
-      stock: [0, [Validators.required, Validators.min(0)]],
-      warranty: [''],
-      weight: [null],
-      dimensions: [''],
-      images: [[]] // Campo para las imágenes
+      compatibleVehicles: [[]],
+      compatibleVehiclesText: ['', [
+        Validators.required,
+        Validators.maxLength(300),
+        this.vehiclesTextValidator
+      ]],
+      stock: [null, [Validators.required, Validators.min(0), Validators.max(999999)]],
+      warranty: ['', [Validators.maxLength(60), this.trimValidator]],
+      weight: [null, [Validators.min(0), Validators.max(1000)]],
+      dimensions: ['', [Validators.maxLength(80), this.trimValidator]],
+      images: [[]]
     });
 
     // Listener para actualizar compatibleVehicles cuando cambie el texto
@@ -88,9 +109,21 @@ export class PartFormComponent implements OnInit {
     });
   }
 
-  vehiclesValidator(control: any) {
-    const vehicles = control.value;
-    return vehicles && vehicles.length > 0 ? null : { required: true };
+  trimValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (value === null || value === undefined || typeof value !== 'string') return null;
+    return value.trim().length > 0 ? null : { required: true };
+  }
+
+  vehiclesTextValidator(control: AbstractControl): ValidationErrors | null {
+    const value = (control.value ?? '').toString().trim();
+    if (!value) return { required: true };
+
+    const vehicles = value.split(',').map((v: string) => v.trim()).filter((v: string) => v.length > 0);
+    if (vehicles.length === 0) return { vehiclesRequired: true };
+    if (vehicles.some((v: string) => v.length < 3)) return { vehicleTooShort: true };
+
+    return null;
   }
 
   loadPart() {
@@ -129,26 +162,31 @@ export class PartFormComponent implements OnInit {
   }
 
   onSubmit() {
+    this.validationMessage = '';
+
     if (this.partForm.valid) {
       this.loading = true;
       this.errorMessage = '';
 
       const formData = this.partForm.value;
+
+      const normalizedVehicles = (formData.compatibleVehiclesText ?? '')
+        .toString()
+        .split(',')
+        .map((v: string) => v.trim())
+        .filter((v: string) => v.length > 0);
       
       const partData = {
         ...formData,
-        images: formData.images || [], // Asegurar que siempre sea un array
+        compatibleVehicles: normalizedVehicles,
+        images: formData.images || [],
         rating: 0,
         reviewCount: 0,
-        isAvailable: formData.stock > 0
+        isAvailable: Number(formData.stock) > 0
       };
 
       // Remove helper field
       delete partData.compatibleVehiclesText;
-
-      // Verificar token
-      const token = this.authService.getToken();
-      console.log('Datos del repuesto a enviar:', partData);
 
       const operation = this.isEditMode 
         ? this.partsService.updatePart(this.partId!, partData)
@@ -157,15 +195,10 @@ export class PartFormComponent implements OnInit {
       operation.subscribe({
         next: (response: any) => {
           this.loading = false;
-          console.log('Repuesto guardado exitosamente:', response);
           this.goBack();
         },
         error: (error: any) => {
           this.loading = false;
-          console.error('Error completo:', error);
-          console.error('Status:', error.status);
-          console.error('Status text:', error.statusText);
-          console.error('Error body:', error.error);
           
           if (error.status === 401) {
             this.errorMessage = 'Error de autenticación. Por favor, inicia sesión nuevamente.';
@@ -180,6 +213,7 @@ export class PartFormComponent implements OnInit {
       });
     } else {
       this.markFormGroupTouched();
+      this.validationMessage = 'Revisa los campos marcados en rojo. Los campos con * son obligatorios.';
     }
   }
 
@@ -203,5 +237,9 @@ export class PartFormComponent implements OnInit {
   get price() { return this.partForm.get('price'); }
   get condition() { return this.partForm.get('condition'); }
   get vehicleType() { return this.partForm.get('vehicleType'); }
+  get compatibleVehiclesText() { return this.partForm.get('compatibleVehiclesText'); }
   get stock() { return this.partForm.get('stock'); }
+  get warranty() { return this.partForm.get('warranty'); }
+  get weight() { return this.partForm.get('weight'); }
+  get dimensions() { return this.partForm.get('dimensions'); }
 }
