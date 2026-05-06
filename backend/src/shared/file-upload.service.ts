@@ -1,49 +1,50 @@
 import { Injectable } from '@nestjs/common';
-import { diskStorage } from 'multer';
-import { extname, join } from 'path';
-import { existsSync, mkdirSync } from 'fs';
+import { supabaseClient } from '../config/supabase.config';
+import { extname } from 'path';
 
 @Injectable()
 export class FileUploadService {
-  private readonly uploadPath = join(process.cwd(), 'uploads');
+  constructor() {}
 
-  constructor() {
-    this.ensureUploadDirectoryExists();
+  async uploadFile(file: Express.Multer.File, bucket: 'workshops' | 'parts'): Promise<string> {
+    try {
+      // Generar nombre único para el archivo
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      const ext = extname(file.originalname);
+      const filename = `${bucket}-${uniqueSuffix}${ext}`;
+
+      // Subir archivo a Supabase Storage
+      const { data, error } = await supabaseClient.storage
+        .from(bucket)
+        .upload(filename, file.buffer, {
+          contentType: file.mimetype,
+          upsert: false
+        });
+
+      if (error) {
+        throw new Error(`Error uploading file: ${error.message}`);
+      }
+
+      // Obtener URL pública del archivo
+      const { data: urlData } = supabaseClient.storage
+        .from(bucket)
+        .getPublicUrl(filename);
+
+      return urlData.publicUrl;
+    } catch (error) {
+      throw new Error(`Failed to upload file: ${error.message}`);
+    }
   }
 
-  private ensureUploadDirectoryExists(): void {
-    if (!existsSync(this.uploadPath)) {
-      mkdirSync(this.uploadPath, { recursive: true });
-    }
-    
-    // Crear subdirectorios para workshops y parts
-    const workshopsPath = join(this.uploadPath, 'workshops');
-    const partsPath = join(this.uploadPath, 'parts');
-    
-    if (!existsSync(workshopsPath)) {
-      mkdirSync(workshopsPath, { recursive: true });
-    }
-    
-    if (!existsSync(partsPath)) {
-      mkdirSync(partsPath, { recursive: true });
-    }
+  async uploadMultipleFiles(files: Express.Multer.File[], bucket: 'workshops' | 'parts'): Promise<string[]> {
+    const uploadPromises = files.map(file => this.uploadFile(file, bucket));
+    return Promise.all(uploadPromises);
   }
 
+  // Método legacy para compatibilidad - ahora retorna configuración vacía
   getMulterConfig(subfolder: 'workshops' | 'parts') {
     return {
-      storage: diskStorage({
-        destination: (req, file, cb) => {
-          const uploadPath = join(this.uploadPath, subfolder);
-          cb(null, uploadPath);
-        },
-        filename: (req, file, cb) => {
-          // Generar nombre único para el archivo
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-          const ext = extname(file.originalname);
-          const filename = `${file.fieldname}-${uniqueSuffix}${ext}`;
-          cb(null, filename);
-        },
-      }),
+      storage: null, // Ya no usamos diskStorage
       fileFilter: (req, file, cb) => {
         // Solo permitir imágenes
         const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
@@ -60,7 +61,9 @@ export class FileUploadService {
     };
   }
 
+  // Método legacy - ya no se usa
   getFileUrl(filename: string, subfolder: 'workshops' | 'parts'): string {
-    return `/uploads/${subfolder}/${filename}`;
+    // Este método ya no se usa, pero lo mantenemos por compatibilidad
+    return `legacy-url-${filename}`;
   }
 }

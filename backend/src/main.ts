@@ -55,15 +55,15 @@ async function bootstrap() {
     ],
   });
 
-  // Servir archivos estáticos (imágenes subidas)
-  const uploadsPath = join(__dirname, '..', 'uploads');
-  
-  app.useStaticAssets(uploadsPath, {
-    prefix: '/uploads/',
-    setHeaders: (res, _path) => {
-      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-    }
-  });
+  // Servir archivos estáticos (imágenes subidas) - LEGACY: Ya no se usa con Supabase Storage
+  // const uploadsPath = join(__dirname, '..', 'uploads');
+  //
+  // app.useStaticAssets(uploadsPath, {
+  //   prefix: '/uploads/',
+  //   setHeaders: (res, path) => {
+  //     res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  //   }
+  // });
 
   // Habilitar validación global
   app.useGlobalPipes(new ValidationPipe({
