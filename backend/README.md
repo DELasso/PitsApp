@@ -154,6 +154,27 @@ Authorization: Bearer <token>
    npm run start:prod
    ```
 
+## 🖼️ Migración de imágenes legacy
+
+Si tienes registros antiguos que aún apuntan a rutas como `/uploads/...`, puedes migrarlos a Supabase Storage con estos comandos:
+
+1. Simular la migración sin escribir cambios:
+   ```bash
+   npm run migrate:legacy-images:dry
+   ```
+
+2. Ejecutar la migración real:
+   ```bash
+   npm run migrate:legacy-images
+   ```
+
+El script:
+
+- busca archivos antiguos en `backend/uploads`
+- sube imágenes legacy al bucket correcto (`workshops` o `parts`)
+- reemplaza en la base de datos las rutas `/uploads/...` por URLs públicas de Supabase
+- conserva las URLs HTTP que ya estén migradas
+
 ### Recomendaciones para producción:
 - Usar un gestor de procesos como PM2
 - Configurar HTTPS
