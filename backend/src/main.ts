@@ -14,6 +14,12 @@ async function bootstrap() {
   ]
     .filter((origin): origin is string => Boolean(origin))
     .map(normalizeOrigin);
+  const defaultAllowedOrigins = [
+    'http://localhost:4200',
+    'https://pitsapp.shop',
+    'https://www.pitsapp.shop',
+  ].map(normalizeOrigin);
+  const allowedOrigins = [...new Set([...defaultAllowedOrigins, ...configuredOrigins])];
 
   const isAllowedOrigin = (origin?: string): boolean => {
     if (!origin) {
@@ -21,15 +27,14 @@ async function bootstrap() {
     }
 
     const normalizedOrigin = normalizeOrigin(origin);
-    const isConfigured = configuredOrigins.includes(normalizedOrigin);
+    const isConfigured = allowedOrigins.includes(normalizedOrigin);
     const isVercelDomain = normalizedOrigin.endsWith('.vercel.app');
-    const isLocalDev = normalizedOrigin === 'http://localhost:4200';
 
     if (process.env.NODE_ENV === 'production') {
       return isConfigured || isVercelDomain;
     }
 
-    return isConfigured || isVercelDomain || isLocalDev;
+    return isConfigured || isVercelDomain;
   };
 
   app.enableCors({
@@ -79,6 +84,7 @@ async function bootstrap() {
     console.log(`PitsApp Backend ejecutándose en http://localhost:${port}`);
     console.log(`API Docs disponibles en: http://localhost:${port}/api`);
     console.log(`Archivos estáticos servidos desde: http://localhost:${port}/uploads`);
+    console.log(`Orígenes CORS permitidos: ${allowedOrigins.join(', ')}`);
   }
 }
 bootstrap();

@@ -30,14 +30,14 @@ SUPABASE_URL=https://tu-proyecto.supabase.co
 SUPABASE_ANON_KEY=tu_anon_key
 SUPABASE_SERVICE_KEY=tu_service_role_key
 JWT_SECRET=una_clave_larga_y_segura
-BACKEND_URL=https://pitsapp-backend.onrender.com
-FRONTEND_URL=https://tu-frontend.vercel.app
-FRONTEND_URLS=https://tu-frontend.vercel.app,https://www.tu-dominio.com
+BACKEND_URL=https://pitsapp.onrender.com
+FRONTEND_URL=https://pitsapp.shop
+FRONTEND_URLS=https://www.pitsapp.shop,https://tu-frontend.vercel.app
 ```
 
 Notas:
 
-- `FRONTEND_URL` es la URL principal autorizada por CORS.
+- `FRONTEND_URL` no debe quedar vacia; es la URL principal autorizada por CORS.
 - `FRONTEND_URLS` permite agregar dominios extra separados por coma.
 - Si usas un dominio propio en Vercel, agregalo tambien en `FRONTEND_URLS`.
 
