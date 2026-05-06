@@ -13,10 +13,10 @@
         </div>
         <div class="navbar-menu">
           <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Inicio</a>
-          <a href="" routerLink="/talleres" routerLinkActive="active">Talleres</a>
-          <a href="" (click)="redirectToHome($event)">Repuestos</a>
-          <a href="" routerLink="/servicios" routerLinkActive="active">Servicios</a>
-          <a href="" (click)="redirectToHome($event)" class="cart-link">
+          <a routerLink="/talleres" routerLinkActive="active">Talleres</a>
+          <a routerLink="/repuestos" routerLinkActive="active">Repuestos</a>
+          <a routerLink="/servicios" routerLinkActive="active">Servicios</a>
+          <a routerLink="/carrito" routerLinkActive="active" class="cart-link">
             <fa-icon [icon]="faShoppingCart"></fa-icon>
             Carrito
             <span *ngIf="cartSummary && cartSummary.totalItems > 0" class="cart-badge">

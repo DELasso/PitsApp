@@ -17,8 +17,9 @@ export const routes: Routes = [
     redirectTo: 'workshops/:id'
   },
   {
-    path: ' ',
-    loadComponent: () => import('./pages/parts/parts.component').then(m => m.PartsComponent)
+    path: 'repuestos',
+    redirectTo: 'parts',
+    pathMatch: 'full'
   },
   {
     path: 'carrito',
@@ -142,9 +143,7 @@ export const routes: Routes = [
   },
   {
     path: 'parts',
-    loadComponent: () => import('./pages/parts/parts.component').then(m => m.PartsComponent),
-    canActivate: [BusinessTypeGuard],
-    data: { businessType: BusinessType.VENTA_REPUESTOS }
+    loadComponent: () => import('./pages/parts/parts.component').then(m => m.PartsComponent)
   },
   {
     path: 'parts/create',

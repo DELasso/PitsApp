@@ -21,7 +21,7 @@ export class HomeComponent {
       title: 'Repuestos',
       description: 'Repuestos originales y genéricos para tu vehículo',
       icon: 'fa-solid fa-gears',
-      route: '/'
+      route: '/repuestos'
     },
     {
       title: 'Servicios',
