@@ -6,9 +6,9 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "build": "npx nest build",
-    "start": "npx nest start",
-    "start:dev": "npx nest start --watch",
+    "build": "tsc",
+    "start": "node dist/main",
+    "start:dev": "nest start --watch",
     "start:prod": "node dist/main"
   },
   "keywords": [
