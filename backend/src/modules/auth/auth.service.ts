@@ -6,6 +6,14 @@ import { LoginDto } from './dto/login.dto';
 import { User } from '../users/entities/user.entity';
 import { UserRole } from '../users/entities/user.entity';
 
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return 'Error desconocido durante el registro';
+}
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -50,7 +58,7 @@ export class AuthService {
         message: 'Usuario registrado exitosamente'
       };
     } catch (error) {
-      throw new UnauthorizedException(error.message);
+      throw new UnauthorizedException(getErrorMessage(error));
     }
   }
 

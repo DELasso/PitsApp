@@ -10,9 +10,35 @@ import {
   Body
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { memoryStorage } from 'multer';
 import { JwtAuthGuard } from '../modules/auth/jwt-auth.guard';
-import { FileUploadService } from './file-upload.service';
+import { FileUploadService, UploadedFile } from './file-upload.service';
 import { UserRole } from '../modules/users/entities/user.entity';
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return 'Unknown upload error';
+}
+
+const uploadOptions = {
+  storage: memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+    files: 5,
+  },
+  fileFilter: (req: unknown, file: UploadedFile, cb: (error: Error | null, acceptFile: boolean) => void) => {
+    const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (allowedMimes.includes(file.mimetype)) {
+      cb(null, true);
+      return;
+    }
+
+    cb(new Error('Solo se permiten archivos de imagen (JPEG, PNG, GIF, WebP)'), false);
+  },
+};
 
 @Controller('upload')
 export class FileUploadController {
@@ -20,9 +46,9 @@ export class FileUploadController {
 
   @Post('workshop-images')
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FilesInterceptor('images', 5)) // Máximo 5 imágenes
+  @UseInterceptors(FilesInterceptor('images', 5, uploadOptions))
   async uploadWorkshopImages(
-    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles() files: UploadedFile[],
     @Request() req
   ) {
     const user = req.user;
@@ -36,57 +62,28 @@ export class FileUploadController {
       throw new BadRequestException('No se han subido archivos');
     }
 
-    // Configurar multer para workshops
-    const multerConfig = this.fileUploadService.getMulterConfig('workshops');
-    
-    // Generar URLs para las imágenes subidas
-    const imageUrls = files.map(file => 
-      this.fileUploadService.getFileUrl(file.filename, 'workshops')
-    );
+    try {
+      // Subir imágenes a Supabase Storage
+      const imageUrls = await this.fileUploadService.uploadMultipleFiles(files, 'workshops');
 
-    return {
-      success: true,
-      message: 'Imágenes subidas exitosamente',
-      data: {
-        images: imageUrls,
-        count: files.length
-      }
-    };
+      return {
+        success: true,
+        message: 'Imágenes subidas exitosamente',
+        data: {
+          images: imageUrls,
+          count: files.length
+        }
+      };
+    } catch (error) {
+      throw new BadRequestException(`Error al subir imágenes: ${getErrorMessage(error)}`);
+    }
   }
 
   @Post('part-images')
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FilesInterceptor('images', 5, {
-    storage: require('multer').diskStorage({
-      destination: (req, file, cb) => {
-        const path = require('path');
-        const uploadDir = path.join(process.cwd(), 'uploads');
-        cb(null, uploadDir);
-      },
-      filename: (req, file, cb) => {
-        const crypto = require('crypto');
-        const path = require('path');
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const hash = crypto.createHash('md5').update(uniqueSuffix.toString()).digest('hex');
-        const ext = path.extname(file.originalname);
-        cb(null, hash + ext);
-      }
-    }),
-    fileFilter: (req, file, cb) => {
-      const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-      if (allowedMimes.includes(file.mimetype)) {
-        cb(null, true);
-      } else {
-        cb(new Error('Solo se permiten archivos de imagen'), false);
-      }
-    },
-    limits: {
-      fileSize: 5 * 1024 * 1024, // 5MB
-      files: 5
-    }
-  }))
+  @UseInterceptors(FilesInterceptor('images', 5, uploadOptions))
   async uploadPartImages(
-    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles() files: UploadedFile[],
     @Request() req
   ) {
     const user = req.user;
@@ -100,53 +97,28 @@ export class FileUploadController {
       throw new BadRequestException('No se han subido archivos');
     }
 
-    // Los archivos ya están guardados por multer
-    const imageUrls = files.map(file => `/uploads/${file.filename}`);
+    try {
+      // Subir imágenes a Supabase Storage
+      const imageUrls = await this.fileUploadService.uploadMultipleFiles(files, 'parts');
 
-    return {
-      success: true,
-      message: 'Imágenes subidas exitosamente',
-      data: {
-        images: imageUrls,
-        count: files.length
-      }
-    };
+      return {
+        success: true,
+        message: 'Imágenes subidas exitosamente',
+        data: {
+          images: imageUrls,
+          count: files.length
+        }
+      };
+    } catch (error) {
+      throw new BadRequestException(`Error al subir imágenes: ${getErrorMessage(error)}`);
+    }
   }
 
   @Post('multiple')
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FilesInterceptor('files', 5, {
-    storage: require('multer').diskStorage({
-      destination: (req, file, cb) => {
-        const path = require('path');
-        const uploadDir = path.join(process.cwd(), 'uploads');
-        cb(null, uploadDir);
-      },
-      filename: (req, file, cb) => {
-        const crypto = require('crypto');
-        const path = require('path');
-        // Generar nombre único usando timestamp y random
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const hash = crypto.createHash('md5').update(uniqueSuffix.toString()).digest('hex');
-        const ext = path.extname(file.originalname);
-        cb(null, hash + ext);
-      }
-    }),
-    fileFilter: (req, file, cb) => {
-      const allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-      if (allowedMimes.includes(file.mimetype)) {
-        cb(null, true);
-      } else {
-        cb(new Error('Solo se permiten archivos de imagen'), false);
-      }
-    },
-    limits: {
-      fileSize: 5 * 1024 * 1024, // 5MB
-      files: 5
-    }
-  }))
+  @UseInterceptors(FilesInterceptor('files', 5, uploadOptions))
   async uploadMultipleImages(
-    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles() files: UploadedFile[],
     @Body() body: { uploadType: 'workshop' | 'part' },
     @Request() req
   ) {
@@ -160,15 +132,22 @@ export class FileUploadController {
     if (!files || files.length === 0) {
       throw new BadRequestException('No se han subido archivos');
     }
-    
-    // Los archivos ya están guardados por multer, solo necesitamos generar las URLs
-    const imageUrls = files.map(file => `/uploads/${file.filename}`);
 
-    return {
-      success: true,
-      message: 'Imágenes subidas exitosamente',
-      urls: imageUrls,
-      count: files.length
-    };
+    try {
+      // Determinar el bucket basado en el tipo de subida
+      const bucket = body.uploadType === 'workshop' ? 'workshops' : 'parts';
+
+      // Subir imágenes a Supabase Storage
+      const imageUrls = await this.fileUploadService.uploadMultipleFiles(files, bucket);
+
+      return {
+        success: true,
+        message: 'Imágenes subidas exitosamente',
+        urls: imageUrls,
+        count: files.length
+      };
+    } catch (error) {
+      throw new BadRequestException(`Error al subir imágenes: ${getErrorMessage(error)}`);
+    }
   }
 }
