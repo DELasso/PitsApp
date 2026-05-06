@@ -46,10 +46,15 @@ Notas:
 Crea un `Web Service` manualmente con estos valores:
 
 - Runtime: `Node`
-- Root Directory: `backend`
+- Root Directory: *(recomendado)* `backend`
 - Build Command: `npm ci --include=dev && npm run build`
 - Start Command: `npm run start:prod`
 - Health Check Path: `/status`
+
+Si tu servicio en Render apunta a la raíz del repo (Root Directory vacío), usa:
+
+- Build Command: `npm run build:backend`
+- Start Command: `npm run start:prod`
 
 ## Verificacion
 
