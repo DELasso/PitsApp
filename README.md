@@ -251,10 +251,12 @@ PitsApp/
 - `GET /api/service-requests/:id/bids` - Ofertas de una solicitud
 - `PATCH /api/bids/:id/withdraw` - Retirar oferta
 
-#### 📷 Upload
+#### 📷 Upload (Supabase Storage)
 - `POST /api/upload/workshop-images` - Imágenes de taller
 - `POST /api/upload/part-images` - Imágenes de repuestos
-- `GET /uploads/:filename` - Acceder a imagen
+- `POST /api/upload/multiple` - Subir múltiples imágenes
+
+*Las imágenes se almacenan en Supabase Storage con URLs públicas*
 
 ## 🗺️ Roadmap
 

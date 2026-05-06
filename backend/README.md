@@ -71,7 +71,7 @@ backend/
 │   ├── common/           # Utilidades compartidas
 │   ├── shared/           # Módulos compartidos (uploads)
 │   └── main.ts           # Punto de entrada
-├── uploads/              # Archivos subidos
+├── uploads/              # Archivos subidos (LEGACY - ahora usa Supabase Storage)
 └── dist/                 # Código compilado
 ```
 
@@ -89,7 +89,27 @@ backend/
 - `increment_bids_count` - Incrementa contador al crear oferta
 - `decrement_bids_count` - Decrementa contador al eliminar oferta
 
-## 🔐 Autenticación
+## � Almacenamiento de Archivos (Supabase Storage)
+
+El backend usa **Supabase Storage** para almacenar imágenes de talleres y repuestos. Esto garantiza persistencia y escalabilidad.
+
+### Configuración de Buckets:
+
+1. **Crear buckets en Supabase:**
+   - Ve a tu proyecto de Supabase → Storage
+   - Crea dos buckets: `workshops` y `parts`
+   - Configura ambos como **públicos** (public bucket)
+
+2. **Políticas de acceso:**
+   - Para `workshops`: permitir subida solo a proveedores autenticados
+   - Para `parts`: permitir subida solo a proveedores autenticados
+   - Lectura pública para todos los usuarios
+
+### URLs de imágenes:
+- Las imágenes ahora se sirven directamente desde Supabase Storage
+- URLs públicas: `https://[project-ref].supabase.co/storage/v1/object/public/[bucket]/[filename]`
+
+## �🔐 Autenticación
 
 El backend usa JWT (JSON Web Tokens) para autenticación. Los endpoints protegidos requieren:
 
