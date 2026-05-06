@@ -284,6 +284,13 @@ div {
     align-items: flex-end;
     gap: 1rem;
   }
+
+  .provider-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
   
   .price-section {
     .price {

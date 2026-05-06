@@ -4,6 +4,7 @@ import {
   Post, 
   Body, 
   Patch, 
+  Put,
   Param, 
   Delete, 
   Query,
@@ -137,6 +138,28 @@ export class PartsController {
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   async update(
+    @Param('id') id: string, 
+    @Body() updatePartDto: UpdatePartDto,
+    @Request() req
+  ) {
+    const user = req.user;
+
+    if (user.role !== UserRole.PROVEEDOR) {
+      throw new ForbiddenException('Solo los proveedores pueden actualizar repuestos');
+    }
+
+    const part = await this.partsService.update(id, updatePartDto, user.sub);
+    
+    return {
+      success: true,
+      message: 'Repuesto actualizado exitosamente',
+      data: part
+    };
+  }
+
+  @Put(':id')
+  @UseGuards(JwtAuthGuard)
+  async updateWithPut(
     @Param('id') id: string, 
     @Body() updatePartDto: UpdatePartDto,
     @Request() req

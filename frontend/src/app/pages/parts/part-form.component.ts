@@ -191,7 +191,7 @@ export class PartFormComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/provider/dashboard']);
+    this.router.navigate(['/provider/repuestos']);
   }
 
   // Getters para facilitar el acceso a los controles del formulario
