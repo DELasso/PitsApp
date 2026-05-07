@@ -275,6 +275,10 @@ export class PartsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/provider/repuestos/crear']);
   }
 
+  navigateToProviderDashboard() {
+    this.router.navigate(['/provider/dashboard']);
+  }
+
   editPart(part: Part, event?: Event) {
     if (event) {
       event.stopPropagation();

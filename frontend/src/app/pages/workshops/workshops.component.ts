@@ -232,4 +232,8 @@ export class WorkshopsComponent implements OnInit, OnDestroy {
   navigateToCreateWorkshop() {
     this.router.navigate(['/provider/talleres/crear']);
   }
+
+  navigateToProviderDashboard() {
+    this.router.navigate(['/provider/dashboard']);
+  }
 }

@@ -7,9 +7,14 @@
     <div class="page-header">
       <h1>{{ isProviderView ? 'Mis Talleres' : 'Talleres Disponibles' }}</h1>
       <p>{{ isProviderView ? 'Gestiona tus talleres mecánicos' : 'Encuentra el taller perfecto para tu vehículo en Medellín' }}</p>
-      <button *ngIf="isProviderView" class="btn btn-success" (click)="navigateToCreateWorkshop()">
-        <i class="fa-solid fa-plus"></i> Crear Taller
-      </button>
+      <div *ngIf="isProviderView" class="header-actions">
+        <button class="btn btn-secondary" (click)="navigateToProviderDashboard()">
+          <i class="fa-solid fa-arrow-left"></i> Volver al Panel
+        </button>
+        <button class="btn btn-success" (click)="navigateToCreateWorkshop()">
+          <i class="fa-solid fa-plus"></i> Crear Taller
+        </button>
+      </div>
     </div>
 
     <div class="search-section" *ngIf="!isProviderView">
@@ -59,9 +64,14 @@
       <div class="no-results-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
       <h3>{{ isProviderView ? 'Aún no tienes talleres' : 'No se encontraron talleres' }}</h3>
       <p>{{ isProviderView ? 'Comienza creando tu primer taller' : 'Intenta ajustar tus filtros de búsqueda' }}</p>
-      <button *ngIf="isProviderView" class="btn btn-success" (click)="navigateToCreateWorkshop()">
-        <i class="fa-solid fa-plus"></i> Crear Taller
-      </button>
+      <div *ngIf="isProviderView" class="header-actions">
+        <button class="btn btn-secondary" (click)="navigateToProviderDashboard()">
+          <i class="fa-solid fa-arrow-left"></i> Volver al Panel
+        </button>
+        <button class="btn btn-success" (click)="navigateToCreateWorkshop()">
+          <i class="fa-solid fa-plus"></i> Crear Taller
+        </button>
+      </div>
       <button *ngIf="!isProviderView" class="btn btn-secondary" (click)="clearFilters()">Limpiar Filtros</button>
     </div>
 
