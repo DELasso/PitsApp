@@ -11,6 +11,7 @@ import { FileUploadService } from '../../services/file-upload.service';
 import { CartSummary } from '../../models/cart.model';
 import { AuthService } from '../../services/auth.service';
 import { User, UserRole } from '../../models/auth.model';
+import { UiService } from '../../services/ui.service';
 
 @Component({
   selector: 'app-parts',
@@ -72,7 +73,8 @@ export class PartsComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private fileUploadService: FileUploadService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private ui: UiService
   ) {}
 
   ngOnInit(): void {
@@ -280,27 +282,35 @@ export class PartsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/provider/repuestos/editar', part.id]);
   }
 
-  deletePart(part: Part, event: Event) {
+  async deletePart(part: Part, event: Event) {
     event.stopPropagation();
 
-    if (confirm(`¿Estás seguro de que deseas eliminar el repuesto "${part.name}"?`)) {
-      this.loading = true;
+    const confirmed = await this.ui.confirm({
+      title: 'Eliminar repuesto',
+      message: `¿Deseas eliminar el repuesto "${part.name}"? Esta acción no se puede deshacer.`,
+      confirmText: 'Eliminar',
+      cancelText: 'Cancelar',
+      variant: 'danger'
+    });
 
-      this.partsService.deletePart(part.id).subscribe({
-        next: () => {
-          this.allParts = this.allParts.filter(p => p.id !== part.id);
-          this.filteredParts = this.filteredParts.filter(p => p.id !== part.id);
-          this.updateCategoryCounts();
-          this.loading = false;
-          alert('Repuesto eliminado correctamente');
-        },
-        error: (error) => {
-          this.loading = false;
-          alert('Error al eliminar el repuesto: ' + (error.error?.message || error.message));
-          console.error('Error deleting part:', error);
-        }
-      });
-    }
+    if (!confirmed) return;
+
+    this.loading = true;
+
+    this.partsService.deletePart(part.id).subscribe({
+      next: () => {
+        this.allParts = this.allParts.filter(p => p.id !== part.id);
+        this.filteredParts = this.filteredParts.filter(p => p.id !== part.id);
+        this.updateCategoryCounts();
+        this.loading = false;
+        this.ui.success('Repuesto eliminado correctamente');
+      },
+      error: (error) => {
+        this.loading = false;
+        this.ui.error(error.error?.message || 'Error al eliminar el repuesto');
+        console.error('Error deleting part:', error);
+      }
+    });
   }
 
   onPartClick(part: Part) {

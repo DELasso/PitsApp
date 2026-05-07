@@ -15,6 +15,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { BidService } from '../../../services/bid.service';
 import { Bid, BidStatus } from '../../../models/bid.model';
+import { UiService } from '../../../services/ui.service';
 
 @Component({
   selector: 'app-my-bids',
@@ -48,7 +49,8 @@ export class MyBidsComponent implements OnInit {
 
   constructor(
     private bidService: BidService,
-    private router: Router
+    private router: Router,
+    private ui: UiService
   ) {}
 
   ngOnInit(): void {
@@ -84,18 +86,27 @@ export class MyBidsComponent implements OnInit {
     this.router.navigate(['/servicios/disponibles', requestId]);
   }
 
-  withdrawBid(bidId: string): void {
-    if (confirm('¿Estás seguro de que deseas retirar esta oferta?')) {
-      this.bidService.withdraw(bidId).subscribe({
-        next: () => {
-          this.loadMyBids();
-        },
-        error: (error) => {
-          console.error('Error withdrawing bid:', error);
-          alert('Error al retirar la oferta. Por favor intenta nuevamente.');
-        }
-      });
-    }
+  async withdrawBid(bidId: string): Promise<void> {
+    const confirmed = await this.ui.confirm({
+      title: 'Retirar oferta',
+      message: '¿Deseas retirar esta oferta? Esta acción no se puede deshacer.',
+      confirmText: 'Retirar',
+      cancelText: 'Cancelar',
+      variant: 'danger'
+    });
+
+    if (!confirmed) return;
+
+    this.bidService.withdraw(bidId).subscribe({
+      next: () => {
+        this.ui.success('Oferta retirada correctamente');
+        this.loadMyBids();
+      },
+      error: (error) => {
+        console.error('Error withdrawing bid:', error);
+        this.ui.error('Error al retirar la oferta. Por favor intenta nuevamente.');
+      }
+    });
   }
 
   formatCurrency(amount: number): string {

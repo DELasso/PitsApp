@@ -7,6 +7,7 @@ import { CartService } from '../../services/cart.service';
 import { FileUploadService } from '../../services/file-upload.service';
 import { Cart, CartSummary } from '../../models/cart.model';
 import { CartItem } from '../../models/cart-item.model';
+import { UiService } from '../../services/ui.service';
 
 @Component({
   selector: 'app-cart',
@@ -24,7 +25,8 @@ export class CartComponent implements OnInit, OnDestroy {
   constructor(
     private cartService: CartService, 
     private router: Router,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
+    private ui: UiService
   ) {}
 
   ngOnInit(): void {
@@ -92,7 +94,7 @@ export class CartComponent implements OnInit, OnDestroy {
 
   proceedToCheckout(): void {
     if (this.cartSummary?.isEmpty) {
-      alert('Tu carrito está vacío. Agrega algunos repuestos antes de proceder al checkout.');
+      this.ui.warning('Tu carrito está vacío. Agrega algunos repuestos antes de proceder al checkout.');
       return;
     }
     

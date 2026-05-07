@@ -9,6 +9,7 @@ import { Subscription, filter } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { User, UserRole } from '../../models/auth.model';
 import { FileUploadService } from '../../services/file-upload.service';
+import { UiService } from '../../services/ui.service';
 
 @Component({
   selector: 'app-workshops',  
@@ -41,7 +42,8 @@ export class WorkshopsComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
     private fileUploadService: FileUploadService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private ui: UiService
   ) {}
 
   ngOnInit() {
@@ -167,26 +169,34 @@ export class WorkshopsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/provider/talleres/editar', workshop.id]);
   }
 
-  deleteWorkshop(workshop: Workshop, event: Event) {
+  async deleteWorkshop(workshop: Workshop, event: Event) {
     event.stopPropagation();
     
-    if (confirm(`¿Estás seguro de que deseas eliminar el taller "${workshop.name}"?`)) {
-      this.loading = true;
-      
-      this.workshopsService.deleteWorkshop(workshop.id).subscribe({
-        next: () => {
-          this.workshops = this.workshops.filter(w => w.id !== workshop.id);
-          this.filteredWorkshops = this.filteredWorkshops.filter(w => w.id !== workshop.id);
-          this.loading = false;
-          alert('Taller eliminado correctamente');
-        },
-        error: (error) => {
-          this.loading = false;
-          alert('Error al eliminar el taller: ' + (error.error?.message || error.message));
-          console.error('Error deleting workshop:', error);
-        }
-      });
-    }
+    const confirmed = await this.ui.confirm({
+      title: 'Eliminar taller',
+      message: `¿Deseas eliminar el taller "${workshop.name}"? Esta acción no se puede deshacer.`,
+      confirmText: 'Eliminar',
+      cancelText: 'Cancelar',
+      variant: 'danger'
+    });
+
+    if (!confirmed) return;
+
+    this.loading = true;
+    
+    this.workshopsService.deleteWorkshop(workshop.id).subscribe({
+      next: () => {
+        this.workshops = this.workshops.filter(w => w.id !== workshop.id);
+        this.filteredWorkshops = this.filteredWorkshops.filter(w => w.id !== workshop.id);
+        this.loading = false;
+        this.ui.success('Taller eliminado correctamente');
+      },
+      error: (error) => {
+        this.loading = false;
+        this.ui.error(error.error?.message || 'Error al eliminar el taller');
+        console.error('Error deleting workshop:', error);
+      }
+    });
   }
 
   onWorkshopClick(workshop: Workshop) {

@@ -10,6 +10,7 @@ import { WorkshopsService } from '../../services/workshops.service';
 import { WorkshopReviewService } from '../../services/workshop-review.service';
 import { FileUploadService } from '../../services/file-upload.service';
 import { AuthService } from '../../services/auth.service';
+import { UiService } from '../../services/ui.service';
 
 @Component({
   selector: 'app-workshop-detail',
@@ -39,7 +40,8 @@ export class WorkshopDetailComponent implements OnInit, OnDestroy {
     private workshopsService: WorkshopsService,
     private reviewService: WorkshopReviewService,
     private fileUploadService: FileUploadService,
-    public authService: AuthService
+    public authService: AuthService,
+    private ui: UiService
   ) {
     this.reviewForm = this.fb.group({
       comment: ['', [Validators.required, Validators.minLength(10)]]
@@ -169,10 +171,16 @@ export class WorkshopDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  deleteReview(reviewId: string): void {
-    if (!confirm('¿Estás seguro de que deseas eliminar esta reseña?')) {
-      return;
-    }
+  async deleteReview(reviewId: string): Promise<void> {
+    const confirmed = await this.ui.confirm({
+      title: 'Eliminar reseña',
+      message: '¿Deseas eliminar esta reseña? Esta acción no se puede deshacer.',
+      confirmText: 'Eliminar',
+      cancelText: 'Cancelar',
+      variant: 'danger'
+    });
+
+    if (!confirmed) return;
 
     this.reviewService.deleteReview(reviewId)
       .pipe(takeUntil(this.destroy$))
@@ -180,11 +188,12 @@ export class WorkshopDetailComponent implements OnInit, OnDestroy {
         next: (response) => {
           if (response.success && this.workshop) {
             this.loadReviews(this.workshop.id);
+            this.ui.success('Reseña eliminada correctamente');
           }
         },
         error: (error) => {
           console.error('Error al eliminar reseña:', error);
-          alert('No se pudo eliminar la reseña');
+          this.ui.error('No se pudo eliminar la reseña');
         }
       });
   }
