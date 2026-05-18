@@ -8,6 +8,7 @@ import { UsersModule } from "./modules/users/users.module";
 import { SharedModule } from "./shared/shared.module";
 import { ServiceRequestsModule } from "./modules/service-requests/service-requests.module";
 import { SupabaseModule } from "./common/supabase/supabase.module";
+import { AiChatModule } from "./modules/ai-chat/ai-chat.module";
 import { NotificationsModule } from "./modules/notifications/notifications.module";
 
 @Module({
@@ -19,6 +20,7 @@ import { NotificationsModule } from "./modules/notifications/notifications.modul
     UsersModule,
     SharedModule,
     ServiceRequestsModule,
+    AiChatModule,
     NotificationsModule,
   ],
   controllers: [AppController],

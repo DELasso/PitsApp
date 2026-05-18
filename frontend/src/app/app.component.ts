@@ -14,6 +14,7 @@ import { CartService } from "./services/cart.service";
 import { AuthService } from "./services/auth.service";
 import { CartSummary } from "./models/cart.model";
 import { User, UserRole } from "./models/auth.model";
+import { AiChatComponent } from "./components/ai-chat/ai-chat.component";
 import { UiOverlayComponent } from "./components/ui-overlay/ui-overlay.component";
 import { NotificationsComponent } from "./components/notifications/notifications.component";
 import { NotificationService } from "./services/notification.service";
@@ -28,6 +29,7 @@ import { NotificationService } from "./services/notification.service";
     CommonModule,
     FontAwesomeModule,
     UiOverlayComponent,
+    AiChatComponent,
     NotificationsComponent,
   ],
   templateUrl: "./app.component.html",
