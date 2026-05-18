@@ -1,18 +1,30 @@
-﻿import { Injectable, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
-import { CreateServiceRequestDto } from './dto/create-service-request.dto';
-import { UpdateServiceRequestDto } from './dto/update-service-request.dto';
-import { ServiceRequest, ServiceStatus } from './entities/service-request.entity';
-import { SupabaseService } from '../../common/supabase/supabase.service';
+﻿import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+  ForbiddenException,
+} from "@nestjs/common";
+import { CreateServiceRequestDto } from "./dto/create-service-request.dto";
+import { UpdateServiceRequestDto } from "./dto/update-service-request.dto";
+import {
+  ServiceRequest,
+  ServiceStatus,
+} from "./entities/service-request.entity";
+import { SupabaseService } from "../../common/supabase/supabase.service";
+import { NotificationsService } from "../notifications/notifications.service";
 
 @Injectable()
 export class ServiceRequestsService {
   constructor(
     private readonly supabaseService: SupabaseService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   private mapToServiceRequest(data: any): ServiceRequest {
-    let serviceDetails: any = data.service_details ? JSON.parse(data.service_details) : null;
-    
+    let serviceDetails: any = data.service_details
+      ? JSON.parse(data.service_details)
+      : null;
+
     const result: ServiceRequest = {
       id: data.id,
       clientId: data.client_id,
@@ -36,25 +48,28 @@ export class ServiceRequestsService {
       updatedAt: data.updated_at,
       expiresAt: data.expires_at,
     };
-    
+
     if (serviceDetails) {
-      if (data.service_type === 'home_service') {
+      if (data.service_type === "home_service") {
         result.homeServiceDetails = serviceDetails;
-      } else if (data.service_type === 'tow_truck') {
+      } else if (data.service_type === "tow_truck") {
         result.towTruckDetails = serviceDetails;
-      } else if (data.service_type === 'express_oil_change') {
+      } else if (data.service_type === "express_oil_change") {
         result.oilChangeDetails = serviceDetails;
-      } else if (data.service_type === 'mechanical_diagnosis') {
+      } else if (data.service_type === "mechanical_diagnosis") {
         result.diagnosisDetails = serviceDetails;
       } else {
         result.repairDetails = serviceDetails;
       }
     }
-    
+
     return result;
   }
 
-  async create(createDto: CreateServiceRequestDto, clientId: string): Promise<ServiceRequest> {
+  async create(
+    createDto: CreateServiceRequestDto,
+    clientId: string,
+  ): Promise<ServiceRequest> {
     const supabase = this.supabaseService.getClient();
 
     const expiresAt = new Date();
@@ -95,7 +110,7 @@ export class ServiceRequestsService {
     };
 
     const { data, error } = await supabase
-      .from('service_requests')
+      .from("service_requests")
       .insert(serviceRequestData)
       .select()
       .single();
@@ -104,6 +119,15 @@ export class ServiceRequestsService {
       throw new Error(`Error creating service request: ${error.message}`);
     }
 
+    // Notificar a todos los proveedores sobre la nueva solicitud
+    this.notificationsService
+      .notifyProvidersNewServiceRequest(
+        data.id,
+        createDto.serviceType,
+        createDto.description,
+      )
+      .catch((err) => console.error("Error notificando proveedores:", err));
+
     return this.mapToServiceRequest(data);
   }
 
@@ -111,15 +135,15 @@ export class ServiceRequestsService {
     const supabase = this.supabaseService.getClient();
 
     const { data, error } = await supabase
-      .from('service_requests')
-      .select('*')
-      .order('created_at', { ascending: false });
+      .from("service_requests")
+      .select("*")
+      .order("created_at", { ascending: false });
 
     if (error) {
       throw new Error(`Error fetching service requests: ${error.message}`);
     }
 
-    return data.map(sr => this.mapToServiceRequest(sr));
+    return data.map((sr) => this.mapToServiceRequest(sr));
   }
 
   async findAvailableForBids(): Promise<ServiceRequest[]> {
@@ -127,26 +151,28 @@ export class ServiceRequestsService {
     const now = new Date().toISOString();
 
     const { data, error } = await supabase
-      .from('service_requests')
-      .select('*')
-      .in('status', [ServiceStatus.PENDING, ServiceStatus.RECEIVING_BIDS])
-      .gt('expires_at', now)
-      .order('created_at', { ascending: false });
+      .from("service_requests")
+      .select("*")
+      .in("status", [ServiceStatus.PENDING, ServiceStatus.RECEIVING_BIDS])
+      .gt("expires_at", now)
+      .order("created_at", { ascending: false });
 
     if (error) {
-      throw new Error(`Error fetching available service requests: ${error.message}`);
+      throw new Error(
+        `Error fetching available service requests: ${error.message}`,
+      );
     }
 
-    return data.map(sr => this.mapToServiceRequest(sr));
+    return data.map((sr) => this.mapToServiceRequest(sr));
   }
 
   async findOne(id: string): Promise<ServiceRequest> {
     const supabase = this.supabaseService.getClient();
 
     const { data, error } = await supabase
-      .from('service_requests')
-      .select('*')
-      .eq('id', id)
+      .from("service_requests")
+      .select("*")
+      .eq("id", id)
       .single();
 
     if (error || !data) {
@@ -160,61 +186,78 @@ export class ServiceRequestsService {
     const supabase = this.supabaseService.getClient();
 
     const { data, error } = await supabase
-      .from('service_requests')
-      .select('*')
-      .eq('client_id', clientId)
-      .order('created_at', { ascending: false });
+      .from("service_requests")
+      .select("*")
+      .eq("client_id", clientId)
+      .order("created_at", { ascending: false });
 
     if (error) {
-      throw new Error(`Error fetching service requests by client: ${error.message}`);
+      throw new Error(
+        `Error fetching service requests by client: ${error.message}`,
+      );
     }
 
-    return data.map(sr => this.mapToServiceRequest(sr));
+    return data.map((sr) => this.mapToServiceRequest(sr));
   }
 
   async findByStatus(status: ServiceStatus): Promise<ServiceRequest[]> {
     const supabase = this.supabaseService.getClient();
 
     const { data, error } = await supabase
-      .from('service_requests')
-      .select('*')
-      .eq('status', status)
-      .order('created_at', { ascending: false });
+      .from("service_requests")
+      .select("*")
+      .eq("status", status)
+      .order("created_at", { ascending: false });
 
     if (error) {
-      throw new Error(`Error fetching service requests by status: ${error.message}`);
+      throw new Error(
+        `Error fetching service requests by status: ${error.message}`,
+      );
     }
 
-    return data.map(sr => this.mapToServiceRequest(sr));
+    return data.map((sr) => this.mapToServiceRequest(sr));
   }
 
   async update(
     id: string,
     updateDto: UpdateServiceRequestDto,
     userId: string,
-    isClient: boolean = true
+    isClient: boolean = true,
   ): Promise<ServiceRequest> {
     const request = await this.findOne(id);
 
     if (isClient && request.clientId !== userId) {
-      throw new ForbiddenException('No tienes permiso para actualizar esta solicitud');
+      throw new ForbiddenException(
+        "No tienes permiso para actualizar esta solicitud",
+      );
     }
 
-    if (request.status === ServiceStatus.COMPLETED || request.status === ServiceStatus.IN_PROGRESS) {
-      throw new BadRequestException('No se puede actualizar una solicitud en progreso o completada');
+    if (
+      request.status === ServiceStatus.COMPLETED ||
+      request.status === ServiceStatus.IN_PROGRESS
+    ) {
+      throw new BadRequestException(
+        "No se puede actualizar una solicitud en progreso o completada",
+      );
     }
 
     const supabase = this.supabaseService.getClient();
 
     const updateData: any = {};
     if (updateDto.description) updateData.description = updateDto.description;
-    if (updateDto.urgencyLevel) updateData.urgency_level = updateDto.urgencyLevel;
-    if (updateDto.budgetMin !== undefined) updateData.budget_min = updateDto.budgetMin;
-    if (updateDto.budgetMax !== undefined) updateData.budget_max = updateDto.budgetMax;
-    if (updateDto.preferredDate) updateData.preferred_date = updateDto.preferredDate;
-    if (updateDto.preferredTimeSlot) updateData.preferred_time_slot = updateDto.preferredTimeSlot;
-    if (updateDto.additionalNotes) updateData.additional_notes = updateDto.additionalNotes;
-    
+    if (updateDto.urgencyLevel)
+      updateData.urgency_level = updateDto.urgencyLevel;
+    if (updateDto.budgetMin !== undefined)
+      updateData.budget_min = updateDto.budgetMin;
+    if (updateDto.budgetMax !== undefined)
+      updateData.budget_max = updateDto.budgetMax;
+    if (updateDto.preferredDate)
+      updateData.preferred_date = updateDto.preferredDate;
+    if (updateDto.preferredTimeSlot)
+      updateData.preferred_time_slot = updateDto.preferredTimeSlot;
+    if (updateDto.additionalNotes)
+      updateData.additional_notes = updateDto.additionalNotes;
+
     if (updateDto.homeServiceDetails) {
       updateData.service_details = JSON.stringify(updateDto.homeServiceDetails);
     } else if (updateDto.towTruckDetails) {
@@ -226,13 +269,13 @@ export class ServiceRequestsService {
     } else if (updateDto.repairDetails) {
       updateData.service_details = JSON.stringify(updateDto.repairDetails);
     }
-    
+
     if (updateDto.status) updateData.status = updateDto.status;
 
     const { data, error } = await supabase
-      .from('service_requests')
+      .from("service_requests")
       .update(updateData)
-      .eq('id', id)
+      .eq("id", id)
       .select()
       .single();
 
@@ -243,33 +286,39 @@ export class ServiceRequestsService {
     return this.mapToServiceRequest(data);
   }
 
-  async acceptBid(serviceRequestId: string, bidId: string, clientId: string): Promise<ServiceRequest> {
+  async acceptBid(
+    serviceRequestId: string,
+    bidId: string,
+    clientId: string,
+  ): Promise<ServiceRequest> {
     const request = await this.findOne(serviceRequestId);
 
     if (request.clientId !== clientId) {
-      throw new ForbiddenException('No tienes permiso para aceptar ofertas en esta solicitud');
+      throw new ForbiddenException(
+        "No tienes permiso para aceptar ofertas en esta solicitud",
+      );
     }
 
     const supabase = this.supabaseService.getClient();
 
     const { data: bid, error: bidError } = await supabase
-      .from('service_bids')
-      .select('*')
-      .eq('id', bidId)
-      .eq('request_id', serviceRequestId)
+      .from("service_bids")
+      .select("*")
+      .eq("id", bidId)
+      .eq("request_id", serviceRequestId)
       .single();
 
     if (bidError || !bid) {
-      throw new NotFoundException('Oferta no encontrada');
+      throw new NotFoundException("Oferta no encontrada");
     }
 
     const { data: updatedRequest, error: updateError } = await supabase
-      .from('service_requests')
+      .from("service_requests")
       .update({
         status: ServiceStatus.BID_ACCEPTED,
         accepted_bid_id: bidId,
       })
-      .eq('id', serviceRequestId)
+      .eq("id", serviceRequestId)
       .select()
       .single();
 
@@ -278,32 +327,60 @@ export class ServiceRequestsService {
     }
 
     await supabase
-      .from('service_bids')
-      .update({ status: 'accepted' })
-      .eq('id', bidId);
+      .from("service_bids")
+      .update({ status: "accepted" })
+      .eq("id", bidId);
 
     await supabase
-      .from('service_bids')
-      .update({ status: 'rejected' })
-      .eq('request_id', serviceRequestId)
-      .neq('id', bidId);
+      .from("service_bids")
+      .update({ status: "rejected" })
+      .eq("request_id", serviceRequestId)
+      .neq("id", bidId);
+
+    // Notificar al proveedor que su oferta fue aceptada
+    const { data: clientData } = await supabase
+      .from("users")
+      .select("first_name, last_name")
+      .eq("id", clientId)
+      .single();
+
+    const clientName = clientData
+      ? `${clientData.first_name} ${clientData.last_name}`.trim()
+      : "Un cliente";
+
+    this.notificationsService
+      .notifyProviderBidAccepted(
+        bid.provider_id,
+        serviceRequestId,
+        clientName,
+        request.serviceType,
+      )
+      .catch((err) =>
+        console.error("Error notificando proveedor por oferta aceptada:", err),
+      );
 
     return this.mapToServiceRequest(updatedRequest);
   }
 
-  async updateStatus(id: string, status: ServiceStatus, userId: string): Promise<ServiceRequest> {
+  async updateStatus(
+    id: string,
+    status: ServiceStatus,
+    userId: string,
+  ): Promise<ServiceRequest> {
     const request = await this.findOne(id);
 
     if (status === ServiceStatus.CANCELLED && request.clientId !== userId) {
-      throw new ForbiddenException('Solo el cliente puede cancelar la solicitud');
+      throw new ForbiddenException(
+        "Solo el cliente puede cancelar la solicitud",
+      );
     }
 
     const supabase = this.supabaseService.getClient();
 
     const { data, error } = await supabase
-      .from('service_requests')
+      .from("service_requests")
       .update({ status })
-      .eq('id', id)
+      .eq("id", id)
       .select()
       .single();
 
@@ -318,19 +395,26 @@ export class ServiceRequestsService {
     const request = await this.findOne(id);
 
     if (request.clientId !== clientId) {
-      throw new ForbiddenException('No tienes permiso para eliminar esta solicitud');
+      throw new ForbiddenException(
+        "No tienes permiso para eliminar esta solicitud",
+      );
     }
 
-    if (request.status !== ServiceStatus.PENDING && request.status !== ServiceStatus.CANCELLED) {
-      throw new BadRequestException('Solo se pueden eliminar solicitudes pendientes o canceladas');
+    if (
+      request.status !== ServiceStatus.PENDING &&
+      request.status !== ServiceStatus.CANCELLED
+    ) {
+      throw new BadRequestException(
+        "Solo se pueden eliminar solicitudes pendientes o canceladas",
+      );
     }
 
     const supabase = this.supabaseService.getClient();
 
     const { error } = await supabase
-      .from('service_requests')
+      .from("service_requests")
       .delete()
-      .eq('id', id);
+      .eq("id", id);
 
     if (error) {
       throw new Error(`Error deleting service request: ${error.message}`);

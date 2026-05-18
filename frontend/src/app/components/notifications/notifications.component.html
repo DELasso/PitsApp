@@ -1,0 +1,103 @@
+<div class="notifications-wrapper" (click)="$event.stopPropagation()">
+    <!-- Botón campana -->
+    <button
+        class="notif-btn"
+        (click)="toggleDropdown()"
+        [class.active]="isOpen"
+        title="Notificaciones"
+    >
+        <fa-icon [icon]="faBell"></fa-icon>
+        <span *ngIf="unreadCount > 0" class="notif-badge">
+            {{ unreadCount > 99 ? "99+" : unreadCount }}
+        </span>
+    </button>
+
+    <!-- Dropdown -->
+    <div class="notif-dropdown" *ngIf="isOpen">
+        <!-- Cabecera -->
+        <div class="notif-header">
+            <h3>Notificaciones</h3>
+            <div class="header-actions">
+                <button
+                    *ngIf="unreadCount > 0"
+                    (click)="markAllAsRead()"
+                    class="header-btn"
+                    title="Marcar todas como leídas"
+                >
+                    <fa-icon [icon]="faCheckDouble"></fa-icon>
+                    <span>Marcar todas</span>
+                </button>
+                <button
+                    *ngIf="notifications.length > 0"
+                    (click)="deleteAll()"
+                    class="header-btn header-btn--danger"
+                    title="Eliminar todas las notificaciones"
+                >
+                    <fa-icon [icon]="faTrash"></fa-icon>
+                    <span>Limpiar</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Lista -->
+        <div class="notif-list">
+            <!-- Estado vacío -->
+            <div *ngIf="notifications.length === 0" class="notif-empty">
+                <fa-icon [icon]="faBell"></fa-icon>
+                <p>No tienes notificaciones</p>
+            </div>
+
+            <!-- Items de notificación -->
+            <div
+                *ngFor="let notif of notifications"
+                class="notif-item"
+                [class.unread]="!notif.isRead"
+                (click)="navigateTo(notif, $event)"
+                title="{{
+                    notif.type === 'new_service_request'
+                        ? 'Ver solicitud de servicio'
+                        : notif.type === 'bid_accepted'
+                          ? 'Ver servicio a realizar'
+                          : 'Ver ofertas recibidas'
+                }}"
+            >
+                <!-- Ícono del tipo -->
+                <div
+                    class="notif-icon"
+                    [class.type-service]="notif.type === 'new_service_request'"
+                    [class.type-bid]="notif.type === 'new_bid_received'"
+                    [class.type-accepted]="notif.type === 'bid_accepted'"
+                >
+                    <fa-icon [icon]="getNotificationIcon(notif.type)"></fa-icon>
+                </div>
+
+                <!-- Contenido -->
+                <div class="notif-content">
+                    <p class="notif-title">{{ notif.title }}</p>
+                    <p class="notif-message">{{ notif.message }}</p>
+                    <div class="notif-footer">
+                        <span class="notif-time">{{
+                            formatDate(notif.createdAt)
+                        }}</span>
+                        <span class="notif-cta">
+                            Ver detalle
+                            <fa-icon [icon]="faArrowRight"></fa-icon>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Acciones derechas -->
+                <div class="notif-actions">
+                    <span *ngIf="!notif.isRead" class="unread-dot"></span>
+                    <button
+                        class="delete-btn"
+                        (click)="deleteOne(notif, $event)"
+                        title="Eliminar notificación"
+                    >
+                        <fa-icon [icon]="faTrash"></fa-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

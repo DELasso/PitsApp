@@ -1,19 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowLeft, faCheck, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { ServiceRequestService } from '../../../services/service-request.service';
-import { ServiceType, VehicleType, UrgencyLevel } from '../../../models/service-request.model';
-import { AuthService } from '../../../services/auth.service';
+import { Component, OnInit, ElementRef } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { RouterModule, ActivatedRoute, Router } from "@angular/router";
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from "@angular/forms";
+import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import {
+  faArrowLeft,
+  faCheck,
+  faSpinner,
+} from "@fortawesome/free-solid-svg-icons";
+import { ServiceRequestService } from "../../../services/service-request.service";
+import {
+  ServiceType,
+  VehicleType,
+  UrgencyLevel,
+} from "../../../models/service-request.model";
+import { AuthService } from "../../../services/auth.service";
 
 @Component({
-  selector: 'app-service-request-form',
+  selector: "app-service-request-form",
   standalone: true,
   imports: [CommonModule, RouterModule, ReactiveFormsModule, FontAwesomeModule],
-  templateUrl: './service-request-form.component.html',
-  styleUrls: ['./service-request-form.component.scss']
+  templateUrl: "./service-request-form.component.html",
+  styleUrls: ["./service-request-form.component.scss"],
 })
 export class ServiceRequestFormComponent implements OnInit {
   faArrowLeft = faArrowLeft;
@@ -23,8 +36,8 @@ export class ServiceRequestFormComponent implements OnInit {
   serviceType!: ServiceType;
   serviceForm!: FormGroup;
   isSubmitting = false;
-  errorMessage = '';
-  successMessage = '';
+  errorMessage = "";
+  successMessage = "";
   vehicleInfoLoaded = false;
 
   ServiceType = ServiceType;
@@ -35,15 +48,15 @@ export class ServiceRequestFormComponent implements OnInit {
   urgencyLevels = Object.values(UrgencyLevel);
 
   serviceTypeLabels: Record<ServiceType, string> = {
-    [ServiceType.HOME_SERVICE]: 'Servicio a Domicilio',
-    [ServiceType.TOW_TRUCK]: 'Grúa y Remolque',
-    [ServiceType.EXPRESS_OIL_CHANGE]: 'Cambio de Aceite Express',
-    [ServiceType.MECHANICAL_DIAGNOSIS]: 'Diagnóstico Mecánico',
-    [ServiceType.SPECIFIC_REPAIR]: 'Reparación Específica',
-    [ServiceType.EMERGENCY_SERVICE]: 'Servicio de Emergencia',
-    [ServiceType.TIRE_CHANGE]: 'Cambio de Llantas',
-    [ServiceType.BATTERY_SERVICE]: 'Servicio de Batería',
-    [ServiceType.OTHER]: 'Otro Servicio'
+    [ServiceType.HOME_SERVICE]: "Servicio a Domicilio",
+    [ServiceType.TOW_TRUCK]: "Grúa y Remolque",
+    [ServiceType.EXPRESS_OIL_CHANGE]: "Cambio de Aceite Express",
+    [ServiceType.MECHANICAL_DIAGNOSIS]: "Diagnóstico Mecánico",
+    [ServiceType.SPECIFIC_REPAIR]: "Reparación Específica",
+    [ServiceType.EMERGENCY_SERVICE]: "Servicio de Emergencia",
+    [ServiceType.TIRE_CHANGE]: "Cambio de Llantas",
+    [ServiceType.BATTERY_SERVICE]: "Servicio de Batería",
+    [ServiceType.OTHER]: "Otro Servicio",
   };
 
   constructor(
@@ -51,11 +64,12 @@ export class ServiceRequestFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private serviceRequestService: ServiceRequestService,
-    private authService: AuthService
+    private authService: AuthService,
+    private el: ElementRef,
   ) {}
 
   ngOnInit(): void {
-    this.serviceType = this.route.snapshot.paramMap.get('type') as ServiceType;
+    this.serviceType = this.route.snapshot.paramMap.get("type") as ServiceType;
     this.initializeForm();
     this.loadUserVehicleInfo();
   }
@@ -65,10 +79,10 @@ export class ServiceRequestFormComponent implements OnInit {
     if (currentUser?.vehicleInfo) {
       const vehicle = currentUser.vehicleInfo;
       this.serviceForm.patchValue({
-        vehicleBrand: vehicle.brand || '',
-        vehicleModel: vehicle.model || '',
-        vehicleYear: vehicle.year || '',
-        vehiclePlate: vehicle.plate || ''
+        vehicleBrand: vehicle.brand || "",
+        vehicleModel: vehicle.model || "",
+        vehicleYear: vehicle.year || "",
+        vehiclePlate: vehicle.plate || "",
       });
       this.vehicleInfoLoaded = true;
     }
@@ -78,24 +92,26 @@ export class ServiceRequestFormComponent implements OnInit {
     // Formulario base
     this.serviceForm = this.fb.group({
       // Información del vehículo
-      vehicleType: ['', Validators.required],
-      vehicleBrand: [''],
-      vehicleModel: [''],
-      vehicleYear: [''],
-      vehiclePlate: [''],
+      vehicleType: ["", Validators.required],
+      vehicleBrand: [""],
+      vehicleModel: [""],
+      vehicleYear: [""],
+      vehiclePlate: [""],
 
       // Detalles generales
-      description: ['', [
-        Validators.required, 
-        Validators.minLength(10),
-        Validators.maxLength(500)
-      ]],
-      urgencyLevel: ['medium', Validators.required],
-      budgetMin: [''],
-      budgetMax: [''],
-      preferredDate: [''],
-      preferredTimeSlot: ['flexible'],
-      additionalNotes: ['']
+      description: [
+        "",
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(500),
+        ],
+      ],
+      urgencyLevel: ["medium", Validators.required],
+      budgetMin: [""],
+      budgetMax: [""],
+      preferredDate: [""],
+      preferredTimeSlot: ["flexible"],
     });
 
     // Agregar campos específicos según el tipo de servicio
@@ -123,105 +139,133 @@ export class ServiceRequestFormComponent implements OnInit {
   }
 
   addHomeServiceFields(): void {
-    this.serviceForm.addControl('address', this.fb.control('', [
-      Validators.required,
-      Validators.minLength(5),
-      Validators.maxLength(150)
-    ]));
-    this.serviceForm.addControl('city', this.fb.control('Medellín', [
-      Validators.required,
-      Validators.minLength(2)
-    ]));
-    this.serviceForm.addControl('neighborhood', this.fb.control(''));
-    this.serviceForm.addControl('unitType', this.fb.control('house'));
-    this.serviceForm.addControl('unitNumber', this.fb.control(''));
-    this.serviceForm.addControl('floor', this.fb.control(''));
-    this.serviceForm.addControl('additionalDirections', this.fb.control(''));
-    this.serviceForm.addControl('hasParking', this.fb.control(true));
+    this.serviceForm.addControl(
+      "address",
+      this.fb.control("", [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(150),
+      ]),
+    );
+    this.serviceForm.addControl(
+      "city",
+      this.fb.control("Medellín", [
+        Validators.required,
+        Validators.minLength(2),
+      ]),
+    );
+    this.serviceForm.addControl("neighborhood", this.fb.control(""));
+    this.serviceForm.addControl("unitType", this.fb.control("house"));
+    this.serviceForm.addControl("unitNumber", this.fb.control(""));
+    this.serviceForm.addControl("floor", this.fb.control(""));
+    this.serviceForm.addControl("additionalDirections", this.fb.control(""));
+    this.serviceForm.addControl("hasParking", this.fb.control(true));
   }
 
   addTowTruckFields(): void {
-    this.serviceForm.addControl('pickupAddress', this.fb.control('', [
-      Validators.required,
-      Validators.minLength(5),
-      Validators.maxLength(150)
-    ]));
-    this.serviceForm.addControl('pickupCity', this.fb.control('Medellín', [
-      Validators.required,
-      Validators.minLength(2)
-    ]));
-    this.serviceForm.addControl('deliveryAddress', this.fb.control('', [
-      Validators.required,
-      Validators.minLength(5),
-      Validators.maxLength(150)
-    ]));
-    this.serviceForm.addControl('deliveryCity', this.fb.control('Medellín', [
-      Validators.required,
-      Validators.minLength(2)
-    ]));
-    this.serviceForm.addControl('estimatedDistance', this.fb.control(''));
-    this.serviceForm.addControl('vehicleCondition', this.fb.control('not_running', Validators.required));
-    this.serviceForm.addControl('needsFlatbed', this.fb.control(false));
-    this.serviceForm.addControl('towAdditionalInfo', this.fb.control(''));
+    this.serviceForm.addControl(
+      "pickupAddress",
+      this.fb.control("", [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(150),
+      ]),
+    );
+    this.serviceForm.addControl(
+      "pickupCity",
+      this.fb.control("Medellín", [
+        Validators.required,
+        Validators.minLength(2),
+      ]),
+    );
+    this.serviceForm.addControl(
+      "deliveryAddress",
+      this.fb.control("", [
+        Validators.required,
+        Validators.minLength(5),
+        Validators.maxLength(150),
+      ]),
+    );
+    this.serviceForm.addControl(
+      "deliveryCity",
+      this.fb.control("Medellín", [
+        Validators.required,
+        Validators.minLength(2),
+      ]),
+    );
+    this.serviceForm.addControl("estimatedDistance", this.fb.control(""));
+    this.serviceForm.addControl(
+      "vehicleCondition",
+      this.fb.control("not_running", Validators.required),
+    );
+    this.serviceForm.addControl("needsFlatbed", this.fb.control(false));
+    this.serviceForm.addControl("towAdditionalInfo", this.fb.control(""));
   }
 
   addOilChangeFields(): void {
-    this.serviceForm.addControl('currentMileage', this.fb.control('', [Validators.required, Validators.min(0)]));
-    this.serviceForm.addControl('lastOilChange', this.fb.control(''));
-    this.serviceForm.addControl('preferredOilBrand', this.fb.control(''));
-    this.serviceForm.addControl('oilType', this.fb.control('synthetic'));
-    this.serviceForm.addControl('includeFilter', this.fb.control(true));
-    this.serviceForm.addControl('additionalServices', this.fb.control([]));
+    this.serviceForm.addControl(
+      "currentMileage",
+      this.fb.control("", [Validators.required, Validators.min(0)]),
+    );
+    this.serviceForm.addControl("lastOilChange", this.fb.control(""));
+    this.serviceForm.addControl("preferredOilBrand", this.fb.control(""));
+    this.serviceForm.addControl("oilType", this.fb.control("synthetic"));
+    this.serviceForm.addControl("includeFilter", this.fb.control(true));
+    this.serviceForm.addControl("additionalServices", this.fb.control([]));
   }
 
   addDiagnosisFields(): void {
-    this.serviceForm.addControl('symptoms', this.fb.control('', [
-      Validators.required, 
-      Validators.minLength(20),
-      Validators.maxLength(500)
-    ]));
-    this.serviceForm.addControl('whenStarted', this.fb.control(''));
-    this.serviceForm.addControl('warningLights', this.fb.control([]));
-    this.serviceForm.addControl('recentRepairs', this.fb.control(''));
-    this.serviceForm.addControl('needsScanner', this.fb.control(false));
+    this.serviceForm.addControl(
+      "symptoms",
+      this.fb.control("", [
+        Validators.required,
+        Validators.minLength(20),
+        Validators.maxLength(500),
+      ]),
+    );
+    this.serviceForm.addControl("whenStarted", this.fb.control(""));
+    this.serviceForm.addControl("warningLights", this.fb.control([]));
+    this.serviceForm.addControl("recentRepairs", this.fb.control(""));
+    this.serviceForm.addControl("needsScanner", this.fb.control(false));
   }
 
   addRepairFields(): void {
-    this.serviceForm.addControl('problemDescription', this.fb.control('', [
-      Validators.required, 
-      Validators.minLength(20),
-      Validators.maxLength(500)
-    ]));
-    this.serviceForm.addControl('affectedParts', this.fb.control([]));
-    this.serviceForm.addControl('previousDiagnosis', this.fb.control(''));
-    this.serviceForm.addControl('hasWarranty', this.fb.control(false));
-    this.serviceForm.addControl('preferredParts', this.fb.control('original'));
+    this.serviceForm.addControl("previousDiagnosis", this.fb.control(""));
+    this.serviceForm.addControl("hasWarranty", this.fb.control(false));
+    this.serviceForm.addControl("preferredParts", this.fb.control("original"));
   }
 
   onSubmit(): void {
     if (this.serviceForm.invalid) {
       this.markFormGroupTouched(this.serviceForm);
-      this.errorMessage = 'Por favor completa todos los campos requeridos';
+      const firstInvalidField = this.getFirstInvalidFieldLabel();
+      this.errorMessage = firstInvalidField
+        ? `El campo "${firstInvalidField}" es obligatorio o tiene un error. Por favor revísalo.`
+        : "Por favor completa todos los campos requeridos.";
+      this.scrollToFirstError();
       return;
     }
 
     this.isSubmitting = true;
-    this.errorMessage = '';
+    this.errorMessage = "";
 
     const formData = this.prepareFormData();
 
     this.serviceRequestService.create(formData).subscribe({
       next: (response) => {
-        this.successMessage = '¡Solicitud creada exitosamente! Pronto recibirás ofertas.';
+        this.successMessage =
+          "¡Solicitud creada exitosamente! Pronto recibirás ofertas.";
         setTimeout(() => {
-          this.router.navigate(['/servicios/mis-solicitudes']);
+          this.router.navigate(["/servicios/mis-solicitudes"]);
         }, 2000);
       },
       error: (error) => {
-        console.error('Error creating service request:', error);
-        this.errorMessage = error.error?.message || 'Error al crear la solicitud. Intenta nuevamente.';
+        console.error("Error creating service request:", error);
+        this.errorMessage =
+          error.error?.message ||
+          "Error al crear la solicitud. Intenta nuevamente.";
         this.isSubmitting = false;
-      }
+      },
     });
   }
 
@@ -232,15 +276,20 @@ export class ServiceRequestFormComponent implements OnInit {
       vehicleType: formValue.vehicleType,
       vehicleBrand: formValue.vehicleBrand,
       vehicleModel: formValue.vehicleModel,
-      vehicleYear: formValue.vehicleYear ? parseInt(formValue.vehicleYear) : undefined,
+      vehicleYear: formValue.vehicleYear
+        ? parseInt(formValue.vehicleYear)
+        : undefined,
       vehiclePlate: formValue.vehiclePlate,
       description: formValue.description,
       urgencyLevel: formValue.urgencyLevel,
-      budgetMin: formValue.budgetMin ? parseFloat(formValue.budgetMin) : undefined,
-      budgetMax: formValue.budgetMax ? parseFloat(formValue.budgetMax) : undefined,
+      budgetMin: formValue.budgetMin
+        ? parseFloat(formValue.budgetMin)
+        : undefined,
+      budgetMax: formValue.budgetMax
+        ? parseFloat(formValue.budgetMax)
+        : undefined,
       preferredDate: formValue.preferredDate,
       preferredTimeSlot: formValue.preferredTimeSlot,
-      additionalNotes: formValue.additionalNotes
     };
 
     // Agregar detalles específicos según el tipo
@@ -254,7 +303,7 @@ export class ServiceRequestFormComponent implements OnInit {
           unitNumber: formValue.unitNumber,
           floor: formValue.floor,
           additionalDirections: formValue.additionalDirections,
-          hasParking: formValue.hasParking
+          hasParking: formValue.hasParking,
         };
         break;
 
@@ -264,21 +313,25 @@ export class ServiceRequestFormComponent implements OnInit {
           pickupCity: formValue.pickupCity,
           deliveryAddress: formValue.deliveryAddress,
           deliveryCity: formValue.deliveryCity,
-          estimatedDistance: formValue.estimatedDistance ? parseFloat(formValue.estimatedDistance) : undefined,
+          estimatedDistance: formValue.estimatedDistance
+            ? parseFloat(formValue.estimatedDistance)
+            : undefined,
           vehicleCondition: formValue.vehicleCondition,
           needsFlatbed: formValue.needsFlatbed,
-          additionalInfo: formValue.towAdditionalInfo
+          additionalInfo: formValue.towAdditionalInfo,
         };
         break;
 
       case ServiceType.EXPRESS_OIL_CHANGE:
         data.oilChangeDetails = {
           currentMileage: parseFloat(formValue.currentMileage),
-          lastOilChange: formValue.lastOilChange ? parseFloat(formValue.lastOilChange) : undefined,
+          lastOilChange: formValue.lastOilChange
+            ? parseFloat(formValue.lastOilChange)
+            : undefined,
           preferredOilBrand: formValue.preferredOilBrand,
           oilType: formValue.oilType,
           includeFilter: formValue.includeFilter,
-          additionalServices: formValue.additionalServices
+          additionalServices: formValue.additionalServices,
         };
         break;
 
@@ -288,17 +341,15 @@ export class ServiceRequestFormComponent implements OnInit {
           whenStarted: formValue.whenStarted,
           warningLights: formValue.warningLights,
           recentRepairs: formValue.recentRepairs,
-          needsScanner: formValue.needsScanner
+          needsScanner: formValue.needsScanner,
         };
         break;
 
       case ServiceType.SPECIFIC_REPAIR:
         data.repairDetails = {
-          problemDescription: formValue.problemDescription,
-          affectedParts: formValue.affectedParts,
           previousDiagnosis: formValue.previousDiagnosis,
           hasWarranty: formValue.hasWarranty,
-          preferredParts: formValue.preferredParts
+          preferredParts: formValue.preferredParts,
         };
         break;
     }
@@ -307,71 +358,182 @@ export class ServiceRequestFormComponent implements OnInit {
   }
 
   private markFormGroupTouched(formGroup: FormGroup): void {
-    Object.keys(formGroup.controls).forEach(key => {
+    Object.keys(formGroup.controls).forEach((key) => {
       const control = formGroup.get(key);
       control?.markAsTouched();
     });
   }
 
+  private fieldLabels: Record<string, string> = {
+    vehicleType: "Tipo de Vehículo",
+    address: "Dirección",
+    city: "Ciudad",
+    pickupAddress: "Dirección de Recogida",
+    pickupCity: "Ciudad de Recogida",
+    deliveryAddress: "Dirección de Entrega",
+    deliveryCity: "Ciudad de Entrega",
+    vehicleCondition: "Condición del Vehículo",
+    currentMileage: "Kilometraje Actual",
+    symptoms: "Síntomas",
+    description: "Descripción General",
+  };
+
+  private getFirstInvalidFieldLabel(): string | null {
+    const fieldOrder = [
+      "vehicleType",
+      "address",
+      "city",
+      "pickupAddress",
+      "pickupCity",
+      "deliveryAddress",
+      "deliveryCity",
+      "vehicleCondition",
+      "currentMileage",
+      "symptoms",
+      "description",
+    ];
+    for (const field of fieldOrder) {
+      if (this.serviceForm.get(field)?.invalid) {
+        return this.fieldLabels[field] ?? field;
+      }
+    }
+    // Cualquier otro campo inválido
+    const key = Object.keys(this.serviceForm.controls).find(
+      (k) => this.serviceForm.get(k)?.invalid,
+    );
+    return key ? (this.fieldLabels[key] ?? key) : null;
+  }
+
+  private scrollToFirstError(): void {
+    // Orden de campos para seguir la secuencia visual del formulario
+    const fieldOrder = [
+      // Vehículo
+      "vehicleType",
+      // Servicio a domicilio
+      "address",
+      "city",
+      // Grúa
+      "pickupAddress",
+      "pickupCity",
+      "deliveryAddress",
+      "deliveryCity",
+      "vehicleCondition",
+      // Cambio de aceite
+      "currentMileage",
+      // Diagnóstico
+      "symptoms",
+      // Descripción general (aplica a todos)
+      "description",
+      // Presupuesto
+      "budgetMin",
+      "budgetMax",
+      "preferredDate",
+    ];
+
+    // Buscar el primer campo con error según el orden visual
+    for (const field of fieldOrder) {
+      const control = this.serviceForm.get(field);
+      if (control && control.invalid) {
+        this.focusField(field);
+        return;
+      }
+    }
+
+    // Si el campo con error no está en el orden predefinido, buscar cualquiera
+    const invalidKey = Object.keys(this.serviceForm.controls).find(
+      (key) => this.serviceForm.get(key)?.invalid,
+    );
+    if (invalidKey) {
+      this.focusField(invalidKey);
+    }
+  }
+
+  private focusField(fieldName: string): void {
+    // Buscar por id del campo
+    const el = this.el.nativeElement.querySelector(`#${fieldName}`);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(() => el.focus(), 300);
+      return;
+    }
+    // Si no tiene id, buscar por formControlName
+    const elByAttr = this.el.nativeElement.querySelector(
+      `[formcontrolname="${fieldName}"]`,
+    );
+    if (elByAttr) {
+      elByAttr.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTimeout(() => elByAttr.focus(), 300);
+    }
+  }
+
   getErrorMessage(fieldName: string): string {
     const control = this.serviceForm.get(fieldName);
-    if (!control || !control.errors) return '';
+    if (!control || !control.errors) return "";
 
     const errors = control.errors;
 
     // Mensajes específicos por tipo de error
     switch (fieldName) {
-      case 'vehicleType':
-        if (errors['required']) return 'El tipo de vehículo es obligatorio';
+      case "vehicleType":
+        if (errors["required"]) return "El tipo de vehículo es obligatorio";
         break;
-      case 'address':
-        if (errors['required']) return 'La dirección es obligatoria';
-        if (errors['minlength']) return `La dirección debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
-        if (errors['maxlength']) return `La dirección no puede exceder ${errors['maxlength'].requiredLength} caracteres`;
+      case "address":
+        if (errors["required"]) return "La dirección es obligatoria";
+        if (errors["minlength"])
+          return `La dirección debe tener al menos ${errors["minlength"].requiredLength} caracteres`;
+        if (errors["maxlength"])
+          return `La dirección no puede exceder ${errors["maxlength"].requiredLength} caracteres`;
         break;
-      case 'city':
-        if (errors['required']) return 'La ciudad es obligatoria';
-        if (errors['minlength']) return `La ciudad debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+      case "city":
+        if (errors["required"]) return "La ciudad es obligatoria";
+        if (errors["minlength"])
+          return `La ciudad debe tener al menos ${errors["minlength"].requiredLength} caracteres`;
         break;
-      case 'pickupAddress':
-        if (errors['required']) return 'La dirección de recogida es obligatoria';
-        if (errors['minlength']) return `Debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+      case "pickupAddress":
+        if (errors["required"])
+          return "La dirección de recogida es obligatoria";
+        if (errors["minlength"])
+          return `Debe tener al menos ${errors["minlength"].requiredLength} caracteres`;
         break;
-      case 'deliveryAddress':
-        if (errors['required']) return 'La dirección de entrega es obligatoria';
-        if (errors['minlength']) return `Debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+      case "deliveryAddress":
+        if (errors["required"]) return "La dirección de entrega es obligatoria";
+        if (errors["minlength"])
+          return `Debe tener al menos ${errors["minlength"].requiredLength} caracteres`;
         break;
-      case 'pickupCity':
-        if (errors['required']) return 'La ciudad de recogida es obligatoria';
+      case "pickupCity":
+        if (errors["required"]) return "La ciudad de recogida es obligatoria";
         break;
-      case 'deliveryCity':
-        if (errors['required']) return 'La ciudad de entrega es obligatoria';
+      case "deliveryCity":
+        if (errors["required"]) return "La ciudad de entrega es obligatoria";
         break;
-      case 'vehicleCondition':
-        if (errors['required']) return 'La condición del vehículo es obligatoria';
+      case "vehicleCondition":
+        if (errors["required"])
+          return "La condición del vehículo es obligatoria";
         break;
-      case 'currentMileage':
-        if (errors['required']) return 'El kilometraje actual es obligatorio';
-        if (errors['min']) return 'El kilometraje debe ser mayor o igual a 0';
-        if (errors['max']) return 'El kilometraje no puede exceder 1,000,000 km';
+      case "currentMileage":
+        if (errors["required"]) return "El kilometraje actual es obligatorio";
+        if (errors["min"]) return "El kilometraje debe ser mayor o igual a 0";
+        if (errors["max"])
+          return "El kilometraje no puede exceder 1,000,000 km";
         break;
-      case 'symptoms':
-        if (errors['required']) return 'La descripción de síntomas es obligatoria';
-        if (errors['minlength']) return `Los síntomas deben tener al menos ${errors['minlength'].requiredLength} caracteres`;
-        if (errors['maxlength']) return `No pueden exceder ${errors['maxlength'].requiredLength} caracteres`;
+      case "symptoms":
+        if (errors["required"])
+          return "La descripción de síntomas es obligatoria";
+        if (errors["minlength"])
+          return `Los síntomas deben tener al menos ${errors["minlength"].requiredLength} caracteres`;
+        if (errors["maxlength"])
+          return `No pueden exceder ${errors["maxlength"].requiredLength} caracteres`;
         break;
-      case 'problemDescription':
-        if (errors['required']) return 'La descripción del problema es obligatoria';
-        if (errors['minlength']) return `Debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
-        if (errors['maxlength']) return `No puede exceder ${errors['maxlength'].requiredLength} caracteres`;
-        break;
-      case 'description':
-        if (errors['required']) return 'La descripción del servicio es obligatoria';
-        if (errors['minlength']) return `Debe tener al menos ${errors['minlength'].requiredLength} caracteres`;
+
+      case "description":
+        if (errors["required"])
+          return "La descripción del servicio es obligatoria";
+        if (errors["minlength"])
+          return `Debe tener al menos ${errors["minlength"].requiredLength} caracteres`;
         break;
     }
 
-    return 'Este campo tiene un error';
+    return "Este campo tiene un error";
   }
 
   hasError(fieldName: string): boolean {
@@ -382,15 +544,18 @@ export class ServiceRequestFormComponent implements OnInit {
   isFieldRequired(fieldName: string): boolean {
     const control = this.serviceForm.get(fieldName);
     if (!control || !control.validator) return false;
-    
+
     const validator = control.validator({} as any);
-    return !!(validator && validator['required']);
+    return !!(validator && validator["required"]);
   }
 
-  getFieldCharacterCount(fieldName: string): { current: number; max: number | null } {
+  getFieldCharacterCount(fieldName: string): {
+    current: number;
+    max: number | null;
+  } {
     const control = this.serviceForm.get(fieldName);
-    const value = control?.value || '';
-    
+    const value = control?.value || "";
+
     const maxLengths: { [key: string]: number } = {
       address: 150,
       pickupAddress: 150,
@@ -401,16 +566,16 @@ export class ServiceRequestFormComponent implements OnInit {
       additionalDirections: 300,
       towAdditionalInfo: 500,
       recentRepairs: 300,
-      previousDiagnosis: 300
+      previousDiagnosis: 300,
     };
 
     return {
       current: value.length,
-      max: maxLengths[fieldName] || null
+      max: maxLengths[fieldName] || null,
     };
   }
 
   goBack(): void {
-    this.router.navigate(['/services']);
+    this.router.navigate(["/services"]);
   }
 }
