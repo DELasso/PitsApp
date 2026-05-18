@@ -36,7 +36,7 @@ export class AiChatComponent implements OnInit, AfterViewChecked {
   }
 
   ngAfterViewChecked(): void {
-    if (this.shouldScroll) {
+    if (this.shouldScroll && this.isOpen) {
       this.scrollToBottom();
       this.shouldScroll = false;
     }
@@ -92,11 +92,12 @@ export class AiChatComponent implements OnInit, AfterViewChecked {
   }
 
   private scrollToBottom(): void {
+    if (!this.messagesContainer?.nativeElement) return;
     try {
       this.messagesContainer.nativeElement.scrollTop =
         this.messagesContainer.nativeElement.scrollHeight;
     } catch (err) {
-      console.error("Error al hacer scroll:", err);
+      // El contenedor puede no estar en el DOM si el chat está cerrado
     }
   }
 

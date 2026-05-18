@@ -23,3 +23,13 @@ services:
         sync: false
       - key: FRONTEND_URLS
         sync: false
+      - key: LC_PROVIDER
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: LC_MODEL
+        sync: false
+      - key: LC_TEMPERATURE
+        sync: false
+      - key: LC_MAX_TOKENS
+        sync: false
