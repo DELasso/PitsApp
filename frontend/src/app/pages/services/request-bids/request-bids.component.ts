@@ -18,6 +18,7 @@ import { ServiceRequestService } from '../../../services/service-request.service
 import { BidService } from '../../../services/bid.service';
 import { ServiceRequest } from '../../../models/service-request.model';
 import { Bid, BidStatus } from '../../../models/bid.model';
+import { UiService } from '../../../services/ui.service';
 
 @Component({
   selector: 'app-request-bids',
@@ -61,7 +62,8 @@ export class RequestBidsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private serviceRequestService: ServiceRequestService,
-    private bidService: BidService
+    private bidService: BidService,
+    private ui: UiService
   ) {}
 
   ngOnInit(): void {
@@ -123,21 +125,27 @@ export class RequestBidsComponent implements OnInit {
     });
   }
 
-  acceptBid(bid: Bid): void {
-    if (!confirm(`¿Estás seguro de aceptar la oferta de ${bid.providerName} por ${this.formatCurrency(bid.totalAmount)}?`)) {
-      return;
-    }
+  async acceptBid(bid: Bid): Promise<void> {
+    const confirmed = await this.ui.confirm({
+      title: 'Aceptar oferta',
+      message: `¿Deseas aceptar la oferta de ${bid.providerName} por ${this.formatCurrency(bid.totalAmount)}?`,
+      confirmText: 'Aceptar',
+      cancelText: 'Cancelar',
+      variant: 'primary'
+    });
+
+    if (!confirmed) return;
 
     this.isAccepting = true;
     this.serviceRequestService.acceptBid(this.serviceRequestId, bid.id).subscribe({
       next: (updatedRequest) => {
-        alert('¡Oferta aceptada exitosamente!');
+        this.ui.success('¡Oferta aceptada exitosamente!');
         this.loadData(); // Recargar datos
         this.isAccepting = false;
       },
       error: (error) => {
         console.error('Error accepting bid:', error);
-        alert('Error al aceptar la oferta. Intenta nuevamente.');
+        this.ui.error('Error al aceptar la oferta. Intenta nuevamente.');
         this.isAccepting = false;
       }
     });

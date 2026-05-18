@@ -13,6 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { ServiceRequestService } from '../../../services/service-request.service';
 import { ServiceRequest, ServiceStatus } from '../../../models/service-request.model';
+import { UiService } from '../../../services/ui.service';
 
 @Component({
   selector: 'app-my-requests',
@@ -57,7 +58,8 @@ export class MyRequestsComponent implements OnInit {
 
   constructor(
     private serviceRequestService: ServiceRequestService,
-    private router: Router
+    private router: Router,
+    private ui: UiService
   ) {}
 
   ngOnInit(): void {
@@ -85,18 +87,27 @@ export class MyRequestsComponent implements OnInit {
     this.router.navigate(['/servicios/solicitud', requestId, 'ofertas']);
   }
 
-  deleteRequest(id: string): void {
-    if (confirm('¿Estás seguro de que quieres eliminar esta solicitud?')) {
-      this.serviceRequestService.delete(id).subscribe({
-        next: () => {
-          this.loadMyRequests();
-        },
-        error: (error) => {
-          console.error('Error deleting request:', error);
-          alert('Error al eliminar la solicitud');
-        }
-      });
-    }
+  async deleteRequest(id: string): Promise<void> {
+    const confirmed = await this.ui.confirm({
+      title: 'Eliminar solicitud',
+      message: '¿Deseas eliminar esta solicitud? Esta acción no se puede deshacer.',
+      confirmText: 'Eliminar',
+      cancelText: 'Cancelar',
+      variant: 'danger'
+    });
+
+    if (!confirmed) return;
+
+    this.serviceRequestService.delete(id).subscribe({
+      next: () => {
+        this.ui.success('Solicitud eliminada correctamente');
+        this.loadMyRequests();
+      },
+      error: (error) => {
+        console.error('Error deleting request:', error);
+        this.ui.error('Error al eliminar la solicitud');
+      }
+    });
   }
 
   getStatusIcon(status: ServiceStatus | string): any {

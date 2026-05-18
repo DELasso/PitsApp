@@ -11,6 +11,7 @@ import { FileUploadService } from '../../services/file-upload.service';
 import { Cart } from '../../models/cart.model';
 import { PaymentMethod, CustomerInfo, ShippingAddress, CheckoutData } from '../../models/checkout.model';
 import { OrderSummary } from '../../models/order.model';
+import { UiService } from '../../services/ui.service';
 
 @Component({
   selector: 'app-checkout',
@@ -87,7 +88,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private orderService: OrderService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
+    private ui: UiService
   ) {
     this.initializeForm();
   }
@@ -264,7 +266,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   async processOrder(): Promise<void> {
     if (!this.checkoutForm.valid || !this.selectedPaymentMethod || !this.cart) {
-      alert('Por favor, completa todos los campos requeridos');
+      this.ui.warning('Por favor, completa todos los campos requeridos');
       return;
     }
 
@@ -286,14 +288,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error('Error al crear la orden:', error);
-          alert('Hubo un error al procesar tu pedido. Por favor, intenta nuevamente.');
+          this.ui.error('Hubo un error al procesar tu pedido. Por favor, intenta nuevamente.');
           this.isProcessing = false;
         }
       });
 
     } catch (error) {
       console.error('Error al procesar la orden:', error);
-      alert('Hubo un error al procesar tu pedido. Por favor, intenta nuevamente.');
+      this.ui.error('Hubo un error al procesar tu pedido. Por favor, intenta nuevamente.');
       this.isProcessing = false;
     }
   }

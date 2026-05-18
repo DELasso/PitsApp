@@ -38,6 +38,14 @@ div {
     font-size: 1.1rem;
     color: var(--text-secondary);
   }
+
+  .header-actions {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }
 
 .search-section {
@@ -283,6 +291,13 @@ div {
     justify-content: space-between;
     align-items: flex-end;
     gap: 1rem;
+  }
+
+  .provider-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
   
   .price-section {

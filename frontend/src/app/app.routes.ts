@@ -142,6 +142,24 @@ export const routes: Routes = [
     canActivate: [ProviderGuard]
   },
   {
+    path: 'provider/repuestos',
+    loadComponent: () => import('./pages/parts/parts.component').then(m => m.PartsComponent),
+    canActivate: [BusinessTypeGuard],
+    data: { businessType: BusinessType.VENTA_REPUESTOS }
+  },
+  {
+    path: 'provider/repuestos/crear',
+    loadComponent: () => import('./pages/parts/part-form.component').then(m => m.PartFormComponent),
+    canActivate: [BusinessTypeGuard],
+    data: { businessType: BusinessType.VENTA_REPUESTOS }
+  },
+  {
+    path: 'provider/repuestos/editar/:id',
+    loadComponent: () => import('./pages/parts/part-form.component').then(m => m.PartFormComponent),
+    canActivate: [BusinessTypeGuard],
+    data: { businessType: BusinessType.VENTA_REPUESTOS }
+  },
+  {
     path: 'parts',
     loadComponent: () => import('./pages/parts/parts.component').then(m => m.PartsComponent)
   },

@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, Subscription, filter } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Part, PartCondition } from '../../models/part.model';
 import { PartsService } from '../../services/parts.service';
@@ -11,6 +11,7 @@ import { FileUploadService } from '../../services/file-upload.service';
 import { CartSummary } from '../../models/cart.model';
 import { AuthService } from '../../services/auth.service';
 import { User, UserRole } from '../../models/auth.model';
+import { UiService } from '../../services/ui.service';
 
 @Component({
   selector: 'app-parts',
@@ -27,6 +28,8 @@ export class PartsComponent implements OnInit, OnDestroy {
   loading = false;
   error: string | null = null;
   currentUser: User | null = null;
+  isProviderView = false;
+  private routerSubscription?: Subscription;
   
   categories = [
     { name: 'Frenos', icon: 'fa-solid fa-car-on', count: 0 },
@@ -68,28 +71,52 @@ export class PartsComponent implements OnInit, OnDestroy {
     private partsService: PartsService,
     private cartService: CartService,
     private authService: AuthService,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private ui: UiService
   ) {}
 
   ngOnInit(): void {
     // Obtener usuario actual
     this.currentUser = this.authService.getCurrentUser();
     
+    this.isProviderView = this.route.snapshot.url.some(s => s.path === 'provider' || s.path === 'repuestos');
+    this.route.url.subscribe(segments => {
+      this.isProviderView = segments.some(s => s.path === 'provider' || s.path === 'repuestos');
+    });
+
     this.loadParts();
-    this.loadCartSummary();
+    if (!this.isProviderView) {
+      this.loadCartSummary();
+    }
+
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        if (event.urlAfterRedirects === '/parts' || event.urlAfterRedirects === '/provider/repuestos') {
+          this.loadParts();
+        }
+      });
   }
 
   ngOnDestroy(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  private loadParts(): void {
+  loadParts(): void {
     this.loading = true;
     this.error = null;
     
-    // Siempre mostrar todos los repuestos disponibles
-    this.partsService.getParts()
+    const partsRequest = this.isProviderView && this.currentUser?.role === UserRole.PROVEEDOR
+      ? this.partsService.getMyParts()
+      : this.partsService.getParts();
+
+    partsRequest
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (parts) => {
@@ -99,7 +126,9 @@ export class PartsComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         error: (error) => {
-          this.error = 'Error al cargar los repuestos';
+          this.error = this.isProviderView
+            ? 'Error al cargar tus repuestos'
+            : 'Error al cargar los repuestos';
           this.loading = false;
           console.error('Error loading parts:', error);
         }
@@ -240,5 +269,57 @@ export class PartsComponent implements OnInit, OnDestroy {
 
   getImageUrl(imagePath: string): string {
     return this.fileUploadService.getImageUrl(imagePath);
+  }
+
+  navigateToCreatePart() {
+    this.router.navigate(['/provider/repuestos/crear']);
+  }
+
+  navigateToProviderDashboard() {
+    this.router.navigate(['/provider/dashboard']);
+  }
+
+  editPart(part: Part, event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.router.navigate(['/provider/repuestos/editar', part.id]);
+  }
+
+  async deletePart(part: Part, event: Event) {
+    event.stopPropagation();
+
+    const confirmed = await this.ui.confirm({
+      title: 'Eliminar repuesto',
+      message: `¿Deseas eliminar el repuesto "${part.name}"? Esta acción no se puede deshacer.`,
+      confirmText: 'Eliminar',
+      cancelText: 'Cancelar',
+      variant: 'danger'
+    });
+
+    if (!confirmed) return;
+
+    this.loading = true;
+
+    this.partsService.deletePart(part.id).subscribe({
+      next: () => {
+        this.allParts = this.allParts.filter(p => p.id !== part.id);
+        this.filteredParts = this.filteredParts.filter(p => p.id !== part.id);
+        this.updateCategoryCounts();
+        this.loading = false;
+        this.ui.success('Repuesto eliminado correctamente');
+      },
+      error: (error) => {
+        this.loading = false;
+        this.ui.error(error.error?.message || 'Error al eliminar el repuesto');
+        console.error('Error deleting part:', error);
+      }
+    });
+  }
+
+  onPartClick(part: Part) {
+    if (this.isProviderView) {
+      this.editPart(part);
+    }
   }
 }

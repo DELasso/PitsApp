@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { VehicleInfo } from '../../models/auth.model';
 import { UsersService } from '../../services/users.service';
 import { AuthService } from '../../services/auth.service';
+import { UiService } from '../../services/ui.service';
 
 @Component({
   selector: 'app-client-vehicles',
@@ -40,7 +41,8 @@ export class ClientVehiclesComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private usersService: UsersService,
-    private authService: AuthService
+    private authService: AuthService,
+    private ui: UiService
   ) {
     this.vehicleForm = this.fb.group({
       brand: ['', Validators.required],
@@ -144,34 +146,44 @@ export class ClientVehiclesComponent implements OnInit {
     this.successMessage = '';
   }
 
-  deleteVehicle(plate: string): void {
-    if (confirm(`¿Estás seguro de que deseas eliminar el vehículo con placa ${plate}?`)) {
-      this.saving = true;
-      this.errorMessage = '';
-      this.successMessage = '';
+  async deleteVehicle(plate: string): Promise<void> {
+    const confirmed = await this.ui.confirm({
+      title: 'Eliminar vehículo',
+      message: `¿Deseas eliminar el vehículo con placa ${plate}? Esta acción no se puede deshacer.`,
+      confirmText: 'Eliminar',
+      cancelText: 'Cancelar',
+      variant: 'danger'
+    });
 
-      this.usersService.deleteMyVehicle(plate).subscribe({
-        next: (response) => {
-          this.vehicles = response.data || [];
+    if (!confirmed) return;
 
-          const currentUser = this.authService.getCurrentUser();
-          if (currentUser) {
-            this.authService.updateCurrentUser({
-              ...currentUser,
-              vehicleInfo: this.vehicles[0] || undefined,
-              vehicleInfos: this.vehicles,
-            });
-          }
+    this.saving = true;
+    this.errorMessage = '';
+    this.successMessage = '';
 
-          this.successMessage = 'Vehículo eliminado correctamente';
-          this.saving = false;
-        },
-        error: (error) => {
-          this.errorMessage = error.error?.message || 'No fue posible eliminar el Vehículo';
-          this.saving = false;
+    this.usersService.deleteMyVehicle(plate).subscribe({
+      next: (response) => {
+        this.vehicles = response.data || [];
+
+        const currentUser = this.authService.getCurrentUser();
+        if (currentUser) {
+          this.authService.updateCurrentUser({
+            ...currentUser,
+            vehicleInfo: this.vehicles[0] || undefined,
+            vehicleInfos: this.vehicles,
+          });
         }
-      });
-    }
+
+        this.successMessage = 'Vehículo eliminado correctamente';
+        this.ui.success('Vehículo eliminado correctamente');
+        this.saving = false;
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.message || 'No fue posible eliminar el Vehículo';
+        this.ui.error(this.errorMessage);
+        this.saving = false;
+      }
+    });
   }
 
   get brand() { return this.vehicleForm.get('brand'); }

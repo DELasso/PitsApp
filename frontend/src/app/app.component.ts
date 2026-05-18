@@ -9,11 +9,12 @@ import { CartService } from './services/cart.service';
 import { AuthService } from './services/auth.service';
 import { CartSummary } from './models/cart.model';
 import { User, UserRole } from './models/auth.model';
+import { UiOverlayComponent } from './components/ui-overlay/ui-overlay.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule, FontAwesomeModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule, FontAwesomeModule, UiOverlayComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

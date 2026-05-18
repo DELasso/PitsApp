@@ -16,7 +16,7 @@ Este proyecto ya tiene `frontend` y `backend` separados:
 La configuracion incluida usa:
 
 - `rootDir`: `backend`
-- `buildCommand`: `npm ci && npm run build`
+- `buildCommand`: `npm ci --include=dev && npm run build`
 - `startCommand`: `npm run start:prod`
 - `healthCheckPath`: `/status`
 
@@ -46,10 +46,15 @@ Notas:
 Crea un `Web Service` manualmente con estos valores:
 
 - Runtime: `Node`
-- Root Directory: `backend`
-- Build Command: `npm ci && npm run build`
+- Root Directory: *(recomendado)* `backend`
+- Build Command: `npm ci --include=dev && npm run build`
 - Start Command: `npm run start:prod`
 - Health Check Path: `/status`
+
+Si tu servicio en Render apunta a la raíz del repo (Root Directory vacío), usa:
+
+- Build Command: `npm run build:backend`
+- Start Command: `npm run start:prod`
 
 ## Verificacion
 
